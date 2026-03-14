@@ -1390,17 +1390,21 @@ const voteUI = {
         con.innerHTML = "";
         (v.options||[]).forEach(opt => {
           const c = v.counts?.[opt.id] || 0;
-          const reserve = (100 - parseFloat(opt.val)).toFixed(1);
+          const burnVal = Number(opt.val);
+          const reserve = Number.isFinite(burnVal) ? (100 - burnVal).toFixed(1) : "—";
+          const safeId = util.esc(String(opt.id || ""));
+          const safeLabel = util.esc(String(opt.label || ""));
+          const safeBurn = Number.isFinite(burnVal) ? String(burnVal) : "—";
           const card = document.createElement("div"); 
           card.className = "v-card";
           card.innerHTML = `
             <div>
-                <span class="v-opt-id">${opt.id}</span>
-                <span class="v-opt-desc">${opt.label}</span>
+                <span class="v-opt-id">${safeId}</span>
+                <span class="v-opt-desc">${safeLabel}</span>
                 <div style="font-size:10px;color:#666;margin-left:20px;margin-top:2px;">Leaves <span style="color:#aaa">${reserve}%</span> for War Chest</div>
             </div>
             <div style="text-align:right;">
-                <div class="v-opt-val">BURN ${opt.val}%</div>
+                <div class="v-opt-val">BURN ${safeBurn}%</div>
                 <span class="v-opt-count">${fmt.short(c)} VOTES</span>
             </div>
           `;
@@ -1423,7 +1427,7 @@ const voteUI = {
             ];
         }
         
-        const html = rec.map(r => `<span class="vt-item">${r}</span>`).join("");
+        const html = rec.map(r => `<span class="vt-item">${util.esc(String(r))}</span>`).join("");
         // 重复两遍实现无缝滚动
         tr.innerHTML = html + html; 
     }
