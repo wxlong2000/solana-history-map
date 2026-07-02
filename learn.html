@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <title>Learn — Solana History Map</title>
+  <meta name="description" content="Learn Solana's core mechanisms through the real events that defined them — 13 playable simulations covering consensus, exploits, market structure, and network load." />
+  <link rel="stylesheet" href="./history-map.css?v=19" />
+  <script defer src="/stats.js?v=1"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Learn Solana through its history","description":"13 playable simulations of real Solana ecosystem events, each teaching a core mechanism: Proof of History, bridge security, oracle manipulation, AMM curves, congestion economics.","url":"https://www.meow-woof.org/learn.html","learningResourceType":"interactive simulation","isAccessibleForFree":true,"license":"https://creativecommons.org/licenses/by/4.0/"}</script>
+  <style>
+    .lr-intro{max-width:64ch;color:var(--ink-dim);line-height:1.7}
+    .lr-track{margin-top:34px}
+    .lr-track>h2{font-size:19px;display:flex;align-items:center;gap:10px}
+    .lr-track>h2 .lr-no{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--solana-green);border:1px solid rgba(93,245,180,.35);border-radius:3px;padding:2px 8px}
+    .lr-track>p{color:var(--ink-dim);font-size:14px;max-width:70ch;line-height:1.65;margin-top:6px}
+    .lr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;margin-top:14px}
+    .lr-card{display:flex;flex-direction:column;gap:8px;padding:16px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.02);text-decoration:none;color:var(--ink);transition:border-color .15s, transform .15s}
+    .lr-card:hover{border-color:rgba(93,245,180,.45);transform:translateY(-2px)}
+    .lr-card .lr-name{font-weight:700;font-size:15px}
+    .lr-card .lr-event{font-family:var(--font-mono);font-size:10.5px;letter-spacing:1px;color:var(--solana-cyan)}
+    .lr-card ul{margin:0;padding-left:16px;color:var(--ink-dim);font-size:13px;line-height:1.55}
+    .lr-card .lr-go{margin-top:auto;font-family:var(--font-mono);font-size:11.5px;color:var(--solana-green)}
+    .lr-note{margin-top:36px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;color:var(--ink-dim);font-size:13px;line-height:1.65;max-width:76ch}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand-mark" href="./index.html" aria-label="Solana History Map home">
+      <span class="brand-kicker">SOLANA</span>
+      <span class="brand-title">History Map</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="./index.html">Atlas</a>
+      <a href="./learn.html" aria-current="page">Learn</a>
+      <a href="./footprint.html">Footprint</a>
+      <a href="./sources.html">Sources</a>
+      <a href="./about.html">About</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <h1>Learn Solana through its history</h1>
+    <p class="lr-intro">
+      Every simulation below reconstructs a real, source-cited event — and makes you operate the mechanism at its center. You don't watch the Wormhole exploit; you forge the receipt. You don't read about Proof of History; you tamper with a real SHA-256 chain and watch it break. Four tracks, thirteen playable teardowns, free and open source (CC-BY-4.0).
+    </p>
+
+    <section class="lr-track">
+      <h2><span class="lr-no">TRACK 1</span> Consensus, time &amp; liveness</h2>
+      <p>How a blockchain agrees on time and order — and what actually happens when block production stops.</p>
+      <div class="lr-grid">
+        <a class="lr-card" href="./index.html#architects_echo">
+          <span class="lr-event">2020 · PROOF OF HISTORY</span>
+          <span class="lr-name">Architect's Echo</span>
+          <ul>
+            <li>Why sequential SHA-256 hashing can act as a clock</li>
+            <li>Tamper with one event and watch every later hash cascade-break</li>
+            <li>Why "PoH as a strict VDF" is academically debated</li>
+          </ul>
+          <span class="lr-go">Play the teardown →</span>
+        </a>
+        <a class="lr-card" href="./index.html#restart">
+          <span class="lr-event">2021–2024 · NETWORK OUTAGES</span>
+          <span class="lr-name">Mount Restart</span>
+          <ul>
+            <li>How validators coordinate a cluster restart from a snapshot</li>
+            <li>Liveness vs safety: why an outage is not a hack and no funds moved</li>
+            <li>Why restarts need a supermajority to agree on the restart slot</li>
+          </ul>
+          <span class="lr-go">Play the teardown →</span>
+        </a>
+        <a class="lr-card" href="./index.html#firedancer">
+          <span class="lr-event">2025 · CLIENT DIVERSITY</span>
+          <span class="lr-name">Firedancer Reactor</span>
+          <ul>
+            <li>Why one bug in one client can halt a single-client network</li>
+            <li>Stake weight, not client count, decides liveness (~⅓ / ⅔ thresholds)</li>
+            <li>Kill a client at different stake shares and see when the network survives</li>
+          </ul>
+          <span class="lr-go">Play the teardown →</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="lr-track">
+      <h2><span class="lr-no">TRACK 2</span> Exploits &amp; security</h2>
+      <p>Three real incidents, three different failure modes: a forged verification, a manipulated price feed, a leaked secret.</p>
+      <div class="lr-grid">
+        <a class="lr-card" href="./index.html#wormhole">
+          <span class="lr-event">2022 · $320M BRIDGE EXPLOIT</span>
+          <span class="lr-name">Wormhole Breach</span>
+          <ul>
+            <li>Be the clerk: forge the <em>receipt</em>, not the signature</li>
+            <li><code>load_instruction_at</code> vs <code>load_instruction_at_checked</code> — one deprecated call</li>
+            <li>Counterfactual: the checked reader rejects the same forgery</li>
+          </ul>
+          <span class="lr-go">Play the teardown →</span>
+        </a>
+        <a class="lr-card" href="./index.html#mango">
+          <span class="lr-event">2022 · $110M ORACLE MANIPULATION</span>
+          <span class="lr-name">Oracle Mirage</span>
+          <ul>
+            <li>Pump a thin market until fake PnL outweighs a real treasury</li>
+            <li>Zero contract bugs used — the design was the vulnerability</li>
+            <li>Why the legal aftermath (2025 vacated convictions) matters</li>
+          </ul>
+          <span class="lr-go">Play the teardown →</span>
+        </a>
+        <a class="lr-card" href="./index.html#slope">
+          <span class="lr-event">2022 · SEED-PHRASE LEAK</span>
+          <span class="lr-name">Leak Ruins</span>
+          <ul>
+            <li>How plaintext logging turns an app into a key custodian</li>
+            <li>Flip the scrub-sensitive-data flag and re-run the drain</li>
+            <li>Forensics honesty: only ~15% of wallets were conclusively traced</li>
+          </ul>
+          <span class="lr-go">Play the teardown →</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="lr-track">
+      <h2><span class="lr-no">TRACK 3</span> Markets &amp; liquidity</h2>
+      <p>The market microstructure layer: how prices form, how orders route, and how launches bootstrap liquidity.</p>
+      <div class="lr-grid">
+        <a class="lr-card" href="./index.html#raydium">
+          <span class="lr-event">2021 · AMM LIQUIDITY</span>
+          <span class="lr-name">Liquidity Vortex</span>
+          <ul>
+            <li>Drag a real x·y=k curve and feel slippage vs depth</li>
+            <li>Why the same swap costs 37% in a shallow pool and 6% in a deep one</li>
+            <li>Illustrative model, labeled as such — the mechanism is exact</li>
+          </ul>
+          <span class="lr-go">Play the teardown →</span>
+        </a>
+        <a class="lr-card" href="./index.html#jup_port">
+          <span class="lr-event">2021 · SWAP AGGREGATION</span>
+          <span class="lr-name">Aggregator Starport</span>
+          <ul>
+            <li>Hand-route a swap across three venues, then lose to the optimizer</li>
+            <li>Convex price impact: why the best split shifts with order size</li>
+            <li>Why aggregation became Solana's invisible default</li>
+          </ul>
+          <span class="lr-go">Play the teardown →</span>
+        </a>
+        <a class="lr-card" href="./index.html#pumpfun">
+          <span class="lr-event">2024 · LAUNCH FRICTION</span>
+          <span class="lr-name">Degen Launchpad</span>
+          <ul>
+            <li>Tap through the four frictions token launches used to require</li>
+            <li>DEPLOY: watch launch cost collapse to near zero</li>
+            <li>What friction-free launching did to token supply — documented as culture, not investment</li>
+          </ul>
+          <span class="lr-go">Play the teardown →</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="lr-track">
+      <h2><span class="lr-no">TRACK 4</span> Scale, load &amp; distribution</h2>
+      <p>What happens when a million people show up at once — congestion economics, RPC load, and mass distribution.</p>
+      <div class="lr-grid">
+        <a class="lr-card" href="./index.html#ore">
+          <span class="lr-event">2024 · CONGESTION ECONOMICS</span>
+          <span class="lr-name">Congestion Mine</span>
+          <ul>
+            <li>Spam harder, watch bots match you and your share snap back</li>
+            <li>Tragedy of the commons in fee markets, played not told</li>
+            <li>Congestion vs outage: the chain kept producing blocks</li>
+          </ul>
+          <span class="lr-go">Play the teardown →</span>
+        </a>
+        <a class="lr-card" href="./index.html#backpack">
+          <span class="lr-event">2023 · MINT-DAY LOAD</span>
+          <span class="lr-name">Bearproof Bastion</span>
+          <ul>
+            <li>Hold to claim while the whole crowd piles onto the same RPCs</li>
+            <li>Why demand can look like a denial-of-service</li>
+            <li>Pause, fix, ship: the one-day delay that saved the mint</li>
+          </ul>
+          <span class="lr-go">Play the teardown →</span>
+        </a>
+        <a class="lr-card" href="./index.html#helium">
+          <span class="lr-event">2023 · DEPIN MIGRATION</span>
+          <span class="lr-name">Migration Gate</span>
+          <ul>
+            <li>Why a real wireless network settles proofs off-chain</li>
+            <li>Flip to "settle everything on-chain" and watch load explode</li>
+            <li>Oracles as compression, not as price feeds</li>
+          </ul>
+          <span class="lr-go">Play the teardown →</span>
+        </a>
+        <a class="lr-card" href="./index.html#wen_temple">
+          <span class="lr-event">2024 · MASS AIRDROPS</span>
+          <span class="lr-name">Temple of "When?"</span>
+          <ul>
+            <li>Run a million-wallet distribution as a dry-run rehearsal</li>
+            <li>Why WEN was the test flight for the JUP airdrop</li>
+            <li>Claim windows, eligibility snapshots, and load shaping</li>
+          </ul>
+          <span class="lr-go">Play the teardown →</span>
+        </a>
+      </div>
+    </section>
+
+    <p class="lr-note">
+      <strong>For educators:</strong> everything here is free to reuse under CC-BY-4.0 — simulations, landmark texts, and the <a href="./dataset.html">open dataset</a>. Every claim is cited (62 references, weighted toward primary sources) and every landmark carries a "sources last verified" date. Found an error? The <a href="https://github.com/wxlong2000/solana-history-map" rel="noopener">repository</a> has a factual-correction template — corrections with a primary source get priority.
+    </p>
+  </main>
+  <footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="./sources.html">Sources</a><a href="./about.html">About</a><span class="foot-spacer"></span><a href="./LICENSE">Open-source · MIT + CC-BY-4.0</a><a href="https://github.com/wxlong2000/solana-history-map" rel="noopener">GitHub</a></footer>
+</body>
+</html>

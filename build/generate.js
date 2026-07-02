@@ -143,7 +143,7 @@ function pageHtml(l, prev, next) {
 </head><body data-fx="on">
 <header class="site-header">
   <a class="brand-mark" href="../index.html" aria-label="Solana History Map home"><span class="brand-kicker">SOURCE-CITED ATLAS</span><span class="brand-title">Solana History Map</span></a>
-  <nav class="nav-links" aria-label="Primary navigation"><a href="../index.html">Atlas</a><a href="../footprint.html">Footprint</a><a href="../sources.html">Sources</a><a href="../about.html">About</a></nav>
+  <nav class="nav-links" aria-label="Primary navigation"><a href="../index.html">Atlas</a><a href="../learn.html">Learn</a><a href="../footprint.html">Footprint</a><a href="../sources.html">Sources</a><a href="../about.html">About</a></nav>
 </header>
 <main class="page-shell lp">
   <a class="lp-back" href="../index.html#${esc(l.id)}">← Back to the atlas</a>
@@ -187,7 +187,7 @@ function datasetHtml(json) {
 <script type="application/ld+json">${dsLd}</script>
 </head><body data-fx="on">
 <header class="site-header"><a class="brand-mark" href="./index.html"><span class="brand-kicker">SOURCE-CITED ATLAS</span><span class="brand-title">Solana History Map</span></a>
-<nav class="nav-links"><a href="./index.html">Atlas</a><a href="./footprint.html">Footprint</a><a href="./sources.html">Sources</a><a href="./about.html">About</a></nav></header>
+<nav class="nav-links"><a href="./index.html">Atlas</a><a href="./learn.html">Learn</a><a href="./footprint.html">Footprint</a><a href="./sources.html">Sources</a><a href="./about.html">About</a></nav></header>
 <main class="page-shell">
 <h1>Open dataset</h1>
 <p>Every landmark on this map is open data you can reuse. Text and data are licensed <a href="./LICENSE-DATA.md">CC-BY-4.0</a>; the site code is <a href="./LICENSE">MIT</a>. No token, no tracking, no affiliation claims.</p>
@@ -233,7 +233,7 @@ function sourcesHtml() {
 .src-none{color:var(--muted,#9aa6b8);font-size:13px;list-style:none;margin-left:-18px}</style>
 </head><body data-fx="on">
 <header class="site-header"><a class="brand-mark" href="./index.html"><span class="brand-kicker">SOURCE-CITED ATLAS</span><span class="brand-title">Solana History Map</span></a>
-<nav class="nav-links"><a href="./index.html">Atlas</a><a href="./footprint.html">Footprint</a><a href="./sources.html" aria-current="page">Sources</a><a href="./about.html">About</a></nav></header>
+<nav class="nav-links"><a href="./index.html">Atlas</a><a href="./learn.html">Learn</a><a href="./footprint.html">Footprint</a><a href="./sources.html" aria-current="page">Sources</a><a href="./about.html">About</a></nav></header>
 <main class="page-shell">
 <h1>Source Index</h1>
 <p class="src-intro">Every landmark on the map is an interpretation of a documented Solana ecosystem memory, backed by primary or strongly authoritative references. Citations are historical references, not endorsements, partnerships, or affiliation claims.</p>
@@ -270,7 +270,7 @@ async function main() {
   fs.writeFileSync(path.join(SITE, "landmarks.json"), JSON.stringify(json, null, 2));
   fs.writeFileSync(path.join(SITE, "dataset.html"), datasetHtml(json));
   fs.writeFileSync(path.join(SITE, "sources.html"), sourcesHtml());
-  const urls = [`${BASE_URL}/`, `${BASE_URL}/dataset.html`, `${BASE_URL}/sources.html`, `${BASE_URL}/about.html`, `${BASE_URL}/footprint.html`]
+  const urls = [`${BASE_URL}/`, `${BASE_URL}/dataset.html`, `${BASE_URL}/sources.html`, `${BASE_URL}/about.html`, `${BASE_URL}/learn.html`, `${BASE_URL}/footprint.html`]
     .concat(LM.map((l) => `${BASE_URL}/landmarks/${l.id}.html`));
   fs.writeFileSync(path.join(SITE, "sitemap.xml"),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n")}\n</urlset>\n`);

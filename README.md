@@ -2,13 +2,17 @@
 
 [![CI](https://github.com/wxlong2000/solana-history-map/actions/workflows/ci.yml/badge.svg)](https://github.com/wxlong2000/solana-history-map/actions/workflows/ci.yml)
 
-**A source-cited, interactive atlas of Solana ecosystem history.**
-22 real events — outages, exploits, infrastructure milestones, airdrops, and
-meme culture — mapped as explorable landmarks on a hand-illustrated map, each
-backed by primary sources and, for the defining moments, a playable
-step-by-step simulation of the actual mechanism.
+**Learn Solana's core mechanisms through the real events that defined them.**
+A source-cited, interactive atlas of 22 ecosystem history landmarks — outages,
+exploits, infrastructure milestones, airdrops, and meme culture — on a
+hand-illustrated map. The defining moments are playable, step-by-step
+simulations of the actual mechanism: you don't read about the Wormhole
+exploit, you forge the receipt; you don't read about Proof of History, you
+tamper with a real SHA-256 chain and watch it break.
 
-**Live:** https://www.meow-woof.org/
+**Live:** https://www.meow-woof.org/ · **Start here:** [Learn tracks](https://www.meow-woof.org/learn.html)
+(4 tracks × 13 playable teardowns: consensus & liveness, exploits & security,
+markets & liquidity, scale & distribution)
 
 - 🗺️ **22 landmarks · 62 references**, weighted toward primary sources
   (official post-mortems, court filings, specs, root-cause analyses)

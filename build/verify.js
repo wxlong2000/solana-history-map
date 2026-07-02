@@ -56,13 +56,13 @@ for (const l of LM) {
 }
 const sitemap = fs.readFileSync(path.join(SITE, "sitemap.xml"), "utf8");
 const urlCount = (sitemap.match(/<loc>/g) || []).length;
-if (urlCount !== 5 + LM.length) fail(`sitemap has ${urlCount} urls, expected ${5 + LM.length}`);
+if (urlCount !== 6 + LM.length) fail(`sitemap has ${urlCount} urls, expected ${6 + LM.length}`);
 if (!sitemap.includes("footprint.html")) fail("sitemap missing footprint.html");
 if (!failures) ok("landmarks.json, 22 pages, sitemap all match the data");
 
 // ---------- 3. assets & links ----------
 console.log("3. referenced assets exist");
-const htmlFiles = ["index.html", "about.html", "sources.html", "dataset.html", "footprint.html", "404.html"]
+const htmlFiles = ["index.html", "about.html", "sources.html", "dataset.html", "footprint.html", "404.html", "learn.html"]
   .map((f) => path.join(SITE, f))
   .concat(fs.readdirSync(path.join(SITE, "landmarks")).map((f) => path.join(SITE, "landmarks", f)));
 let checked = 0;

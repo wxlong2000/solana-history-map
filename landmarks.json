@@ -38,22 +38,34 @@
       "id": "restart",
       "name": "MOUNT RESTART",
       "category": "Outage",
-      "year": 2022,
+      "year": 2021,
       "date": "2021-09",
       "tldr": "The network went down. Then down again. And every time, it clawed its way back.",
-      "whatHappened": "Across 2021–2022 Solana suffered several full or partial outages — overwhelmed by bot traffic, a resource-exhaustion bug, and surging demand — each requiring validators to coordinate a restart of the chain.",
-      "whyItMatters": "Mount Restart is a scar and a proof point at once: not a perfect uptime record, but a network and operator community that kept recovering and hardening after every fall.",
+      "whatHappened": "Solana's outage era has a real ledger. Sep 14, 2021: bot traffic from the Grape IDO — roughly 400,000 transactions per second at peak, 'in effect, a denial of service attack' per Solana's own post-mortem — took the network down for about 17 hours. Apr 30–May 1, 2022: NFT-minting bots hammering Candy Machine (millions of requests per second, per later analyses) forced a ~7-hour restart. Jun 1, 2022: a durable-nonce bug caused one transaction to be processed twice, breaking consensus for ~4.5 hours. Sep 30, 2022 brought another halt, and on Feb 25, 2023 the network fell into a degraded vote-only mode that stalled economic activity for roughly 19 hours. The last full halt: Feb 6, 2024, about 5 hours, an infinite JIT-recompile loop in a legacy loader. Each time, over a thousand validators coordinated a restart from a snapshot — and no user funds were lost.",
+      "whyItMatters": "Mount Restart is a scar and a proof point at once. Every fall forced a structural fix — QUIC ingress, stake-weighted transaction quality-of-service, local fee markets, patched runtimes — and the record shows the hardening worked: as of mid-2026, Solana's official status page has logged no full network halt since February 2024, over two years of uninterrupted block production. These were liveness failures, not hacks — the ledger never lied, it just paused.",
       "status": "verified",
       "tier": "playable",
       "lastVerified": "2026-07",
       "sources": [
         {
-          "label": "Solana: 9-14 network outage overview",
+          "label": "Solana: 9-14-2021 outage overview (official post-mortem)",
           "url": "https://solana.com/news/9-14-network-outage-initial-overview"
         },
         {
-          "label": "Solana: 09-30-22 outage report",
+          "label": "Solana: 06-01-22 outage report (durable nonce, official)",
+          "url": "https://solana.com/news/06-01-22-solana-mainnet-beta-outage-report-2"
+        },
+        {
+          "label": "Solana: 09-30-22 outage report (official)",
           "url": "https://solana.com/news/09-30-22-solana-mainnet-beta-outage-report"
+        },
+        {
+          "label": "Solana: 02-06-24 outage report (official)",
+          "url": "https://solana.com/news/02-06-24-solana-mainnet-beta-outage-report"
+        },
+        {
+          "label": "Solana status page — full incident history",
+          "url": "https://status.solana.com/history"
         },
         {
           "label": "Helius — A complete history of Solana outages",
@@ -173,8 +185,8 @@
       "year": 2021,
       "date": "2021-10",
       "tldr": "Almost every 'best price' swap you've made on Solana ran through this one aggregator.",
-      "whatHappened": "Jupiter grew into Solana's default liquidity router — quoting and splitting trades across the ecosystem's venues so users get the best execution without thinking about it.",
-      "whyItMatters": "It stands for infrastructure that disappears into the user experience: routes, quotes, swaps, and liquidity access that just work.",
+      "whatHappened": "Jupiter launched in the fall of 2021 (archived snapshots show jup.ag live by Oct 13, 2021) as a router that quotes and splits trades across Solana's venues so users get the best execution without thinking about it. The engine kept compounding: limit orders arrived by late 2022, a Rust-rewritten v2 routing engine in March 2023, the Metis routing algorithm (a reworked Bellman-Ford pathfinder) in July 2023, and DCA in September 2023. By December 2025 it briefly held about 93.6% of Solana's aggregator-routed DEX volume (per SolanaFloor, based on Dune data) — a share that has since fluctuated as competition intensified — while routing hundreds of millions of dollars in swaps on a typical day (per DefiLlama, mid-2026).",
+      "whyItMatters": "It stands for infrastructure that disappears into the user experience: routes, quotes, swaps, and liquidity access that just work. Jupiter's whole product is a moving target — the best split shifts with every block — which is why the mechanism, not any market-share snapshot, is the story.",
       "status": "verified",
       "tier": "playable",
       "lastVerified": "2026-07",
@@ -184,11 +196,15 @@
           "url": "https://developers.jup.ag/docs/get-started"
         },
         {
+          "label": "Jupiter v3: the Metis routing algo (official, Jul 2023)",
+          "url": "https://discuss.jup.ag/t/archived-jupiter-v3-the-metis-routing-algo/21712"
+        },
+        {
           "label": "Eco — How Solana's Jupiter DEX router works",
           "url": "https://eco.com/support/en/articles/14801182-jupiter-aggregator-how-solana-s-dex-router-works"
         },
         {
-          "label": "SolanaFloor — Jupiter aggregator market-share data",
+          "label": "SolanaFloor — Jupiter aggregator market-share data (Dec 2025)",
           "url": "https://solanafloor.com/news/jupiter-reclaims-dominance-with-93-6-market-share-in-solana-s-aggregator-landscape"
         }
       ],
@@ -397,8 +413,8 @@
       "year": 2024,
       "date": "2024-01-19",
       "tldr": "Launch a token in 30 seconds for almost nothing. Solana's meme floodgates never closed again.",
-      "whatHappened": "Pump.fun made token creation fast, permissionless, and nearly free, turning meme-coin launches into a constant, high-volume cultural activity on Solana.",
-      "whyItMatters": "A major product and culture moment — with real speculation and risk attached. It is history, treated neutrally, not an endorsement.",
+      "whatHappened": "Pump.fun collapsed the cost of launching a token to almost zero: every coin starts with a fixed one-billion supply sold along a bonding curve — an automated pricing formula with no presale and no order book — and, once the curve sells out, 'graduates' to an open DEX (historically Raydium at around a $69K market cap, later Pump.fun's own PumpSwap). The frictionless machine made meme launches a constant, high-volume cultural activity — and wrote its own turbulent history: in May 2024 a former employee abused leftover privileged access to drain about $1.9M (roughly 12,300 SOL) from bonding-curve contracts and was later sentenced in London to six years, per press reports; in December 2024 the UK's FCA issued an unauthorized-firm warning, after which Pump.fun itself blocked UK users; and in July 2025 its PUMP token sale raised $600M in minutes, widely reported as one of the largest ICOs ever.",
+      "whyItMatters": "A major product and culture moment with real speculation and risk attached — the bonding-curve launchpad became a category, and its incidents became case studies in platform custody and regulatory reach. It is history, treated neutrally: neither the mechanism nor the token is an endorsement.",
       "status": "verified",
       "tier": "playable",
       "lastVerified": "2026-07",
@@ -406,6 +422,14 @@
         {
           "label": "CoinDesk — Most Influential 2025: Pump.fun",
           "url": "https://www.coindesk.com/coindesk-news/2025/12/10/most-influential-pump-fun"
+        },
+        {
+          "label": "CoinDesk — Pump.fun exploited by former employee (May 2024)",
+          "url": "https://www.coindesk.com/business/2024/05/16/solana-meme-coin-factory-pumpfun-compromised-by-bonding-curve-exploit"
+        },
+        {
+          "label": "FCA — warning notice on Pump.fun (official, Dec 2024)",
+          "url": "https://www.fca.org.uk/news/warnings/pumpfun"
         },
         {
           "label": "The Block — Pump.fun PUMP token launch coverage",
@@ -454,7 +478,7 @@
       "date": "2024-03",
       "tldr": "A cat staking its claim in a world run by dogs — and the 'cat season' it kicked off.",
       "whatHappened": "MEW, branded 'cat in a dog's world,' launched on Solana in late March 2024 via a fair launch, with part of supply distributed to the community by airdrop. Its premise was explicitly cultural: a cat-themed project staking a claim in a meme ecosystem long dominated by dog mascots. Its arrival is widely credited with sparking the wave crypto-natives nicknamed 'cat season.'",
-      "whyItMatters": "MEW marked the moment cat-meme culture asserted itself as a distinct community identity on Solana, showing how a simple cultural frame could organize a large online community around a shared in-joke.",
+      "whyItMatters": "MEW marked the moment cat-meme culture asserted itself as a distinct community identity on Solana, showing how a simple cultural frame could organize a large online community around a shared in-joke. This record covers MEW's own launch and framing; the broader 'cat season' it helped spark — Popcat's $1B milestone and the cats-vs-dogs rivalry — is chronicled at CAT SEASON PEAKS.",
       "status": "verified",
       "tier": "timeline",
       "lastVerified": "2026-07",
@@ -558,7 +582,7 @@
       "date": "2024-07",
       "tldr": "Where cats staked their claim against a dog-ruled meme world — Popcat's grin and MEW's 'cat in a dog's world' powering 2024's 'cat season.'",
       "whatHappened": "Solana's cat-coin culture rises here as a deliberate counter to the dog-dominated meme scene. Popcat — drawn from the 2020 'Oatmeal' cat clicker meme — launched as a Solana token in December 2023; in July 2024 it became the first cat-themed meme coin to cross a $1B market cap. In March 2024, MEW launched with its narrative baked into its name — 'cat in a dog's world,' a lone cat surviving among dogs — and the cat-coin rally around these tokens through 2024 became known in crypto circles as 'cat season.'",
-      "whyItMatters": "This landmark captures meme culture as identity and rivalry: dogs as the incumbent dynasty, cats as the scrappy challengers. It shows how online communities use humor, mascots, and us-vs-them stories to build belonging.",
+      "whyItMatters": "This landmark captures meme culture as identity and rivalry: dogs as the incumbent dynasty, cats as the scrappy challengers. It shows how online communities use humor, mascots, and us-vs-them stories to build belonging. MEW's own fair-launch story has its own record at MEWVEIL WOODS; this landmark chronicles the season the challengers briefly won.",
       "status": "verified",
       "tier": "timeline",
       "lastVerified": "2026-07",
