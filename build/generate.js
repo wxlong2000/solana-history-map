@@ -137,6 +137,7 @@ function pageHtml(l, prev, next) {
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="${ogImg}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="../history-map.css?v=${CSS_VERSION}">
+<script defer src="../stats.js?v=1"></script>
 <style>${LP_STYLE}</style>
 <script type="application/ld+json">${jsonLd}</script>
 </head><body data-fx="on">
@@ -181,6 +182,7 @@ function datasetHtml(json) {
 <meta name="description" content="Open, reusable dataset of Solana history landmarks with sources. CC-BY-4.0.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="./history-map.css?v=${CSS_VERSION}">
+<script defer src="./stats.js?v=1"></script>
 <style>.ds-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:14px}.ds-table th,.ds-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}.ds-table th{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--solana-green)}</style>
 <script type="application/ld+json">${dsLd}</script>
 </head><body data-fx="on">
@@ -216,6 +218,7 @@ function sourcesHtml() {
 <meta name="description" content="The source index for the Solana History Map — every landmark with its primary and journalistic references. CC-BY-4.0.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="./history-map.css?v=${CSS_VERSION}">
+<script defer src="./stats.js?v=1"></script>
 <style>.src-intro{max-width:760px;color:var(--muted,#9aa6b8)}
 .src-count{font-family:var(--font-mono);font-size:12px;letter-spacing:1px;color:var(--solana-green);text-transform:uppercase}
 .src-entry{padding:16px 0;border-bottom:1px solid var(--line)}

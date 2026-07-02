@@ -1,9 +1,13 @@
 // Cloudflare Pages advanced-mode Worker.
-// Beyond serving the static site, it adds ONE endpoint: a cached, method-whitelisted Solana RPC
-// proxy at /api/chain for the homepage live chain pulse. It hides the upstream RPC, whitelists only
-// the read methods the pulse needs (so it can't be abused as an open relay), edge-caches a few
-// seconds so all visitors collapse into a handful of upstream calls, and falls through a list of
-// upstreams (skipping any that block the Worker's datacenter IP).
+// Beyond serving the static site, it adds TWO endpoints:
+//   /api/chain — a cached, method-whitelisted Solana RPC proxy for the homepage live chain pulse.
+//     It hides the upstream RPC, whitelists only the read methods the pulse needs (so it can't be
+//     abused as an open relay), edge-caches a few seconds so all visitors collapse into a handful
+//     of upstream calls, and falls through a list of upstreams.
+//   /api/hit — self-hosted, privacy-first page-view counting into Workers Analytics Engine.
+//     No cookies, no fingerprinting, no third parties: it stores only (path, referrer host,
+//     coarse device class) per hit. Honors DNT/GPC. The STATS binding is configured in
+//     wrangler.toml; without it the endpoint is a silent no-op.
 //
 // Upstream: the public api.mainnet-beta endpoint blocks Cloudflare IPs, so the keyless default is
 // PublicNode. Set RPC_UPSTREAM in the Pages project env to a paid/Helius URL to take priority; the
@@ -17,10 +21,34 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/api/chain") return chain(request, env, ctx);
+    if (url.pathname === "/api/hit") return hit(request, env);
     if (url.pathname === "/_worker.js") return new Response("Not found", { status: 404 });
     return env.ASSETS.fetch(request); // everything else = static site
   },
 };
+
+// ---- /api/hit — privacy-first page-view counter (Workers Analytics Engine) ----
+const HIT_PATH = /^\/(index\.html)?$|^\/(about|sources|dataset|footprint|learn|404)\.html$|^\/landmarks\/[a-z_]+\.html$/;
+async function hit(request, env) {
+  if (request.method === "OPTIONS") return cors(new Response(null, { status: 204 }));
+  if (request.method !== "POST") return json({ error: "POST only" }, 405);
+  if (!env.STATS) return json({ ok: false, reason: "stats disabled" }, 200);
+  // honor Do-Not-Track / Global Privacy Control
+  if (request.headers.get("DNT") === "1" || request.headers.get("Sec-GPC") === "1")
+    return json({ ok: true, respected: "dnt" }, 200);
+  let body;
+  try { body = await request.json(); } catch (e) { return json({ error: "invalid json" }, 400); }
+  const path = typeof body.p === "string" && HIT_PATH.test(body.p) ? body.p : "/other";
+  let refHost = "";
+  try { if (body.r) refHost = new URL(body.r).hostname.slice(0, 64); } catch (e) {}
+  const device = body.m === 1 ? "mobile" : "desktop";
+  env.STATS.writeDataPoint({
+    blobs: [path.slice(0, 96), refHost, device],
+    doubles: [1],
+    indexes: [path.slice(0, 96)],
+  });
+  return json({ ok: true }, 200);
+}
 
 function cors(resp) {
   const r = new Response(resp.body, resp);
