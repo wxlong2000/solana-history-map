@@ -184,7 +184,11 @@ body[data-fx="off"] .fx-toggle .dot { background: var(--muted); box-shadow: none
   color: var(--archive-gold); text-transform: uppercase;
 }
 .map-curator-note strong { font-size: 13px; line-height: 1.35; font-weight: 650; }
+.map-learn-cta { pointer-events: auto; margin-top: 3px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .3px; color: var(--solana-green); text-decoration: none; border-bottom: 1px dotted rgba(93,245,180,.5); width: max-content; }
+.map-learn-cta:hover { color: #bdeaff; }
 .map-hint { position: absolute; left: 16px; bottom: 14px; z-index: 11; font-family: var(--font-mono); font-size: 10px; letter-spacing: 1px; color: var(--muted); background: rgba(7, 9, 13, 0.48); padding: 4px 8px; border-radius: 3px; pointer-events: none; opacity: .85; transition: opacity .5s ease; }
+.map-hint a { pointer-events: auto; color: var(--solana-cyan); text-decoration: none; border-bottom: 1px dotted rgba(61,214,255,.5); }
+.map-hint a:hover { color: #bdeaff; }
 .map-hint.hide { opacity: 0; }
 
 /* ---------- markers: unified, high-contrast; counter-scaled to stay constant

@@ -888,6 +888,7 @@
   // ================= WALKTHROUGH: backpack — Bearproof Bastion (Mad Lads mint) =================
   register("backpack", {
     accent: "#46c7ec",
+    unmount: function (ctx) { var s = ctx.state; if (s.crowd) { clearInterval(s.crowd); s.crowd = null; } if (s.hi) { clearInterval(s.hi); s.hi = null; } },
     mount: function (stage, ctx) {
       var st = ctx.state, P = panels(stage); st.P = P;
       var sh = slotShell(P, ["mood", "xnft", "load", "fix"]); st.sh = sh;
@@ -1123,7 +1124,7 @@
         { id: "wrapped", name: "Sollet assets", sub: "wrapped BTC / ETH", x: 84, y: 20, dep: "custody", link: "collateral custodied through FTX", down: "STUCK — redemptions frozen" },
         { id: "mm", name: "Market makers", sub: "Alameda liquidity", x: 14, y: 66, dep: "mm", link: "much liquidity provided by Alameda", down: "ILLIQUID — spreads blow out" },
         { id: "found", name: "Solana Foundation", sub: "treasury", x: 86, y: 66, dep: "exposure", link: "held some assets on FTX (disclosed)", down: "DENTED — disclosed balance locked" },
-        { id: "narr", name: "“exchange chain”", sub: "reputation by association", x: 50, y: 88, dep: "narrative", link: "narrative association only — no real dependency", down: "FEAR — confidence only, nothing on-chain broke", stylized: true }
+        { id: "narr", name: "“exchange chain”", sub: "reputation by association", x: 50, y: 82, dep: "narrative", link: "narrative association only — no real dependency", down: "FEAR — confidence only, nothing on-chain broke", stylized: true }
       ];
       st.phase = "audit"; st.audited = {}; st.forked = false;
       var COLOR = { keys: "#ff5066", custody: "#ffab3d", mm: "#e0c65a", exposure: "#c98bff", narrative: "#6b7c93" };
@@ -1254,6 +1255,7 @@
   // ================= WALKTHROUGH: woof_city — Aggregation vs. Interface =================
   register("woof_city", {
     accent: "#d7c08a",
+    unmount: function (ctx) { var s = ctx.state; if (s.crowd) { clearInterval(s.crowd); s.crowd = null; } if (s.drain) { clearInterval(s.drain); s.drain = null; } },
     mount: function (stage, ctx) {
       var st = ctx.state, P = panels(stage); st.P = P;
       var sh = slotShell(P, ["fork", "holders", "fund", "cap"]); st.sh = sh;
@@ -1313,10 +1315,10 @@
         st.executed = true; st.execBtn.disabled = true;
         ctx.speak("No venue deal was ever secured. The money is refunded — the Sphere never ran.");
         // refund drain
-        var drain = setInterval(function () {
+        st.drain = setInterval(function () {
           st.raised = Math.max(0, st.raised - 90000);
           st.gauge.set(Math.min(100, st.raised / 690000 * 100), "$" + Math.round(st.raised).toLocaleString() + " · refunding", "bad");
-          if (st.raised <= 0) { clearInterval(drain); st.gauge.set(0, "refunded → $0 (Apr 2025)", "bad"); }
+          if (st.raised <= 0) { clearInterval(st.drain); st.drain = null; st.gauge.set(0, "refunded → $0 (Apr 2025)", "bad"); }
         }, 120);
         st.cap.innerHTML = "The display <b class=\"bad\">never ran.</b> Raising the money was easy; <b>signing a contract with the venue was not</b> — that needs a single accountable legal entity, which a meme crowd is not. Organizers never secured a deal and <b>refunded backers in April 2025.</b>";
       });

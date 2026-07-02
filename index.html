@@ -22,7 +22,7 @@
   <link rel="preload" as="font" type="font/woff2" href="./assets/fonts/Inter-var.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="./assets/fonts/JetBrainsMono-var.woff2" crossorigin />
   <link rel="preload" as="image" imagesrcset="assets/map.webp?v=21 2048w, assets/final_3840.webp?v=21 3840w" imagesizes="100vw" />
-  <link rel="stylesheet" href="./history-map.css?v=19" />
+  <link rel="stylesheet" href="./history-map.css?v=20" />
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Solana History Map","url":"https://www.meow-woof.org/","description":"An interactive, source-cited public atlas of Solana history — 22 explorable landmarks.","license":"https://creativecommons.org/licenses/by/4.0/"}</script>
   <style>
     #boot-overlay{position:fixed;inset:0;z-index:300;background:#05070b;display:flex;align-items:center;justify-content:center;transition:opacity .6s ease}
@@ -229,7 +229,7 @@
     .ftx-detonate:disabled{opacity:.4;cursor:not-allowed}
     .ftx-fork{width:100%;border-color:rgba(20,241,149,.5)!important;background:linear-gradient(180deg,rgba(20,241,149,.16),rgba(20,241,149,.06))!important;color:#c9ffe8!important;font-weight:800;letter-spacing:1px}
     .ftx-fork:disabled{opacity:.5;cursor:not-allowed}
-    @media(max-width:760px){.ftx-node{width:104px;padding:6px 7px}.ftx-node b{font-size:11px}.ftx-graph{height:52vh}}
+    @media(max-width:760px){.ftx-node{width:104px;padding:6px 7px}.ftx-node b{font-size:11px}.ftx-graph{height:52vh;min-height:380px}}
     /* saga — The Negative-Price Phone */
     .saga-arb{width:100%;border-color:rgba(70,199,236,.5)!important;background:linear-gradient(180deg,rgba(70,199,236,.18),rgba(70,199,236,.07))!important;color:#bdeaff!important;font-weight:800;letter-spacing:.5px;font-size:13px}
     .saga-arb:disabled{opacity:.4;cursor:not-allowed}
@@ -682,7 +682,7 @@
   <script defer src="./alive.js?v=3"></script>
   <script defer src="./share-card.js?v=1"></script>
   <script defer src="./wormhole-breach.js?v=5"></script>
-  <script defer src="./interactive-sim.js?v=14"></script>
+  <script defer src="./interactive-sim.js?v=15"></script>
   <script defer src="./mobile-feed.js?v=1"></script>
   <script defer src="./keepers-sync.js?v=1"></script>
   <script defer src="./stats.js?v=1"></script>
@@ -744,8 +744,9 @@
         <div class="map-curator-note">
           <span>Interactive public archive</span>
           <strong>22 Solana landmarks, mapped as a visual record.</strong>
+          <a class="map-learn-cta" href="./learn.html">New here? Start with a playable teardown →</a>
         </div>
-        <div class="map-hint" id="map-hint">Select a numbered landmark to inspect the record</div>
+        <div class="map-hint" id="map-hint">Select a numbered landmark to inspect the record — or open a <a href="./learn.html">guided teardown</a></div>
       </div>
 
       <aside class="landmark-panel" aria-live="polite">

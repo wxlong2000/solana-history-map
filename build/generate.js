@@ -23,7 +23,7 @@ catch (e) {
 const BASE_URL = "https://www.meow-woof.org";
 // Single cache-busting version for CSS shared across every generated page —
 // hand-written pages (index/about/sources/dataset/footprint) must match.
-const CSS_VERSION = 19;
+const CSS_VERSION = 20;
 const DATASET_VERSION = "1.0.0";
 
 global.window = {};
