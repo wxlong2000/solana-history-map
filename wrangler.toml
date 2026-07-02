@@ -2,14 +2,12 @@
 # Secrets (e.g. RPC_UPSTREAM) are managed in the Cloudflare dashboard, never here.
 #
 # The STATS binding powers the self-hosted privacy-first page-view counter
-# (/api/hit — see stats.js + _worker.js). It requires Workers Analytics Engine
-# to be enabled once on the account:
-#   https://dash.cloudflare.com/80b1d3697c4c60f913290d47358f39d0/workers/analytics-engine
-# After enabling, uncomment the block below and redeploy.
+# (/api/hit — see stats.js + _worker.js), writing to the "shm_hits" Analytics
+# Engine dataset. Secrets (e.g. RPC_UPSTREAM) live in the Cloudflare dashboard.
 name = "meowwoof-token"
 pages_build_output_dir = "."
 compatibility_date = "2026-01-01"
 
-# [[analytics_engine_datasets]]
-# binding = "STATS"
-# dataset = "shm_hits"
+[[analytics_engine_datasets]]
+binding = "STATS"
+dataset = "shm_hits"
