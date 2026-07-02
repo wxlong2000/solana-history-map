@@ -199,6 +199,37 @@
     .breach-say:empty{min-height:0}
     .dd-note{font-family:var(--font-sans,sans-serif);font-size:13.5px;line-height:1.6;color:#dbe3ee;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:11px;padding:16px 18px;text-align:center}
     .dd-note b{color:var(--archive-gold,#d7c08a)}
+    /* ftx_crater — The Contagion Map */
+    .ftx-graph{position:relative;width:100%;height:min(46vh,330px);margin:2px 0 4px;border:1px solid var(--line,rgba(255,255,255,.1));border-radius:12px;background:radial-gradient(120% 90% at 50% 42%,rgba(255,80,102,.06),rgba(6,9,14,.6));overflow:hidden}
+    .ftx-edges{position:absolute;inset:0;width:100%;height:100%}
+    .ftx-edge{stroke:rgba(255,255,255,.12);stroke-width:.5;stroke-dasharray:2 2;transition:stroke .3s,stroke-width .3s;vector-effect:non-scaling-stroke}
+    .ftx-edge.shown{stroke-width:1.4;stroke-dasharray:none}
+    .ftx-edge.hot{stroke-width:2.2;filter:drop-shadow(0 0 4px currentColor);animation:ftxPulse 1.1s ease-in-out infinite}
+    @keyframes ftxPulse{50%{opacity:.5}}
+    .ftx-core{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:3;display:flex;flex-direction:column;gap:2px;padding:10px 14px;border-radius:11px;border:1px solid rgba(255,80,102,.6);background:linear-gradient(180deg,rgba(255,80,102,.22),rgba(255,80,102,.08));color:#ffd7dd;font-family:var(--font-mono,monospace);cursor:default;box-shadow:0 0 26px rgba(255,80,102,.3)}
+    .ftx-core b{font-size:14px;letter-spacing:1px}.ftx-core span{font-size:10px;color:rgba(255,215,221,.7)}
+    .ftx-node{position:absolute;transform:translate(-50%,-50%);z-index:4;display:flex;flex-direction:column;gap:1px;width:132px;padding:8px 10px;border-radius:10px;border:1px solid var(--line,rgba(255,255,255,.14));background:rgba(12,16,22,.92);color:var(--ink,#f4f7fb);font-family:var(--font-mono,monospace);text-align:left;cursor:pointer;transition:border-color .2s,transform .12s,box-shadow .2s}
+    .ftx-node:hover{transform:translate(-50%,-50%) translateY(-2px);border-color:rgba(255,255,255,.4)}
+    .ftx-node b{font-size:12px}.ftx-node .fn-sub{font-size:9.5px;color:var(--ink-dim,#c8d2dc);opacity:.75}
+    .ftx-node .fn-link{font-size:9.5px;line-height:1.35;color:var(--solana-cyan,#46c7ec);margin-top:3px;display:none}
+    .ftx-node.audited .fn-link{display:block}
+    .ftx-node .fn-state{font-size:10px;font-weight:700;margin-top:3px;display:none}
+    .ftx-node.audited{border-color:rgba(255,255,255,.32)}
+    .ftx-node.is-stylized{border-style:dashed;opacity:.9}
+    .ftx-node.down{border-color:rgba(255,80,102,.5)}
+    .ftx-node.down .fn-state{display:block;color:#ff8a99}
+    .ftx-node.dep-narrative.down .fn-state{color:#9fb2c6}
+    .ftx-node.forked{border-color:rgba(20,241,149,.6);box-shadow:0 0 22px rgba(20,241,149,.25)}
+    .ftx-node.forked .fn-state{display:block;color:var(--solana-green,#14f195)}
+    .ftx-meters{}
+    .ftx-cap{font-family:var(--font-mono,monospace);font-size:12px;line-height:1.5;margin:4px 0}
+    .ftx-cap .ok{color:var(--solana-green,#14f195)}.ftx-cap .bad{color:#ff6b7f}
+    .ftx-act{margin-top:6px}
+    .ftx-detonate{width:100%;border-color:rgba(255,80,102,.5)!important;background:linear-gradient(180deg,rgba(255,80,102,.2),rgba(255,80,102,.08))!important;color:#ffd7dd!important;font-weight:800;letter-spacing:2px}
+    .ftx-detonate:disabled{opacity:.4;cursor:not-allowed}
+    .ftx-fork{width:100%;border-color:rgba(20,241,149,.5)!important;background:linear-gradient(180deg,rgba(20,241,149,.16),rgba(20,241,149,.06))!important;color:#c9ffe8!important;font-weight:800;letter-spacing:1px}
+    .ftx-fork:disabled{opacity:.5;cursor:not-allowed}
+    @media(max-width:760px){.ftx-node{width:104px;padding:6px 7px}.ftx-node b{font-size:11px}.ftx-graph{height:52vh}}
     .breach-action{align-self:flex-start;background:linear-gradient(135deg,rgba(70,199,236,.18),rgba(70,199,236,.08))!important;border-color:rgba(70,199,236,.5)!important;color:#bdeaff!important}
     .breach-action.spent{opacity:.5}
     .breach-nav{display:flex;gap:10px;justify-content:space-between}
@@ -635,7 +666,7 @@
   <script defer src="./alive.js?v=3"></script>
   <script defer src="./share-card.js?v=1"></script>
   <script defer src="./wormhole-breach.js?v=5"></script>
-  <script defer src="./interactive-sim.js?v=11"></script>
+  <script defer src="./interactive-sim.js?v=12"></script>
   <script defer src="./mobile-feed.js?v=1"></script>
   <script defer src="./keepers-sync.js?v=1"></script>
   <script defer src="./stats.js?v=1"></script>

@@ -11,7 +11,7 @@ exploit, you forge the receipt; you don't read about Proof of History, you
 tamper with a real SHA-256 chain and watch it break.
 
 **Live:** https://www.meow-woof.org/ · **Start here:** [Learn tracks](https://www.meow-woof.org/learn.html)
-(4 tracks × 13 playable teardowns: consensus & liveness, exploits & security,
+(4 tracks × 14 playable teardowns: consensus & liveness, exploits & security,
 markets & liquidity, scale & distribution)
 
 - 🗺️ **22 landmarks · 62 references**, weighted toward primary sources

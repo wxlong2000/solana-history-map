@@ -81,10 +81,10 @@
       "year": 2022,
       "date": "2022-11",
       "tldr": "The meteor that hit closest to Solana — and nearly took the whole chain with it.",
-      "whatHappened": "When FTX and Alameda collapsed in November 2022, the fallout hit Solana hard: SOL had been closely associated with them, and confidence cratered alongside the price.",
-      "whyItMatters": "It became a brutal stress test that separated builders who stayed from capital that left. The crater is not about price — it marks the period the ecosystem had to prove it was more than an exchange-era narrative.",
+      "whatHappened": "When FTX and Alameda collapsed in November 2022, the fallout hit Solana harder than any other chain: SOL was the ecosystem most associated with them, and confidence cratered alongside the price. But the damage traveled along dependency edges, not the blockchain — custody (Sollet-wrapped assets), liquidity (Alameda market-making), the Foundation's own disclosed FTX balance, and one hard technical break: Serum, whose program-upgrade keys were held by FTX. The chain itself never stopped producing blocks. Within about 48 hours the community forked Serum into OpenBook under fresh keys, restoring the order-book liquidity that Raydium and others depended on.",
+      "whyItMatters": "It became a brutal stress test that separated builders who stayed from capital that left, and a lasting lesson in systemic risk: on a permissionless chain, contagion spreads through custody, liquidity, and keys — your dependency graph — not through consensus. The crater is not about price; it marks the period the ecosystem had to prove it was more than an exchange-era narrative, and the OpenBook fork showed the infrastructure was recoverable because no one owned the chain itself.",
       "status": "verified",
-      "tier": "timeline",
+      "tier": "playable",
       "lastVerified": "2026-07",
       "sources": [
         {

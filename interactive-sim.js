@@ -1111,19 +1111,144 @@
     });
   }
 
-  deepDive("ftx_crater", {
+  // ================= WALKTHROUGH: ftx_crater — The Contagion Map =================
+  register("ftx_crater", {
     accent: "#ff5066",
-    interactive: { beat: 1, kind: "tug", label: "Drag the FTX crisis deeper →", hint: "Drag the crisis <strong>all the way to peak panic</strong> — confidence craters, the network doesn’t.", leftLabel: "SOL price / confidence", rightLabel: "Network · producing blocks", start: 0, compute: function (v) { return { left: Math.max(4, 100 - v), leftText: v > 4 ? "cratering" : "steady", leftState: v > 50 ? "bad" : (v > 15 ? "warn" : ""), right: 100, rightText: "still finalizing", rightState: "ok", sliderText: v > 60 ? "peak panic" : (v > 20 ? "contagion" : "calm"), caption: v >= 60 ? "Confidence and price cratered — but the network <b>never stopped producing blocks.</b> The crisis was reputational, not technical." : "" }; } },
-    beats: [
-      { date: "Nov 2022", tag: "FTX falls", head: "The meteor lands", body: "FTX and Alameda collapse in November 2022. SOL had been closely associated with them — confidence, and the price, cratered alongside." },
-      { date: "days after", tag: "contagion", head: "The closest call on the map", body: "SOL was the chain most tied to FTX/Alameda. But the network <strong>kept running</strong>, and the Foundation noted most large DeFi projects had limited or no direct FTX exposure." },
-      { date: "2023 →", tag: "who stayed", head: "Builders vs. the capital that left", body: "A brutal stress test that separated builders who stayed from capital that fled — the period Solana had to prove it was more than an exchange-era narrative." }
-    ],
-    why: "It’s not about price — it marks the period Solana had to prove it was more than an exchange-era story.",
-    closingLead: "The closest call on the whole map — and the chain kept producing blocks throughout. What cratered was <strong>confidence</strong>, not the network.",
-    figures: [{ big: "Nov 2022", small: "FTX/Alameda collapse" }, { big: "chain", small: "kept running" }],
-    sourceExtras: [{ label: "CNBC — Solana’s yearlong slide (Dec 2022)", url: "https://www.cnbc.com/2022/12/30/solanas-accelerating-yearlong-slide-wipes-out-over-50-billion.html" }],
-    note: "Avoid implying the chain failed or halted — it didn’t; the crisis was reputational/financial."
+    mount: function (stage, ctx) {
+      var st = ctx.state, P = panels(stage); st.P = P;
+      var sh = slotShell(P, ["graph", "meters", "act", "cap"]); st.sh = sh;
+      // dependency nodes hanging off FTX/Alameda (center). dep = the KIND of link.
+      st.NODES = [
+        { id: "serum", name: "Serum", sub: "central order book", x: 16, y: 20, dep: "keys", link: "program upgrade keys held by FTX", down: "FROZEN — upgrade key inaccessible", fixable: true },
+        { id: "wrapped", name: "Sollet assets", sub: "wrapped BTC / ETH", x: 84, y: 20, dep: "custody", link: "collateral custodied through FTX", down: "STUCK — redemptions frozen" },
+        { id: "mm", name: "Market makers", sub: "Alameda liquidity", x: 14, y: 66, dep: "mm", link: "much liquidity provided by Alameda", down: "ILLIQUID — spreads blow out" },
+        { id: "found", name: "Solana Foundation", sub: "treasury", x: 86, y: 66, dep: "exposure", link: "held some assets on FTX (disclosed)", down: "DENTED — disclosed balance locked" },
+        { id: "narr", name: "“exchange chain”", sub: "reputation by association", x: 50, y: 88, dep: "narrative", link: "narrative association only — no real dependency", down: "FEAR — confidence only, nothing on-chain broke", stylized: true }
+      ];
+      st.phase = "audit"; st.audited = {}; st.forked = false;
+      var COLOR = { keys: "#ff5066", custody: "#ffab3d", mm: "#e0c65a", exposure: "#c98bff", narrative: "#6b7c93" };
+      st.COLOR = COLOR;
+      // ---- graph: SVG edges under absolutely-positioned node chips ----
+      var g = el("div", "ftx-graph");
+      var edges = st.NODES.map(function (n) { return '<line class="ftx-edge" data-id="' + n.id + '" x1="50" y1="46" x2="' + n.x + '" y2="' + n.y + '"/>'; }).join("");
+      g.innerHTML = '<svg class="ftx-edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' + edges + '</svg>' +
+        '<button class="ftx-core" type="button" disabled><b>FTX / Alameda</b><span>Nov 2022 · collapse</span></button>';
+      st.NODES.forEach(function (n) {
+        var b = el("button", "ftx-node dep-" + n.dep + (n.stylized ? " is-stylized" : ""), '<b>' + n.name + '</b><span class="fn-sub">' + n.sub + '</span><span class="fn-link"></span><span class="fn-state"></span>');
+        b.type = "button"; b.style.left = n.x + "%"; b.style.top = n.y + "%";
+        b.setAttribute("data-id", n.id);
+        b.addEventListener("click", function () { auditNode(n); });
+        g.appendChild(b); n.elBtn = b;
+      });
+      st.g = g; sh.slots.graph.appendChild(g);
+      st.svg = g.querySelector(".ftx-edges");
+      // ---- meters ----
+      st.conf = UI.meter("Confidence · price / sentiment"); st.net = UI.meter("Network · blocks finalized");
+      sh.slots.meters.appendChild(st.conf.el); sh.slots.meters.appendChild(st.net.el);
+      st.conf.set(100, "steady", ""); st.net.set(100, "finalizing", "ok");
+      // ---- action + caption ----
+      st.cap = el("div", "ftx-cap muted"); sh.slots.cap.appendChild(st.cap);
+      st.act = el("div", "ftx-act"); sh.slots.act.appendChild(st.act);
+
+      function edgeEl(id) { return st.svg.querySelector('.ftx-edge[data-id="' + id + '"]'); }
+      function auditNode(n) {
+        if (st.phase !== "audit" || st.audited[n.id]) return;
+        st.audited[n.id] = true;
+        n.elBtn.classList.add("audited");
+        n.elBtn.querySelector(".fn-link").textContent = n.link;
+        var e = edgeEl(n.id); e.classList.add("shown"); e.style.stroke = COLOR[n.dep];
+        var done = st.NODES.filter(function (x) { return st.audited[x.id]; }).length;
+        ctx.speak("Audited: " + n.name + " — " + n.link);
+        st.cap.innerHTML = done < st.NODES.length
+          ? "Audited <b>" + done + " / " + st.NODES.length + "</b> links. Each edge is a <b>different kind</b> of dependency — keys, custody, liquidity, exposure, or just narrative."
+          : "All links mapped. Notice the colors: only <b>one</b> is a hard technical dependency (Serum's upgrade keys). Now detonate FTX and watch what actually travels.";
+        if (done === st.NODES.length && st.detonateBtn) st.detonateBtn.disabled = false;
+      }
+      st.auditNode = auditNode;
+      st.edgeEl = edgeEl;
+      st.paintContagion = function () {
+        st.NODES.forEach(function (n) {
+          n.elBtn.classList.add("down");
+          n.elBtn.querySelector(".fn-state").textContent = n.down;
+          var e = edgeEl(n.id); e.classList.add("shown", "hot"); e.style.stroke = COLOR[n.dep];
+        });
+        st.conf.set(9, "cratering", "bad");
+        st.net.set(100, "still finalizing", "ok");
+      };
+      st.doFork = function () {
+        var n = st.NODES[0]; // serum
+        st.forked = true;
+        n.elBtn.classList.remove("down"); n.elBtn.classList.add("forked");
+        n.elBtn.querySelector("b").textContent = "OpenBook";
+        n.elBtn.querySelector(".fn-sub").textContent = "community fork of Serum";
+        n.elBtn.querySelector(".fn-state").textContent = "RELINKED — new keys, no FTX";
+        var e = edgeEl("serum"); e.classList.remove("hot"); e.style.stroke = "#14f195";
+        st.conf.set(24, "rebuilding", "warn");
+      };
+    },
+    steps: [
+      {
+        head: "Map the blast radius", body: "When FTX and Alameda imploded in November 2022, SOL was the chain most tied to them. But “tied” meant different things. Click each node to <strong>audit its link</strong> to FTX — and see what kind of dependency it really was.",
+        hint: "Click all five nodes to audit how each one actually depended on FTX.",
+        enter: function (ctx) {
+          var s = ctx.state; s.P.show(true); s.sh.show(["graph", "meters", "cap"]);
+          s.phase = "audit";
+          s.cap.innerHTML = "Five things people called “Solana's FTX exposure.” Audit each link — they are not the same kind.";
+        }
+      },
+      {
+        head: "Detonate — and watch what travels", body: "Contagion spreads along <strong>dependency edges</strong>, not through the blockchain. Custody freezes, liquidity dries up, keys lock — but a hard technical break only exists where FTX literally held the keys. Press detonate and watch the two meters.",
+        hint: "Press DETONATE — confidence craters, the network keeps finalizing blocks.",
+        enter: function (ctx) {
+          var s = ctx.state; s.P.show(true); s.sh.show(["graph", "meters", "act", "cap"]);
+          s.phase = "armed";
+          s.act.innerHTML = "";
+          var btn = el("button", "btn-hud ftx-detonate", "⚠ DETONATE FTX");
+          btn.type = "button"; btn.disabled = Object.keys(s.audited).length < s.NODES.length;
+          if (btn.disabled) s.cap.innerHTML = "Go back and audit all five links first — you can't read the blast radius without the map.";
+          else s.cap.innerHTML = "Every link is mapped. Press detonate.";
+          btn.addEventListener("click", function () {
+            if (s.phase === "detonated") return;
+            s.phase = "detonated";
+            s.paintContagion(); btn.disabled = true;
+            ctx.speak("FTX detonated. Confidence craters; the network keeps finalizing blocks.");
+            s.cap.innerHTML = "Look at the meters. <b class=\"bad\">Confidence cratered.</b> But the <b class=\"ok\">network never stopped finalizing blocks</b> — the only hard on-chain break is Serum, the one place FTX held the upgrade keys. Everything else was custody, liquidity, or fear.";
+          });
+          s.act.appendChild(btn); s.detonateBtn = btn;
+        }
+      },
+      {
+        head: "The fix was social, not technical", body: "Serum couldn't be upgraded — its keys were with FTX. So the community did the one thing a permissionless chain lets you do: <strong>fork the program</strong> under fresh keys. Serum became <strong>OpenBook</strong> in about 48 hours, and the order-book liquidity that Raydium and others relied on came back.",
+        hint: "Cut the compromised key and fork Serum into OpenBook.",
+        enter: function (ctx) {
+          var s = ctx.state; s.P.show(true); s.sh.show(["graph", "meters", "act", "cap"]);
+          if (s.phase !== "detonated" && s.phase !== "forked") { s.paintContagion(); s.phase = "detonated"; }
+          s.act.innerHTML = "";
+          var btn = el("button", "btn-hud ftx-fork", "✂ CUT KEY & FORK → OpenBook");
+          btn.type = "button"; if (s.forked) btn.disabled = true;
+          btn.addEventListener("click", function () {
+            if (s.forked) return;
+            s.doFork(); btn.disabled = true;
+            ctx.speak("Serum forked into OpenBook under community keys — the order book came back.");
+            s.cap.innerHTML = "Serum → <b class=\"ok\">OpenBook</b>, forked under community keys in ~48h. Confidence stays scarred — that heals slowly — but the <b>infrastructure was recoverable because no one owned the chain itself.</b>";
+          });
+          s.act.appendChild(btn); s.forkBtn = btn;
+          if (s.forked) s.cap.innerHTML = "Serum is now OpenBook — relinked under community keys.";
+          else s.cap.innerHTML = "One node is still frozen: Serum. Its keys were FTX's. Fork it.";
+        }
+      },
+      {
+        head: "Why this keep still stands", body: "The FTX crater is the closest call on the whole map — and it teaches the most durable lesson: on a permissionless chain, <strong>contagion travels your dependency graph, not your blockchain</strong>. Custody, liquidity, and keys are the attack surface; the ledger itself kept producing blocks the entire time.",
+        hint: "Open the sources, or replay.",
+        enter: function (ctx) {
+          var s = ctx.state; s.P.show(false);
+          s.P.closing.innerHTML = '<p class="sim-closing-lead">The blast radius was a <strong>dependency graph</strong> — custody, liquidity, and one set of upgrade keys — not the blockchain. What cratered was <strong>confidence</strong>; the chain never stopped finalizing blocks, and the one hard break (Serum) was fixable by forking it into OpenBook.</p>' +
+            '<div class="sim-figrow"><span class="sim-fig">Nov 2022<small>FTX / Alameda collapse</small></span><span class="sim-fig">~48h<small>Serum → OpenBook fork</small></span><span class="sim-fig">0<small>blocks the chain missed</small></span></div>' +
+            sourcesFor("ftx_crater", [{ label: "openbook-dex — community fork of Serum (GitHub)", url: "https://github.com/openbook-dex/program" }]) +
+            '<p class="sim-note">Confidence/price levels here are an illustrative model. The Foundation’s own FTX exposure is per its public disclosure; the “exchange chain” node is stylized to show a narrative-only link, not a technical one. The chain did not halt during the FTX collapse.</p>';
+        }
+      }
+    ]
   });
 
   deepDive("woof_city", {
