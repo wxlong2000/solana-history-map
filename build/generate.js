@@ -1,6 +1,6 @@
 // Build script: from landmarks-data.js, generate
 //   - /landmarks/<id>.html   per-landmark static pages (own title/desc/og:image)
-//   - /assets/og/<id>.png     1200x630 cyberpunk share cards (sharp)
+//   - /assets/og/<id>.jpg     1200x630 cyberpunk share cards (sharp)
 //   - /landmarks.json         open dataset
 //   - /dataset.html           dataset + methodology page
 //   - /sitemap.xml
@@ -79,7 +79,7 @@ async function makeCard(l) {
     ${sourced ? `<text x="64" y="${H - 48}" font-family="monospace" font-size="22" letter-spacing="3" fill="#9fb0c0">${sourced}</text>` : ""}
     <text x="${W - 64}" y="${H - 48}" text-anchor="end" font-family="monospace" font-size="20" letter-spacing="3" fill="#5df5b4">SOLANA HISTORY MAP</text>
   </svg>`;
-  await base.composite([{ input: Buffer.from(svg), top: 0, left: 0 }]).png().toFile(path.join(OG_DIR, l.id + ".png"));
+  await base.composite([{ input: Buffer.from(svg), top: 0, left: 0 }]).jpeg({ quality: 82 }).toFile(path.join(OG_DIR, l.id + ".jpg"));
 }
 
 const LP_STYLE = `.lp{max-width:880px}
@@ -100,14 +100,14 @@ function pageHtml(l, prev, next) {
   const cat = String(l.category || "").toUpperCase();
   const metaBits = [l.year, cat, (l.sources && l.sources.length) ? "SOURCED" : ""].filter(Boolean).join("  ·  ");
   const desc = esc(l.tldr || "");
-  const ogImg = `${BASE_URL}/assets/og/${l.id}.png`;
+  const ogImg = `${BASE_URL}/assets/og/${l.id}.jpg`;
   const url = `${BASE_URL}/landmarks/${l.id}.html`;
   const story = [["What happened", l.whatHappened], ["Why Solana remembers it", l.whyItMatters], ["On the map", l.onMap]]
     .filter((s) => s[1]).map((s) => `<section><h4>${esc(s[0])}</h4><p>${esc(s[1])}</p></section>`).join("");
   const sources = (l.sources && l.sources.length)
     ? l.sources.map((s) => `<div class="source-line"><span class="src-tag">VERIFIED //</span><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)}</a></div>`).join("")
     : '<span class="story-empty">Source verification pending.</span>';
-  const heroSrc = (l.image) ? "../" + esc(l.image) : `../assets/og/${l.id}.png`;
+  const heroSrc = (l.image) ? "../" + esc(l.image) : `../assets/og/${l.id}.jpg`;
   const affil = l.affiliationNote ? `<p class="affiliation-note">${esc(l.affiliationNote)}</p>` : "";
   const tierBadge = l.tier === "playable"
     ? '<span class="lp-tier lp-tier-play">PLAYABLE TEARDOWN</span>'
