@@ -135,7 +135,7 @@ function pageHtml(l, prev, next) {
   ${affil}
   <nav class="lp-nav"><a href="./${esc(prev.id)}.html">← ${esc(prev.name)}</a><a href="./${esc(next.id)}.html">${esc(next.name)} →</a></nav>
 </main>
-<footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="../sources.html">Sources</a><a href="../about.html">About</a><span class="foot-spacer"></span><a href="../about.html">Open-source · MIT + CC-BY-4.0</a></footer>
+<footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="../sources.html">Sources</a><a href="../about.html">About</a><span class="foot-spacer"></span><a href="../LICENSE">Open-source · MIT + CC-BY-4.0</a></footer>
 </body></html>`;
 }
 
@@ -155,13 +155,13 @@ function datasetHtml(json) {
 <nav class="nav-links"><a href="./index.html">Atlas</a><a href="./footprint.html">Footprint</a><a href="./sources.html">Sources</a><a href="./about.html">About</a></nav></header>
 <main class="page-shell">
 <h1>Open dataset</h1>
-<p>Every landmark on this map is open data you can reuse. Text and data are licensed CC-BY-4.0; the site code is MIT. No token, no tracking, no affiliation claims.</p>
+<p>Every landmark on this map is open data you can reuse. Text and data are licensed <a href="./LICENSE-DATA.md">CC-BY-4.0</a>; the site code is <a href="./LICENSE">MIT</a>. No token, no tracking, no affiliation claims.</p>
 <p><a class="btn-hud" href="./landmarks.json" download>Download landmarks.json</a></p>
 <h2 style="margin-top:28px;font-size:20px">Methodology</h2>
 <p>A landmark qualifies if it is (1) a real, documented Solana ecosystem event or culture moment, (2) sourceable to a primary or strongly authoritative reference, and (3) memorable enough to teach. Security and outage events lead with official post-mortems, court filings, or Chainalysis; meme/culture entries are documented neutrally as culture, never as investment advice. References are historical citations, not endorsements.</p>
 <table class="ds-table"><thead><tr><th>Landmark</th><th>Category</th><th>Year</th><th>Status</th><th>Sources</th></tr></thead><tbody>${rows}</tbody></table>
 </main>
-<footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="./sources.html">Sources</a><a href="./about.html">About</a><span class="foot-spacer"></span><a href="./about.html">Open-source · MIT + CC-BY-4.0</a></footer>
+<footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="./sources.html">Sources</a><a href="./about.html">About</a><span class="foot-spacer"></span><a href="./LICENSE">Open-source · MIT + CC-BY-4.0</a></footer>
 </body></html>`;
 }
 
@@ -205,7 +205,7 @@ function sourcesHtml() {
 <p class="src-count">${LM.length} landmarks · ${total} references · auto-generated from <a href="./dataset.html" style="color:var(--solana-cyan,#46c7ec)">the open dataset</a></p>
 ${blocks}
 </main>
-<footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="./about.html">About</a><a href="./dataset.html">Dataset</a><span class="foot-spacer"></span><a href="./about.html">Open-source · MIT + CC-BY-4.0</a></footer>
+<footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="./about.html">About</a><a href="./dataset.html">Dataset</a><span class="foot-spacer"></span><a href="./LICENSE">Open-source · MIT + CC-BY-4.0</a></footer>
 </body></html>`;
 }
 
