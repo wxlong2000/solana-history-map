@@ -319,7 +319,7 @@ window.SOLANA_HISTORY_LANDMARKS = [
   {
     id: "woof_city", name: "DOG DYNASTY FORGE", x: 89.5, y: 35,
     category: "Meme", year: 2022, date: "2022-12-25", status: "verified", danger: false, image: "assets/landmarks/woof_city.jpeg",
-    lastVerified: "2026-07", tier: "timeline",
+    lastVerified: "2026-07", tier: "playable",
     tldr: "The foundry of Solana's dog-meme dynasty — from BONK's post-FTX morale airdrop to dogwifhat's pink beanie conquering the internet.",
     whatHappened: "Solana's dog-coin culture begins here. On December 25, 2022 — weeks after FTX gutted Solana's reputation — an anonymous community launched BONK as 'the first Solana dog coin, for the people, by the people,' airdropping roughly half its supply to active Solana participants instead of insiders, a grassroots morale boost in the depths of the bear. The lineage continued with dogwifhat (WIF), launched in late 2023 — a Shiba in a pink knit beanie that became one of the internet's most-shared images; in March 2024 its community crowdfunded over $690,000 in under four days to try to put the meme on the Las Vegas Sphere — though the display never ran: organizers never secured a deal with the venue and refunded backers in April 2025.",
     whyItMatters: "BONK and WIF document how Solana's meme scene was rebuilt on community participation and shared humor rather than top-down marketing — BONK's broad airdrop became a template for grassroots distribution, and dogwifhat showed how one absurd image plus collective coordination could capture mainstream attention.",

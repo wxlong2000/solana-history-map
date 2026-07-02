@@ -1251,21 +1251,111 @@
     ]
   });
 
-  deepDive("woof_city", {
+  // ================= WALKTHROUGH: woof_city — Aggregation vs. Interface =================
+  register("woof_city", {
     accent: "#d7c08a",
-    interactives: [
-      { beat: 0, kind: "tapgrid", label: "Airdrop BONK to the community ▸", hint: "Tap to airdrop BONK — watch where it goes.", pct: 0.5, caption: "~<b>half</b> of BONK’s supply went to active Solana participants — grassroots distribution, not insiders." },
-      { beat: 2, kind: "gauge", label: "Crowdfund the Vegas Sphere ▸", hint: "Fund it — then see what became of the money.", meterLabel: "raised toward the $690k Sphere goal", peak: 100, peakText: "$690k raised in <4 days", peakState: "warn", refund: true, refundText: "refunded → $0 (Apr 2025)", caption: "$690k crowdfunded in under four days — but the Sphere display <b>never ran</b>; organizers never secured a deal and <b>refunded backers</b> in April 2025." }
-    ],
-    beats: [
-      { date: "Dec 25, 2022", tag: "BONK", head: "A Christmas morale airdrop", body: "Weeks after FTX gutted Solana’s reputation, an anonymous community launched <strong>BONK</strong> — “the first Solana dog coin, for the people, by the people” — airdropping ~half its supply to active Solana participants instead of insiders." },
-      { date: "late 2023", tag: "WIF", head: "A dog in a pink beanie", body: "The lineage continued with <strong>dogwifhat (WIF)</strong>, a Shiba in a pink knit hat that became one of the internet’s most-shared images.", hint: "Just read this one — press <strong>Next →</strong> for the Sphere saga.", visual: "<div class=\"dd-note\">🧢 <b>dogwifhat (WIF)</b><br>a Shiba in a pink knit beanie — one of the internet’s most-shared images, and the meme the community would try to put on the Vegas Sphere.</div>" },
-      { date: "Mar 2024 → 2025", tag: "the Sphere", head: "$690k for the Vegas Sphere — that never ran", body: "WIF’s community crowdfunded over $690,000 in under four days to put the meme on the Las Vegas Sphere. But the display <strong>never ran</strong>: organizers never secured a deal and refunded backers in April 2025." }
-    ],
-    why: "Solana’s meme scene was rebuilt on community participation and shared humor, not top-down marketing.",
-    closingLead: "BONK’s broad airdrop became a template for grassroots distribution — and dogwifhat showed how one absurd image plus collective coordination could capture mainstream attention.",
-    figures: [{ big: "~50%", small: "BONK supply airdropped" }, { big: "$690k", small: "Sphere fund — refunded" }],
-    note: "‘First Solana dog coin’ is BONK’s own framing. The Sphere display never happened; backers were refunded in Apr 2025."
+    mount: function (stage, ctx) {
+      var st = ctx.state, P = panels(stage); st.P = P;
+      var sh = slotShell(P, ["fork", "holders", "fund", "cap"]); st.sh = sh;
+      st.choice = null; st.raised = 0; st.crowd = null; st.executed = false;
+      // ---- Act 1: allocation fork ----
+      st.forkWrap = el("div", "wc-fork");
+      st.forkWrap.innerHTML =
+        '<button class="wc-fork-btn cf" data-c="insiders" type="button"><b>Allocate ~50% to insiders</b><span>team, VCs, market makers</span></button>' +
+        '<button class="wc-fork-btn" data-c="airdrop" type="button"><b>Airdrop ~50% to active participants</b><span>wallets already using Solana</span></button>';
+      sh.slots.fork.appendChild(st.forkWrap);
+      st.holderOverlap = UI.meter("Holders who already build / use Solana");
+      st.holderVerdict = UI.stat("What the token becomes");
+      sh.slots.holders.appendChild(st.holderOverlap.el); sh.slots.holders.appendChild(st.holderVerdict.el);
+      [].forEach.call(st.forkWrap.querySelectorAll(".wc-fork-btn"), function (b) {
+        b.addEventListener("click", function () {
+          if (st.choice) return;
+          st.choice = b.getAttribute("data-c");
+          [].forEach.call(st.forkWrap.querySelectorAll(".wc-fork-btn"), function (x) { x.disabled = true; x.classList.toggle("chosen", x === b); });
+          if (st.choice === "airdrop") {
+            st.holderOverlap.set(88, "mostly the ecosystem", "ok");
+            st.holderVerdict.set("morale + recognition for people already here", "ok");
+            ctx.speak("Airdropped to active participants — the holders are the ecosystem itself.");
+            st.cap.innerHTML = "This is what BONK did on Dec 25, 2022 (~half the supply, per BONK's own framing): a <b>grassroots morale boost</b> in the depths of the post-FTX bear. The token's holders <b>are</b> the people building — so it reads as recognition, not a sale.";
+          } else {
+            st.holderOverlap.set(16, "mostly disconnected", "bad");
+            st.holderVerdict.set("just another coin (counterfactual)", "warn");
+            ctx.speak("Counterfactual: insider allocation — holders disconnected from the ecosystem.");
+            st.cap.innerHTML = "<b>Counterfactual.</b> Concentrate in insiders and the holders have little to do with the ecosystem — it's just another launch. BONK chose the other branch, and that's why it landed as a community morale event.";
+          }
+        });
+      });
+      // ---- Act 2: crowdfund gauge ----
+      st.gauge = UI.meter("Raised toward the $690k Vegas Sphere goal");
+      st.fundBtn = el("button", "btn-hud wc-pledge", "▲ PLEDGE — join the crowdfund");
+      st.execBtn = el("button", "btn-hud wc-exec", "EXECUTE — put WIF on the Sphere");
+      st.fundBtn.type = "button"; st.execBtn.type = "button"; st.execBtn.disabled = true; st.execBtn.style.display = "none";
+      sh.slots.fund.appendChild(st.gauge.el); sh.slots.fund.appendChild(st.fundBtn); sh.slots.fund.appendChild(st.execBtn);
+      st.gauge.set(0, "$0", "");
+      function paintFund() {
+        var pct = Math.min(100, st.raised / 690000 * 100);
+        st.gauge.set(pct, "$" + Math.round(st.raised).toLocaleString(), pct >= 100 ? "warn" : "");
+        if (st.raised >= 690000 && !st.executed) {
+          st.fundBtn.disabled = true; st.fundBtn.textContent = "✓ $690k raised in under 4 days";
+          st.execBtn.style.display = ""; st.execBtn.disabled = false;
+          if (st.crowd) { clearInterval(st.crowd); st.crowd = null; }
+          st.cap.innerHTML = "<b class=\"ok\">$690k in under four days.</b> The crowd aggregated the money effortlessly. Now press <b>EXECUTE</b> — turn the money into a meme on the Las Vegas Sphere.";
+        }
+      }
+      st.fundBtn.addEventListener("click", function () {
+        if (st.executed || st.raised >= 690000) return;
+        st.raised = Math.min(690000, st.raised + 60000);
+        if (!st.crowd) st.crowd = setInterval(function () { st.raised = Math.min(690000, st.raised + 47000); paintFund(); }, 220);
+        paintFund();
+      });
+      st.execBtn.addEventListener("click", function () {
+        if (st.executed) return;
+        st.executed = true; st.execBtn.disabled = true;
+        ctx.speak("No venue deal was ever secured. The money is refunded — the Sphere never ran.");
+        // refund drain
+        var drain = setInterval(function () {
+          st.raised = Math.max(0, st.raised - 90000);
+          st.gauge.set(Math.min(100, st.raised / 690000 * 100), "$" + Math.round(st.raised).toLocaleString() + " · refunding", "bad");
+          if (st.raised <= 0) { clearInterval(drain); st.gauge.set(0, "refunded → $0 (Apr 2025)", "bad"); }
+        }, 120);
+        st.cap.innerHTML = "The display <b class=\"bad\">never ran.</b> Raising the money was easy; <b>signing a contract with the venue was not</b> — that needs a single accountable legal entity, which a meme crowd is not. Organizers never secured a deal and <b>refunded backers in April 2025.</b>";
+      });
+      st.paintFund = paintFund;
+      st.cap = el("div", "ftx-cap muted"); sh.slots.cap.appendChild(st.cap);
+    },
+    steps: [
+      {
+        head: "Act I — who gets the tokens?", body: "Solana's dog-meme dynasty starts on Christmas Day 2022, weeks after FTX gutted the ecosystem's reputation. An anonymous community launches <strong>BONK</strong>. The first decision decides everything: where does the supply go?",
+        hint: "Choose an allocation — insiders, or the people already using Solana.",
+        enter: function (ctx) { var s = ctx.state; s.P.show(true); s.sh.show(["fork", "holders", "cap"]); s.cap.innerHTML = "A community's first real power is <b>distribution</b>. Pick a branch and see who ends up holding the token."; }
+      },
+      {
+        head: "Aggregation, pointed at the right people", body: "BONK airdropped roughly half its supply to <strong>active Solana wallets</strong>, not insiders — “for the people, by the people.” Distributing to the ecosystem is the thing decentralized communities do best: they <strong>aggregate</strong> — attention, participation, and here, ownership — with no central organizer.",
+        hint: "If you didn't already, pick the airdrop branch to see the difference.",
+        enter: function (ctx) { var s = ctx.state; s.P.show(true); s.sh.show(["fork", "holders", "cap"]); if (!s.choice) s.cap.innerHTML = "Pick a branch above — then compare who holds the token."; }
+      },
+      {
+        head: "Act II — the community tries to interface with the real world", body: "Fast-forward: <strong>dogwifhat (WIF)</strong>, a Shiba in a pink beanie, becomes one of the internet's most-shared images. In March 2024 its community sets out to put the meme on the <strong>Las Vegas Sphere</strong> and crowdfunds the cost. Press pledge and watch the crowd aggregate money.",
+        hint: "Press PLEDGE — the crowd piles in and blows past $690k in under four days.",
+        enter: function (ctx) { var s = ctx.state; s.P.show(true); s.sh.show(["fund", "cap"]); if (!s.executed && s.raised < 690000) s.cap.innerHTML = "Same superpower, bigger stage: can the crowd <b>aggregate</b> the money to buy a spot on the Sphere?"; s.paintFund(); }
+      },
+      {
+        head: "Money raised. Now execute.", body: "The money came together almost instantly — aggregation is effortless. But putting a meme on the Sphere isn't a transfer; it's a <strong>contract with a single venue</strong>, which needs one accountable, signing legal entity. Press EXECUTE.",
+        hint: "Press EXECUTE — and watch what a crowd can't do.",
+        enter: function (ctx) { var s = ctx.state; s.P.show(true); s.sh.show(["fund", "cap"]); if (s.raised < 690000) { s.raised = 690000; s.paintFund(); } if (!s.executed) s.cap.innerHTML = "The $690k is sitting there. Press <b>EXECUTE</b> to turn it into a Sphere booking."; }
+      },
+      {
+        head: "Why this keep still stands", body: "The Dog Dynasty Forge holds one lesson in two acts: a decentralized community's <strong>strongest</strong> muscle is <strong>aggregation</strong> — distributing tokens, pooling money, coordinating attention with no central boss. Its <strong>weakest</strong> is <strong>interfacing</strong> with a world that still requires a single signing entity. BONK aggregated ownership perfectly; the Sphere fund aggregated money perfectly and then hit the wall of a contract it couldn't sign.",
+        hint: "Open the sources, or replay.",
+        enter: function (ctx) {
+          var s = ctx.state; s.P.show(false);
+          s.P.closing.innerHTML = '<p class="sim-closing-lead">Same community, two outcomes: it can <strong>aggregate</strong> ownership and money in days, but it cannot <strong>interface</strong> with a venue that needs one accountable signer. BONK\'s broad airdrop became a template for grassroots distribution; the Sphere fund showed the ceiling.</p>' +
+            '<div class="sim-figrow"><span class="sim-fig">~50%<small>BONK supply airdropped</small></span><span class="sim-fig">$690k<small>raised in &lt;4 days</small></span><span class="sim-fig">$0<small>Sphere ran → refunded Apr 2025</small></span></div>' +
+            sourcesFor("woof_city", []) +
+            '<p class="sim-note">“First Solana dog coin” and the ~50% airdrop figure are BONK\'s own framing. The Sphere display never ran; backers were refunded in April 2025. The insider-allocation branch is a counterfactual; holder-overlap percentages are an illustrative model. Documented as internet culture, not investment.</p>';
+        }
+      }
+    ]
   });
 
   // ================= WALKTHROUGH: saga — The Negative-Price Phone =================

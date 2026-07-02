@@ -234,6 +234,18 @@
     .saga-arb{width:100%;border-color:rgba(70,199,236,.5)!important;background:linear-gradient(180deg,rgba(70,199,236,.18),rgba(70,199,236,.07))!important;color:#bdeaff!important;font-weight:800;letter-spacing:.5px;font-size:13px}
     .saga-arb:disabled{opacity:.4;cursor:not-allowed}
     .slot-ledger{display:flex;gap:8px;flex-wrap:wrap}.slot-ledger .sim-stat{flex:1;min-width:120px}
+    /* woof_city — Aggregation vs Interface */
+    .wc-fork{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+    .wc-fork-btn{flex:1;min-width:170px;display:flex;flex-direction:column;gap:3px;padding:13px 14px;border-radius:11px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink);font-family:var(--font-mono);text-align:left;cursor:pointer;transition:.15s}
+    .wc-fork-btn b{font-size:13px}.wc-fork-btn span{font-size:10.5px;color:var(--ink-dim);opacity:.8}
+    .wc-fork-btn:hover:not(:disabled){border-color:var(--archive-gold,#d7c08a);transform:translateY(-2px)}
+    .wc-fork-btn.cf{border-style:dashed}
+    .wc-fork-btn.chosen{border-color:var(--archive-gold,#d7c08a);box-shadow:0 0 20px rgba(215,192,138,.25)}
+    .wc-fork-btn:disabled:not(.chosen){opacity:.4}
+    .wc-pledge{width:100%;border-color:rgba(215,192,138,.5)!important;background:linear-gradient(180deg,rgba(215,192,138,.16),rgba(215,192,138,.06))!important;color:#f0e6cf!important;font-weight:800;letter-spacing:1px;margin-top:6px}
+    .wc-pledge:disabled{opacity:.6;cursor:default}
+    .wc-exec{width:100%;border-color:rgba(255,80,102,.5)!important;background:linear-gradient(180deg,rgba(255,80,102,.18),rgba(255,80,102,.07))!important;color:#ffd7dd!important;font-weight:800;letter-spacing:1px;margin-top:8px}
+    .wc-exec:disabled{opacity:.4;cursor:not-allowed}
     .breach-action{align-self:flex-start;background:linear-gradient(135deg,rgba(70,199,236,.18),rgba(70,199,236,.08))!important;border-color:rgba(70,199,236,.5)!important;color:#bdeaff!important}
     .breach-action.spent{opacity:.5}
     .breach-nav{display:flex;gap:10px;justify-content:space-between}
@@ -670,7 +682,7 @@
   <script defer src="./alive.js?v=3"></script>
   <script defer src="./share-card.js?v=1"></script>
   <script defer src="./wormhole-breach.js?v=5"></script>
-  <script defer src="./interactive-sim.js?v=13"></script>
+  <script defer src="./interactive-sim.js?v=14"></script>
   <script defer src="./mobile-feed.js?v=1"></script>
   <script defer src="./keepers-sync.js?v=1"></script>
   <script defer src="./stats.js?v=1"></script>
