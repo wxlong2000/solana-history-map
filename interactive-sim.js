@@ -1268,19 +1268,96 @@
     note: "‘First Solana dog coin’ is BONK’s own framing. The Sphere display never happened; backers were refunded in Apr 2025."
   });
 
-  deepDive("saga", {
+  // ================= WALKTHROUGH: saga — The Negative-Price Phone =================
+  register("saga", {
     accent: "#46c7ec",
-    interactive: { beat: 1, kind: "slider", label: "Drag: BONK’s price climbs →", hint: "Drag until the bundled airdrop is worth more than the phone.", meterLabel: "value of the bundled airdrop · vs the $599 phone", min: 0, max: 100, compute: function (v) { var val = v * 12; return { pct: Math.min(100, val / 700 * 100), text: "$" + Math.round(val), state: val > 599 ? "gold" : "", sliderText: "$" + Math.round(val) + " bundled", crossed: val > 599 }; }, crossedCaption: "The bundled tokens are now worth <b>more than the $599 phone</b> — a rational buyer flips from <b>SKIP → BUY</b>, and that arbitrage sold Saga out." },
-    beats: [
-      { date: "May 8, 2023", tag: "ship", head: "Solana built a phone", body: "Solana Mobile shipped <strong>Saga</strong> — a flagship Android phone with a hardware Secure Element (Seed Vault) and a fee-free dApp Store. Launched near $1,000 (later cut to $599), it was widely panned." },
-      { date: "Dec 2023", tag: "the flip", head: "Worth less than its airdrop", body: "The BONK community airdropped 30M BONK to each device. As BONK climbed, the bundled tokens were briefly worth <strong>more than the phone</strong> — and Saga sold out, units flipping for thousands." },
-      { date: "Jan 2024", tag: "round 2", head: "Chapter 2 sells out the idea", body: "The successor drew over 30,000 preorders within ~30 hours of its announcement." }
-    ],
-    why: "Token incentives, not specs, can make or break consumer hardware adoption.",
-    closingLead: "Crypto’s first deeply crypto-native smartphone — and proof that an airdrop, not a spec sheet, can drive consumer-hardware demand.",
-    figures: [{ big: "$599", small: "phone price (cut)" }, { big: "30M BONK", small: "airdropped per device" }],
-    sourceExtras: [{ label: "TechCrunch — Chapter 2 preorder frenzy (Jan 2024)", url: "https://techcrunch.com/2024/01/18/solana-mobiles-second-phone-announcement-drives-buying-frenzy/" }],
-    note: "Earlier phones (HTC Exodus, Sirin Finney, 2018) also had hardware key storage; Saga paired Seed Vault with an open dApp store."
+    mount: function (stage, ctx) {
+      var st = ctx.state, P = panels(stage); st.P = P;
+      var PHONE = 599, BONK_PER = 30; // illustrative units: "30" = 30M BONK; bundle value = bonk * BONK_PER
+      var sh = slotShell(P, ["demand", "price", "arb", "ledger", "cap"]); st.sh = sh;
+      st.stock = 20; st.wallet = 0; st.flips = 0; st.bonk = 0; st.ebay = PHONE;
+      // two kinds of demand
+      st.specBar = UI.meter("Spec demand · “is it a good phone?”");
+      st.arbBar = UI.meter("Arbitrage demand · “is the bundle > price?”");
+      sh.slots.demand.appendChild(st.specBar.el); sh.slots.demand.appendChild(st.arbBar.el);
+      st.specBar.set(8, "widely panned", "bad"); st.arbBar.set(0, "—", "");
+      // BONK price slider drives bundle value
+      st.bundleMeter = UI.meter("Bundled airdrop value · vs the $599 phone");
+      st.price = UI.slider("BONK price (illustrative) →", 0, 100, 1, function (v) { recompute(v); });
+      sh.slots.price.appendChild(st.price.el); sh.slots.price.appendChild(st.bundleMeter.el);
+      // arbitrage loop button + inventory/wallet stats
+      st.arbBtn = el("button", "btn-hud saga-arb", "① BUY phone −$599  ② CLAIM 30M BONK  ③ SELL");
+      st.arbBtn.type = "button"; st.arbBtn.disabled = true;
+      sh.slots.arb.appendChild(st.arbBtn);
+      st.stockStat = UI.stat("Saga inventory"); st.walletStat = UI.stat("Your net profit, per flip"); st.ebayStat = UI.stat("Secondary (eBay) price");
+      sh.slots.ledger.appendChild(st.stockStat.el); sh.slots.ledger.appendChild(st.walletStat.el); sh.slots.ledger.appendChild(st.ebayStat.el);
+      st.cap = el("div", "ftx-cap muted"); sh.slots.cap.appendChild(st.cap);
+      st.stockStat.set(st.stock + " units", ""); st.walletStat.set("$0", ""); st.ebayStat.set("$" + PHONE, "");
+
+      function bundleVal(v) { return v * BONK_PER; } // illustrative $
+      function recompute(v) {
+        st.bonk = v;
+        var bv = bundleVal(v), crossed = bv > PHONE;
+        st.price.setVal("bundle ≈ $" + Math.round(bv));
+        st.bundleMeter.set(Math.min(100, bv / (PHONE * 1.6) * 100), "$" + Math.round(bv), crossed ? "gold" : (bv > 300 ? "warn" : ""));
+        st.arbBar.set(crossed ? Math.min(100, (bv - PHONE) / PHONE * 140 + 20) : 0, crossed ? "profit on every unit" : "underwater", crossed ? "ok" : "");
+        st.arbBtn.disabled = !crossed || st.stock <= 0;
+        if (st.stock <= 0) st.cap.innerHTML = "Inventory: <b>0</b>. Saga is <b class=\"ok\">sold out</b> — and the secondary price has floated up to meet the bundle. The phone's spec demand never moved; arbitrage demand cleared the shelves.";
+        else if (crossed) st.cap.innerHTML = "Bundle ≈ <b>$" + Math.round(bv) + "</b> &gt; $" + PHONE + " phone. Every purchase now nets a profit — <b>run the loop</b> and watch inventory drain.";
+        else st.cap.innerHTML = "Bundle ≈ <b>$" + Math.round(bv) + "</b>. Below the $" + PHONE + " price, buying is a loss — a rational buyer skips. Drag BONK higher.";
+      }
+      st.arbBtn.addEventListener("click", function () {
+        var bv = bundleVal(st.bonk); if (bv <= PHONE || st.stock <= 0) return;
+        st.stock--; st.flips++;
+        var profit = Math.round(bv - PHONE);
+        st.wallet = profit;
+        st.stockStat.set(st.stock + " units", st.stock <= 3 ? "warn" : "");
+        st.walletStat.set("+$" + profit, "ok");
+        // secondary price floats up toward bundle value as arbitrage clears stock
+        st.ebay = Math.round(PHONE + (bv - PHONE) * Math.min(1, (20 - st.stock) / 20));
+        st.ebayStat.set("$" + st.ebay, "ok");
+        ctx.speak("Flip " + st.flips + ": bought at $" + PHONE + ", bundle worth $" + Math.round(bv) + ", net +$" + profit + ". Inventory " + st.stock + ".");
+        if (st.stock <= 0) { st.arbBtn.disabled = true; recompute(st.bonk); }
+      });
+      st.recompute = recompute;
+      st.reset = function () { st.stock = 20; st.wallet = 0; st.flips = 0; st.ebay = PHONE; st.stockStat.set("20 units", ""); st.walletStat.set("$0", ""); st.ebayStat.set("$" + PHONE, ""); };
+    },
+    steps: [
+      {
+        head: "A phone almost nobody wanted", body: "On May 8, 2023 Solana Mobile shipped <strong>Saga</strong> — a flagship Android phone with a hardware Secure Element (Seed Vault) and a fee-free dApp Store. Launched near $1,000, cut to $599, it was <strong>widely panned</strong>. On the spec sheet alone, demand was flat.",
+        hint: "Note the two demand meters — spec demand is the only one alive, and it's near zero.",
+        enter: function (ctx) { var s = ctx.state; s.P.show(true); s.sh.show(["demand", "cap"]); s.cap.innerHTML = "Two completely different kinds of demand. Right now only <b>spec demand</b> exists — and it's flat."; }
+      },
+      {
+        head: "The airdrop changes the arithmetic", body: "In December 2023 the BONK community airdropped <strong>30M BONK to every Saga</strong>. Now the phone comes with a bag of tokens. Drag BONK's price up and watch the bundle value cross the $599 line — the moment it does, the phone's <em>effective</em> price goes negative.",
+        hint: "Drag BONK up until the bundled airdrop is worth more than the $599 phone.",
+        enter: function (ctx) { var s = ctx.state; s.P.show(true); s.sh.show(["demand", "price", "cap"]); s.recompute(s.price.value()); }
+      },
+      {
+        head: "Now YOU run the arbitrage", body: "When the bundle beats the price, buying isn't consumption — it's a trade. Press the loop: <strong>buy at $599 → claim the BONK → sell it</strong>, pocket the difference. Do it until the shelves are empty, and watch the secondary price float up to meet the bundle.",
+        hint: "Set BONK high, then press the arbitrage loop until inventory hits zero.",
+        enter: function (ctx) { var s = ctx.state; s.P.show(true); s.sh.show(["price", "arb", "ledger", "cap"]); if (s.price.value() < 25) s.price.set(30); s.recompute(s.price.value()); }
+      },
+      {
+        head: "Chapter 2: buying the expectation", body: "The lesson wasn't lost on anyone. When <strong>Chapter 2</strong> was announced in January 2024, it drew <strong>over 30,000 preorders in ~30 hours</strong> — for a phone with no airdrop yet announced. People weren't buying specs, or even a known bundle. They were buying the <strong>expected value of the next airdrop</strong>.",
+        hint: "Reveal what 30,000 preorders were really pricing.",
+        enter: function (ctx) {
+          var s = ctx.state; s.P.show(true); s.sh.show(["ledger", "cap"]);
+          s.cap.innerHTML = "<b>30,000+ preorders in ~30 hours</b>, no airdrop announced. Demand had fully detached from the hardware — the phone became a <b>call option on the next drop</b>.";
+        }
+      },
+      {
+        head: "Why this keep still stands", body: "Saga was the first deeply crypto-native smartphone — but its real lesson is economic: <strong>token incentives, not specs, can make or break consumer hardware.</strong> When a product ships with a claimable asset, demand can switch species — from product demand (bounded by how good it is) to arbitrage demand (bounded only by the spread).",
+        hint: "Open the sources, or replay.",
+        enter: function (ctx) {
+          var s = ctx.state; s.P.show(false);
+          s.P.closing.innerHTML = '<p class="sim-closing-lead">The Saga didn\'t sell out because it got better — it sold out because it became a <strong>trade</strong>. The spec sheet lost to an airdrop; the second phone sold on the expectation of the next one.</p>' +
+            '<div class="sim-figrow"><span class="sim-fig">$599<small>phone price (cut)</small></span><span class="sim-fig">30M BONK<small>airdropped per device</small></span><span class="sim-fig">30k+<small>Chapter 2 preorders, ~30h</small></span></div>' +
+            sourcesFor("saga", [{ label: "TechCrunch — Chapter 2 preorder frenzy (Jan 2024)", url: "https://techcrunch.com/2024/01/18/solana-mobiles-second-phone-announcement-drives-buying-frenzy/" }]) +
+            '<p class="sim-note">BONK price, bundle value, per-flip profit, inventory, and the secondary price here are an illustrative model of the arbitrage mechanism, not historical figures. The $599 price, 30M-BONK airdrop, the sell-out, and 30k+ Chapter 2 preorders are from the cited sources. Earlier phones (HTC Exodus, Sirin Finney) also had hardware key storage.</p>';
+        }
+      }
+    ]
   });
 
   deepDive("myro", {

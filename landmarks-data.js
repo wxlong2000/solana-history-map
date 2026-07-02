@@ -171,7 +171,7 @@ window.SOLANA_HISTORY_LANDMARKS = [
   {
     id: "saga", name: "SAGA MONOLITH", x: 43, y: 55.7,
     category: "Consumer", year: 2023, date: "2023-05-08", status: "verified", danger: false, image: "assets/landmarks/saga.jpeg",
-    lastVerified: "2026-07", tier: "timeline",
+    lastVerified: "2026-07", tier: "playable",
     tldr: "Solana built a phone. Almost nobody wanted the first one. The second sold out.",
     whatHappened: "Solana Mobile shipped Saga on May 8, 2023 — a flagship Android phone built around a hardware Secure Element called Seed Vault, plus a fee-free dApp Store. Launched near $1,000 (later cut to $599), it was widely panned until December 2023, when the BONK community airdropped 30M BONK to each device; as BONK climbed, the bundled tokens were briefly worth more than the phone, and Saga sold out with units flipping for thousands on eBay. The successor, Chapter 2, drew over 30,000 preorders within ~30 hours of its January 2024 announcement.",
     whyItMatters: "Saga was the first deeply crypto-native smartphone — earlier devices like HTC Exodus and Sirin Finney had hardware key storage, but Saga paired Seed Vault with an open, fee-free dApp Store and tight wallet/SDK integration. Its airdrop-driven second life showed how token incentives, not specs, can make or break consumer hardware adoption.",

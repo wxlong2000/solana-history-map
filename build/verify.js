@@ -105,7 +105,7 @@ for (const l of LM) {
   if (l.tier === "playable" && !has) fail(`${l.id} labeled playable but no sim registered`);
   if (l.tier === "timeline" && has) fail(`${l.id} has a registered sim but is labeled timeline`);
 }
-if (!failures) ok(`14 playable tiers all backed by registered sims`);
+if (!failures) ok(`15 playable tiers all backed by registered sims`);
 
 console.log(failures ? `\nFAILED — ${failures} problem(s)` : "\nAll checks passed");
 process.exit(failures ? 1 : 0);
