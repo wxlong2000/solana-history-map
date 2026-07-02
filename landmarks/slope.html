@@ -8,10 +8,8 @@
 <meta property="og:type" content="article"><meta property="og:url" content="https://www.meow-woof.org/landmarks/slope.html">
 <meta property="og:image" content="https://www.meow-woof.org/assets/og/slope.png">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://www.meow-woof.org/assets/og/slope.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="../history-map.css?v=14">
+<link rel="stylesheet" href="../history-map.css?v=19">
 <style>.lp{max-width:880px}
 .lp-back{display:inline-block;margin-bottom:16px;font-family:var(--font-mono);font-size:12px;letter-spacing:.5px;color:var(--solana-green);text-decoration:none}
 .lp-back:hover{text-shadow:var(--glow-green)}
@@ -22,7 +20,10 @@
 .lp .evidence{margin-top:18px}
 .lp-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
 .lp-nav a{font-family:var(--font-mono);font-size:13px;color:var(--solana-cyan);text-decoration:none}
-.lp-nav a:hover{color:var(--solana-green)}</style>
+.lp-nav a:hover{color:var(--solana-green)}
+.lp-tier{display:inline-block;margin-left:10px;padding:2px 8px;border-radius:3px;border:1px solid var(--line);font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-dim);vertical-align:middle}
+.lp-tier-play{border-color:rgba(93,245,180,.45);color:var(--solana-green)}</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"LEAK RUINS","description":"Thousands of wallets emptied overnight — the culprit wasn't a contract, it was an app quietly logging your seed phrase.","url":"https://www.meow-woof.org/landmarks/slope.html","image":"https://www.meow-woof.org/assets/og/slope.png","dateModified":"2026-07-01","isPartOf":{"@type":"WebSite","name":"Solana History Map","url":"https://www.meow-woof.org/"},"license":"https://creativecommons.org/licenses/by/4.0/","citation":["https://solana.com/news/8-2-2022-application-wallet-incident","https://www.theblock.co/post/161425/slope-wallet-provider-saved-user-seed-phrases-in-plain-text-solana-security-researchers-find"]}</script>
 </head><body data-fx="on">
 <header class="site-header">
   <a class="brand-mark" href="../index.html" aria-label="Solana History Map home"><span class="brand-kicker">SOURCE-CITED ATLAS</span><span class="brand-title">Solana History Map</span></a>
@@ -30,13 +31,13 @@
 </header>
 <main class="page-shell lp">
   <a class="lp-back" href="../index.html#slope">← Back to the atlas</a>
-  <p class="panel-topline">Record // SECURITY</p>
+  <p class="panel-topline">Record // SECURITY <span class="lp-tier lp-tier-play">PLAYABLE TEARDOWN</span></p>
   <h1 class="selected-title">LEAK RUINS</h1>
   <p class="selected-meta">2022  ·  SECURITY  ·  SOURCED</p>
   <img class="lp-hero" src="../assets/landmarks/slope.jpeg" alt="LEAK RUINS landmark artwork" loading="lazy" decoding="async">
   <p class="selected-tldr">Thousands of wallets emptied overnight — the culprit wasn&#39;t a contract, it was an app quietly logging your seed phrase.</p>
   <div class="story-block"><section><h4>What happened</h4><p>Beginning August 2, 2022, attackers drained roughly 9,231 Solana wallets of about $4.1M over several hours. Investigators traced the root cause to the Slope mobile wallet, whose app inadvertently transmitted users&#39; seed phrases in readable text to an application-monitoring service, where they could be harvested. The Solana protocol itself was not compromised; hardware wallets and seeds never imported into Slope were unaffected.</p></section><section><h4>Why Solana remembers it</h4><p>A landmark reminder that wallet-application security — not just the underlying chain — is where users get drained, and that logging secrets in plaintext is a catastrophic anti-pattern.</p></section><section><h4>On the map</h4><p>Cracked ruins on a hillside where a hidden seam leaked the keys to every vault.</p></section></div>
-  <details class="evidence" open><summary>Evidence</summary><div class="evidence-body"><div class="source-line"><span class="src-tag">VERIFIED //</span><a href="https://solana.com/news/8-2-2022-application-wallet-incident" target="_blank" rel="noopener">Solana Foundation: 8-2-2022 wallet incident update</a></div><div class="source-line"><span class="src-tag">VERIFIED //</span><a href="https://www.theblock.co/post/161425/slope-wallet-provider-saved-user-seed-phrases-in-plain-text-solana-security-researchers-find" target="_blank" rel="noopener">The Block: Slope saved seed phrases in plain text</a></div></div></details>
+  <details class="evidence" open><summary>Evidence · sources last verified 2026-07</summary><div class="evidence-body"><div class="source-line"><span class="src-tag">VERIFIED //</span><a href="https://solana.com/news/8-2-2022-application-wallet-incident" target="_blank" rel="noopener">Solana Foundation: 8-2-2022 wallet incident update</a></div><div class="source-line"><span class="src-tag">VERIFIED //</span><a href="https://www.theblock.co/post/161425/slope-wallet-provider-saved-user-seed-phrases-in-plain-text-solana-security-researchers-find" target="_blank" rel="noopener">The Block: Slope saved seed phrases in plain text</a></div></div></details>
   
   <nav class="lp-nav"><a href="./wormhole.html">← WORMHOLE BREACH</a><a href="./jup_port.html">AGGREGATOR STARPORT →</a></nav>
 </main>

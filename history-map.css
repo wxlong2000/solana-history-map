@@ -1,6 +1,22 @@
 /* Solana History Map — formal interactive archive.
    The map stays the exhibit; interface chrome is restrained and source-led. */
 
+/* Self-hosted variable fonts (latin subset) — zero third-party requests. */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("assets/fonts/Inter-var.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("assets/fonts/JetBrainsMono-var.woff2") format("woff2");
+}
+
 :root {
   --bg: #07090d;
   --bg-2: #0b0f15;

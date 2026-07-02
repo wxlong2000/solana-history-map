@@ -21,6 +21,10 @@ catch (e) {
 
 // Deploy-time base URL — CONFIRM/EDIT before deploying (OG tags need absolute URLs).
 const BASE_URL = "https://www.meow-woof.org";
+// Single cache-busting version for CSS shared across every generated page —
+// hand-written pages (index/about/sources/dataset/footprint) must match.
+const CSS_VERSION = 19;
+const DATASET_VERSION = "1.0.0";
 
 global.window = {};
 require(path.join(SITE, "landmarks-data.js"));
@@ -88,7 +92,9 @@ const LP_STYLE = `.lp{max-width:880px}
 .lp .evidence{margin-top:18px}
 .lp-nav{display:flex;justify-content:space-between;gap:14px;margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
 .lp-nav a{font-family:var(--font-mono);font-size:13px;color:var(--solana-cyan);text-decoration:none}
-.lp-nav a:hover{color:var(--solana-green)}`;
+.lp-nav a:hover{color:var(--solana-green)}
+.lp-tier{display:inline-block;margin-left:10px;padding:2px 8px;border-radius:3px;border:1px solid var(--line);font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-dim);vertical-align:middle}
+.lp-tier-play{border-color:rgba(93,245,180,.45);color:var(--solana-green)}`;
 
 function pageHtml(l, prev, next) {
   const cat = String(l.category || "").toUpperCase();
@@ -103,6 +109,22 @@ function pageHtml(l, prev, next) {
     : '<span class="story-empty">Source verification pending.</span>';
   const heroSrc = (l.image) ? "../" + esc(l.image) : `../assets/og/${l.id}.png`;
   const affil = l.affiliationNote ? `<p class="affiliation-note">${esc(l.affiliationNote)}</p>` : "";
+  const tierBadge = l.tier === "playable"
+    ? '<span class="lp-tier lp-tier-play">PLAYABLE TEARDOWN</span>'
+    : '<span class="lp-tier">ILLUSTRATED TIMELINE</span>';
+  const verified = l.lastVerified ? ` · sources last verified ${esc(l.lastVerified)}` : "";
+  const jsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: l.name,
+    description: l.tldr || "",
+    url: url,
+    image: ogImg,
+    dateModified: l.lastVerified ? l.lastVerified + "-01" : undefined,
+    isPartOf: { "@type": "WebSite", name: "Solana History Map", url: BASE_URL + "/" },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    citation: (l.sources || []).map((s) => s.url),
+  });
   return `<!DOCTYPE html>
 <html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -113,11 +135,10 @@ function pageHtml(l, prev, next) {
 <meta property="og:type" content="article"><meta property="og:url" content="${url}">
 <meta property="og:image" content="${ogImg}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="${ogImg}">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="../history-map.css?v=14">
+<link rel="stylesheet" href="../history-map.css?v=${CSS_VERSION}">
 <style>${LP_STYLE}</style>
+<script type="application/ld+json">${jsonLd}</script>
 </head><body data-fx="on">
 <header class="site-header">
   <a class="brand-mark" href="../index.html" aria-label="Solana History Map home"><span class="brand-kicker">SOURCE-CITED ATLAS</span><span class="brand-title">Solana History Map</span></a>
@@ -125,13 +146,13 @@ function pageHtml(l, prev, next) {
 </header>
 <main class="page-shell lp">
   <a class="lp-back" href="../index.html#${esc(l.id)}">← Back to the atlas</a>
-  <p class="panel-topline">Record // ${esc(cat)}</p>
+  <p class="panel-topline">Record // ${esc(cat)} ${tierBadge}</p>
   <h1 class="selected-title">${esc(l.name)}</h1>
   <p class="selected-meta">${esc(metaBits)}</p>
   <img class="lp-hero" src="${heroSrc}" alt="${esc(l.name)} landmark artwork" loading="lazy" decoding="async">
   <p class="selected-tldr">${esc(l.tldr || "")}</p>
   <div class="story-block">${story}</div>
-  <details class="evidence" open><summary>Evidence</summary><div class="evidence-body">${sources}</div></details>
+  <details class="evidence" open><summary>Evidence${verified}</summary><div class="evidence-body">${sources}</div></details>
   ${affil}
   <nav class="lp-nav"><a href="./${esc(prev.id)}.html">← ${esc(prev.name)}</a><a href="./${esc(next.id)}.html">${esc(next.name)} →</a></nav>
 </main>
@@ -140,16 +161,28 @@ function pageHtml(l, prev, next) {
 }
 
 function datasetHtml(json) {
-  const rows = LM.map((l) => `<tr><td>${esc(l.name)}</td><td>${esc(l.category || "")}</td><td>${esc(l.year || "")}</td><td>${esc(l.status)}</td><td>${(l.sources || []).length}</td></tr>`).join("");
+  const rows = LM.map((l) => `<tr><td>${esc(l.name)}</td><td>${esc(l.category || "")}</td><td>${esc(l.year || "")}</td><td>${esc(l.status)}</td><td>${(l.sources || []).length}</td><td>${esc(l.lastVerified || "")}</td></tr>`).join("");
+  const dsLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: json.name,
+    description: "Open, source-cited dataset of 22 Solana ecosystem history landmarks: outages, exploits, infrastructure milestones, airdrops, and culture.",
+    url: `${BASE_URL}/dataset.html`,
+    version: json.version,
+    dateModified: json.generated_at,
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    isAccessibleForFree: true,
+    creator: { "@type": "Organization", name: "Solana History Map" },
+    distribution: [{ "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${BASE_URL}/landmarks.json` }],
+  });
   return `<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Open dataset — Solana History Map</title>
 <meta name="description" content="Open, reusable dataset of Solana history landmarks with sources. CC-BY-4.0.">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="./history-map.css?v=14">
+<link rel="stylesheet" href="./history-map.css?v=${CSS_VERSION}">
 <style>.ds-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:14px}.ds-table th,.ds-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}.ds-table th{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--solana-green)}</style>
+<script type="application/ld+json">${dsLd}</script>
 </head><body data-fx="on">
 <header class="site-header"><a class="brand-mark" href="./index.html"><span class="brand-kicker">SOURCE-CITED ATLAS</span><span class="brand-title">Solana History Map</span></a>
 <nav class="nav-links"><a href="./index.html">Atlas</a><a href="./footprint.html">Footprint</a><a href="./sources.html">Sources</a><a href="./about.html">About</a></nav></header>
@@ -159,7 +192,8 @@ function datasetHtml(json) {
 <p><a class="btn-hud" href="./landmarks.json" download>Download landmarks.json</a></p>
 <h2 style="margin-top:28px;font-size:20px">Methodology</h2>
 <p>A landmark qualifies if it is (1) a real, documented Solana ecosystem event or culture moment, (2) sourceable to a primary or strongly authoritative reference, and (3) memorable enough to teach. Security and outage events lead with official post-mortems, court filings, or Chainalysis; meme/culture entries are documented neutrally as culture, never as investment advice. References are historical citations, not endorsements.</p>
-<table class="ds-table"><thead><tr><th>Landmark</th><th>Category</th><th>Year</th><th>Status</th><th>Sources</th></tr></thead><tbody>${rows}</tbody></table>
+<p class="src-count">Dataset v${esc(json.version)} · generated ${esc(json.generated_at)} · ${LM.length} landmarks</p>
+<table class="ds-table"><thead><tr><th>Landmark</th><th>Category</th><th>Year</th><th>Status</th><th>Sources</th><th>Verified</th></tr></thead><tbody>${rows}</tbody></table>
 </main>
 <footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="./sources.html">Sources</a><a href="./about.html">About</a><span class="foot-spacer"></span><a href="./LICENSE">Open-source · MIT + CC-BY-4.0</a></footer>
 </body></html>`;
@@ -181,9 +215,7 @@ function sourcesHtml() {
 <title>Sources — Solana History Map</title>
 <meta name="description" content="The source index for the Solana History Map — every landmark with its primary and journalistic references. CC-BY-4.0.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./history-map.css?v=14">
+<link rel="stylesheet" href="./history-map.css?v=${CSS_VERSION}">
 <style>.src-intro{max-width:760px;color:var(--muted,#9aa6b8)}
 .src-count{font-family:var(--font-mono);font-size:12px;letter-spacing:1px;color:var(--solana-green);text-transform:uppercase}
 .src-entry{padding:16px 0;border-bottom:1px solid var(--line)}
@@ -221,18 +253,21 @@ async function main() {
     name: "Solana History Map — landmark dataset",
     license: "CC-BY-4.0",
     generated_from: "landmarks-data.js",
+    version: DATASET_VERSION,
+    generated_at: new Date().toISOString().slice(0, 10),
     count: LM.length,
     landmarks: LM.map((l) => ({
       id: l.id, name: l.name, category: l.category, year: l.year, date: l.date || "",
       tldr: l.tldr, whatHappened: l.whatHappened, whyItMatters: l.whyItMatters,
-      status: l.status, sources: l.sources || [],
+      status: l.status, tier: l.tier || "", lastVerified: l.lastVerified || "",
+      sources: l.sources || [],
       page: `${BASE_URL}/landmarks/${l.id}.html`
     })),
   };
   fs.writeFileSync(path.join(SITE, "landmarks.json"), JSON.stringify(json, null, 2));
   fs.writeFileSync(path.join(SITE, "dataset.html"), datasetHtml(json));
   fs.writeFileSync(path.join(SITE, "sources.html"), sourcesHtml());
-  const urls = [`${BASE_URL}/`, `${BASE_URL}/dataset.html`, `${BASE_URL}/sources.html`, `${BASE_URL}/about.html`]
+  const urls = [`${BASE_URL}/`, `${BASE_URL}/dataset.html`, `${BASE_URL}/sources.html`, `${BASE_URL}/about.html`, `${BASE_URL}/footprint.html`]
     .concat(LM.map((l) => `${BASE_URL}/landmarks/${l.id}.html`));
   fs.writeFileSync(path.join(SITE, "sitemap.xml"),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n")}\n</urlset>\n`);

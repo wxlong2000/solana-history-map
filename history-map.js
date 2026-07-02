@@ -131,7 +131,13 @@
     current = l;
     try { window.__shmSelected = l; document.dispatchEvent(new CustomEvent("shm:select", { detail: l })); } catch (e) {}
 
-    if (elStatus) elStatus.textContent = "Record // " + (l.category || "").toUpperCase();
+    if (elStatus) {
+      elStatus.textContent = "Record // " + (l.category || "").toUpperCase();
+      var tb = document.createElement("span");
+      tb.className = "tier-badge" + (l.tier === "playable" ? " tier-play" : "");
+      tb.textContent = l.tier === "playable" ? "PLAYABLE TEARDOWN" : "ILLUSTRATED TIMELINE";
+      elStatus.appendChild(tb);
+    }
     if (elTitle) {
       elTitle.textContent = l.name;
       elTitle.setAttribute("data-text", l.name);

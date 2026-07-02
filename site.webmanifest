@@ -1,0 +1,13 @@
+{
+  "name": "Solana History Map",
+  "short_name": "SOL History",
+  "description": "A source-cited, interactive atlas of Solana ecosystem history.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#05070b",
+  "theme_color": "#05070b",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/favicon-32.png", "sizes": "32x32", "type": "image/png" }
+  ]
+}
