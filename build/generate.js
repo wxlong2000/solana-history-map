@@ -156,7 +156,7 @@ function pageHtml(l, prev, next) {
   ${affil}
   <nav class="lp-nav"><a href="./${esc(prev.id)}.html">← ${esc(prev.name)}</a><a href="./${esc(next.id)}.html">${esc(next.name)} →</a></nav>
 </main>
-<footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="../sources.html">Sources</a><a href="../about.html">About</a><span class="foot-spacer"></span><a href="../LICENSE">Open-source · MIT + CC-BY-4.0</a></footer>
+<footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="../sources.html">Sources</a><a href="../about.html">About</a><span class="foot-spacer"></span><a href="../LICENSE">Open-source · MIT + CC-BY-4.0</a><a href="https://github.com/wxlong2000/solana-history-map" rel="noopener">GitHub</a></footer>
 </body></html>`;
 }
 
@@ -195,7 +195,7 @@ function datasetHtml(json) {
 <p class="src-count">Dataset v${esc(json.version)} · generated ${esc(json.generated_at)} · ${LM.length} landmarks</p>
 <table class="ds-table"><thead><tr><th>Landmark</th><th>Category</th><th>Year</th><th>Status</th><th>Sources</th><th>Verified</th></tr></thead><tbody>${rows}</tbody></table>
 </main>
-<footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="./sources.html">Sources</a><a href="./about.html">About</a><span class="foot-spacer"></span><a href="./LICENSE">Open-source · MIT + CC-BY-4.0</a></footer>
+<footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="./sources.html">Sources</a><a href="./about.html">About</a><span class="foot-spacer"></span><a href="./LICENSE">Open-source · MIT + CC-BY-4.0</a><a href="https://github.com/wxlong2000/solana-history-map" rel="noopener">GitHub</a></footer>
 </body></html>`;
 }
 
@@ -237,7 +237,7 @@ function sourcesHtml() {
 <p class="src-count">${LM.length} landmarks · ${total} references · auto-generated from <a href="./dataset.html" style="color:var(--solana-cyan,#46c7ec)">the open dataset</a></p>
 ${blocks}
 </main>
-<footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="./about.html">About</a><a href="./dataset.html">Dataset</a><span class="foot-spacer"></span><a href="./LICENSE">Open-source · MIT + CC-BY-4.0</a></footer>
+<footer class="site-footer"><span class="foot-brand">Solana History Map</span><a href="./about.html">About</a><a href="./dataset.html">Dataset</a><span class="foot-spacer"></span><a href="./LICENSE">Open-source · MIT + CC-BY-4.0</a><a href="https://github.com/wxlong2000/solana-history-map" rel="noopener">GitHub</a></footer>
 </body></html>`;
 }
 

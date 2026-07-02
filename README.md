@@ -1,5 +1,7 @@
 # Solana History Map
 
+[![CI](https://github.com/wxlong2000/solana-history-map/actions/workflows/ci.yml/badge.svg)](https://github.com/wxlong2000/solana-history-map/actions/workflows/ci.yml)
+
 **A source-cited, interactive atlas of Solana ecosystem history.**
 22 real events — outages, exploits, infrastructure milestones, airdrops, and
 meme culture — mapped as explorable landmarks on a hand-illustrated map, each
