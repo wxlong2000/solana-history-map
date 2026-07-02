@@ -4,3 +4,10 @@
 node_modules/
 dist/
 .wrangler/
+
+# secrets — never commit or deploy
+.dev.vars
+.env
+.env.*
+*.pem
+*.key

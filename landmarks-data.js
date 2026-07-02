@@ -1,0 +1,306 @@
+// Solana History Map — landmark dataset
+// Schema: id, name, x/y (map %), category, year, date?, tldr (the hook),
+//         danger (security/exploit -> red glitch), status, featured, image,
+//         whatHappened, whyItMatters, onMap, sources[], affiliationNote?
+// Content is the spine: tldr teases (curiosity gap), the body resolves it.
+// Sourcing is the lifeblood — Wormhole is NOT a DOJ case (that's Mango/Eisenberg).
+
+window.SOLANA_HISTORY_LANDMARKS = [
+  {
+    id: "architects_echo", name: "ARCHITECT'S ECHO", x: 83.4, y: 12.5,
+    category: "Infrastructure", year: 2020, date: "2020-03-16", status: "verified", danger: false, image: "assets/landmarks/architects_echo.jpeg",
+    tldr: "Why is Solana fast to the point of absurdity? The answer is a bet called Proof of History.",
+    whatHappened: "Solana's design begins with Proof of History (PoH), a verifiable delay function using sequential SHA-256 hashing that Anatoly Yakovenko described in a November 2017 whitepaper. PoH stamps a cryptographic, verifiable ordering of events into the ledger before consensus, so validators can agree on time without constant communication. After a series of testnets, Solana Labs launched the network's Mainnet Beta on March 16, 2020.",
+    whyItMatters: "Proof of History is the foundational idea that lets Solana parallelize and pipeline transaction processing for high throughput, and the 2020 mainnet beta is the origin point of the entire ecosystem mapped here.",
+    onMap: "A primordial monolith whose hum still keeps the realm's clocks in sync.",
+    sources: [
+      { label: "Solana — Proof of History (official)", url: "https://solana.com/news/proof-of-history" },
+      { label: "Solana whitepaper (Yakovenko, 2017)", url: "https://solana.com/solana-whitepaper.pdf" },
+      { label: "The Block — What is Proof of History and why does Solana use it?", url: "https://www.theblock.co/learn/302470/what-is-proof-of-history-and-why-does-solana-use-it" }
+    ]
+  },
+  {
+    id: "restart", name: "MOUNT RESTART", x: 22.2, y: 22.2,
+    category: "Outage", year: 2022, status: "verified", featured: true, danger: false,
+    image: "assets/landmarks/restart.jpeg",
+    tldr: "The network went down. Then down again. And every time, it clawed its way back.",
+    whatHappened: "Across 2021–2022 Solana suffered several full or partial outages — overwhelmed by bot traffic, a resource-exhaustion bug, and surging demand — each requiring validators to coordinate a restart of the chain.",
+    whyItMatters: "Mount Restart is a scar and a proof point at once: not a perfect uptime record, but a network and operator community that kept recovering and hardening after every fall.",
+    onMap: "A mountain rebuilt on its own rubble — resilience as terrain.",
+    sources: [
+      { label: "Solana: 9-14 network outage overview", url: "https://solana.com/news/9-14-network-outage-initial-overview" },
+      { label: "Solana: 09-30-22 outage report", url: "https://solana.com/news/09-30-22-solana-mainnet-beta-outage-report" },
+      { label: "Helius — A complete history of Solana outages", url: "https://www.helius.dev/blog/solana-outages-complete-history" }
+    ]
+  },
+  {
+    id: "ftx_crater", name: "FTX FALLOUT CRATER", x: 50.4, y: 70,
+    category: "Macro", year: 2022, date: "2022-11", status: "verified", featured: true, danger: true,
+    image: "assets/landmarks/ftx-fallout-crater.jpeg",
+    tldr: "The meteor that hit closest to Solana — and nearly took the whole chain with it.",
+    whatHappened: "When FTX and Alameda collapsed in November 2022, the fallout hit Solana hard: SOL had been closely associated with them, and confidence cratered alongside the price.",
+    whyItMatters: "It became a brutal stress test that separated builders who stayed from capital that left. The crater is not about price — it marks the period the ecosystem had to prove it was more than an exchange-era narrative.",
+    onMap: "A scorched impact crater — the closest call on the map.",
+    sources: [
+      { label: "Solana Foundation — facts related to FTX bankruptcy", url: "https://solana.com/news/solana-facts-ftx-bankruptcy" },
+      { label: "CNBC — Solana's yearlong slide wipes out over $50B (Dec 2022)", url: "https://www.cnbc.com/2022/12/30/solanas-accelerating-yearlong-slide-wipes-out-over-50-billion.html" },
+      { label: "Decrypt — Solana hits ATH two years after FTX nearly sank it", url: "https://decrypt.co/292874/solana-hits-all-time-high-price" }
+    ]
+  },
+  {
+    id: "mango", name: "ORACLE MIRAGE", x: 35.4, y: 34.8,
+    category: "Security", year: 2022, date: "2022-10", status: "verified", featured: true, danger: true,
+    image: "assets/landmarks/mango.jpeg",
+    tldr: "One trader drained ~$110M through an oracle, then argued it was a legal trade — and a court later vacated his convictions.",
+    whatHappened: "In October 2022, Avraham Eisenberg manipulated the price oracle behind Mango Markets to inflate his collateral and borrow out roughly $110M. He publicly framed it as a legal 'highly profitable trading strategy.' A jury convicted him of fraud and market manipulation in April 2024, but in May 2025 a federal judge vacated all convictions — citing improper venue and the absence of a material misrepresentation — and prosecutors appealed.",
+    whyItMatters: "Oracle manipulation is one of DeFi's defining attack surfaces. Mango turned an abstract risk into a years-long legal saga and a permanent design lesson about where price data comes from.",
+    onMap: "A shimmering mirage — a price that looked real long enough to drain a protocol.",
+    sources: [
+      { label: "CFTC: charges over $110M Mango Markets manipulation", url: "https://www.cftc.gov/PressRoom/PressReleases/8647-23" },
+      { label: "CoinDesk: judge overturns Mango Markets exploiter's fraud convictions (May 2025)", url: "https://www.coindesk.com/business/2025/05/24/judge-overturns-convictions-in-mango-markets-exploiters-crypto-fraud-case" },
+      { label: "The Block: Eisenberg convictions overturned on improper venue", url: "https://www.theblock.co/post/355666/u-s-judge-overturns-fraud-convictions-of-mango-markets-exploiter-eisenberg-determining-improper-venue" }
+    ]
+  },
+  {
+    id: "wormhole", name: "WORMHOLE BREACH", x: 87.5, y: 55.3,
+    category: "Security", year: 2022, date: "2022-02", status: "verified", featured: true, danger: true,
+    image: "assets/landmarks/wormhole.jpeg",
+    tldr: "A signature check that wasn't. 120,000 ETH minted from nothing. $320M gone in minutes.",
+    whatHappened: "In February 2022, an attacker exploited a signature-verification flaw in Wormhole — the bridge connecting Solana and Ethereum — to forge the minting of 120,000 wrapped ETH without depositing any collateral. Around $320M drained out in minutes, one of the largest DeFi hacks ever at the time. Jump Crypto, which backs Wormhole, replaced the funds within hours to keep users whole.",
+    whyItMatters: "Cross-chain bridges are among DeFi's largest attack surfaces, and Wormhole became the dividing line: after it, bridge security, audits, and verification got dramatically more serious. It also exposed the double edge of a deep-pocketed backstop — users were protected, but only because a large player chose to absorb the loss.",
+    onMap: "A torn rift in the terrain — a reminder that every bridge between worlds has a cost.",
+    sources: [
+      { label: "Wormhole security documentation", url: "https://wormhole.com/docs/protocol/security/" },
+      { label: "Chainalysis: Wormhole hack analysis", url: "https://www.chainalysis.com/blog/wormhole-hack-february-2022/" }
+    ],
+    affiliationNote: "Historical reference only. No affiliation with or endorsement by Wormhole is implied."
+  },
+  {
+    id: "slope", name: "LEAK RUINS", x: 29.4, y: 62.3,
+    category: "Security", year: 2022, date: "2022-08-02", status: "verified", danger: true, image: "assets/landmarks/slope.jpeg",
+    tldr: "Thousands of wallets emptied overnight — the culprit wasn't a contract, it was an app quietly logging your seed phrase.",
+    whatHappened: "Beginning August 2, 2022, attackers drained roughly 9,231 Solana wallets of about $4.1M over several hours. Investigators traced the root cause to the Slope mobile wallet, whose app inadvertently transmitted users' seed phrases in readable text to an application-monitoring service, where they could be harvested. The Solana protocol itself was not compromised; hardware wallets and seeds never imported into Slope were unaffected.",
+    whyItMatters: "A landmark reminder that wallet-application security — not just the underlying chain — is where users get drained, and that logging secrets in plaintext is a catastrophic anti-pattern.",
+    onMap: "Cracked ruins on a hillside where a hidden seam leaked the keys to every vault.",
+    sources: [
+      { label: "Solana Foundation: 8-2-2022 wallet incident update", url: "https://solana.com/news/8-2-2022-application-wallet-incident" },
+      { label: "The Block: Slope saved seed phrases in plain text", url: "https://www.theblock.co/post/161425/slope-wallet-provider-saved-user-seed-phrases-in-plain-text-solana-security-researchers-find" }
+    ]
+  },
+  {
+    id: "jup_port", name: "AGGREGATOR STARPORT", x: 63.5, y: 67.3,
+    category: "Infrastructure", year: 2021, status: "verified", featured: true, danger: false,
+    image: "assets/landmarks/jup_port.jpeg",
+    tldr: "Almost every 'best price' swap you've made on Solana ran through this one aggregator.",
+    whatHappened: "Jupiter grew into Solana's default liquidity router — quoting and splitting trades across the ecosystem's venues so users get the best execution without thinking about it.",
+    whyItMatters: "It stands for infrastructure that disappears into the user experience: routes, quotes, swaps, and liquidity access that just work.",
+    onMap: "A starport where every route converges.",
+    sources: [
+      { label: "Jupiter Developer Platform (official docs)", url: "https://developers.jup.ag/docs/get-started" },
+      { label: "Eco — How Solana's Jupiter DEX router works", url: "https://eco.com/support/en/articles/14801182-jupiter-aggregator-how-solana-s-dex-router-works" },
+      { label: "SolanaFloor — Jupiter aggregator market-share data", url: "https://solanafloor.com/news/jupiter-reclaims-dominance-with-93-6-market-share-in-solana-s-aggregator-landscape" }
+    ]
+  },
+  {
+    id: "raydium", name: "LIQUIDITY VORTEX", x: 57, y: 85.5,
+    category: "Infrastructure", year: 2021, date: "2021-02", status: "verified", danger: false, image: "assets/landmarks/raydium.jpeg",
+    tldr: "Solana's early liquidity poured out from here.",
+    whatHappened: "Raydium launched on Solana in February 2021 as an automated market maker (AMM) and one of the network's earliest major DeFi protocols. Its original hybrid design posted limit orders onto the Serum central limit order book, so pool liquidity was also visible to order-book traders. After Serum was deprecated, Raydium migrated this integration to OpenBook; later AMM versions operate mainly as standalone pools.",
+    whyItMatters: "Raydium was early proof that Solana's low fees and fast finality could support on-chain market making, and it became one of the most widely integrated liquidity venues in the ecosystem.",
+    onMap: "A churning whirlpool that pulls scattered currents into a single deep channel.",
+    sources: [
+      { label: "Raydium — 'The Raydium Protocol' launch post (Feb 2021)", url: "https://raydium.medium.com/the-raydium-protocol-9809464e0105" },
+      { label: "Decrypt — Life After FTX: Solana DeFi rebuilds without Serum", url: "https://decrypt.co/116652/ftx-solana-defi-serum-starting-over" },
+      { label: "raydium-amm (GitHub)", url: "https://github.com/raydium-io/raydium-amm" }
+    ]
+  },
+  {
+    id: "firedancer", name: "FIREDANCER REACTOR", x: 62.2, y: 44,
+    category: "Infrastructure", year: 2025, date: "2025-12", status: "verified", danger: false, image: "assets/landmarks/firedancer.jpeg",
+    tldr: "If every Solana validator speaks one dialect, a single bug can topple the network. Firedancer is a second dialect.",
+    whatHappened: "Firedancer is an independent Solana validator client built from scratch by Jump Crypto, written primarily in C with a modular, tile-based architecture drawn from low-latency trading systems. Because it is a clean-room reimplementation rather than a fork of the existing Agave client, it introduces genuine client diversity. In December 2025 the full Firedancer client finalized blocks on Solana mainnet for the first time — the first non-Agave-descended codebase to do so — after running in production on a small set of validators for roughly 100 days. Jump deliberately kept the rollout slow, advising validators against switching at scale before security audits were complete.",
+    whyItMatters: "Client diversity means a critical bug in one implementation need not halt the whole network, directly addressing Solana's historical outage risk from running a single validator codebase.",
+    onMap: "A second great furnace lit beside the first, so one going dark never leaves the realm cold.",
+    sources: [
+      { label: "The Block — Firedancer hits Solana mainnet (Dec 12, 2025)", url: "https://www.theblock.co/post/382411/jump-cryptos-firedancer-hits-solana-mainnet-as-the-network-aims-to-unlock-1-million-tps" },
+      { label: "CoinDesk — Firedancer's slow-and-steady Solana rollout (May 2026)", url: "https://www.coindesk.com/tech/2026/05/16/jump-crypto-s-firedancer-is-taking-a-slow-and-steady-approach-to-its-long-awaited-solana-infrastructure-rollout" },
+      { label: "firedancer-io/firedancer (official Jump Crypto repo)", url: "https://github.com/firedancer-io/firedancer" }
+    ]
+  },
+  {
+    id: "helium", name: "MIGRATION GATE", x: 54.2, y: 15,
+    category: "Infrastructure", year: 2023, date: "2023-04-18", status: "verified", danger: false, image: "assets/landmarks/helium.jpeg",
+    tldr: "A worldwide wireless network picked itself up and moved entirely onto Solana.",
+    whatHappened: "Helium, a decentralized wireless (DePIN) network, proposed in HIP-70 to deprecate its own Layer-1 blockchain and migrate its tokens and operations to Solana, moving Proof-of-Coverage and Data Transfer accounting off-chain to oracles. The migration went live on April 18, 2023, after the community approved HIP-70.",
+    whyItMatters: "It was one of the largest DePIN networks to abandon a bespoke chain for Solana, validating Solana as settlement infrastructure for real-world physical networks and helping establish the DePIN category there.",
+    onMap: "A great wireless beacon-tower relocating its foundations onto firmer bedrock.",
+    sources: [
+      { label: "HIP-70: Scaling the Helium Network (official spec, GitHub)", url: "https://github.com/helium/HIP/blob/main/0070-scaling-helium.md" },
+      { label: "HIP-70 announcement (Helium Foundation)", url: "https://medium.com/helium-foundation/hip-70-helium-core-team-proposes-to-migrate-to-solana-e7ea23a042e7" },
+      { label: "CoinDesk: Helium begins move to Solana (Apr 2023)", url: "https://www.coindesk.com/tech/2023/04/18/decentralized-wireless-project-helium-begins-move-to-solana-blockchain" }
+    ]
+  },
+  {
+    id: "ore", name: "CONGESTION MINE", x: 49.4, y: 37,
+    category: "Infrastructure", year: 2024, date: "2024-04", status: "verified", danger: false, image: "assets/landmarks/ore.jpeg",
+    tldr: "An 'anyone can mine' token nearly choked the chain — speculation became a stress test.",
+    whatHappened: "ORE, a Bitcoin-style proof-of-work mineable token built as a program on Solana, launched on April 2, 2024. Its v1 mining design was easily gamed and incentivized mass transaction spam, briefly making ORE one of the most-used programs on Solana. Combined with a surge in memecoin activity, this contributed to severe congestion where the majority of transactions were failing; its creator paused v1 on April 16, 2024, and relaunched a redesigned v2 on August 6, 2024.",
+    whyItMatters: "ORE became a flashpoint in Solana's 2024 congestion crisis, illustrating how spam-incentivizing program design could compound a fee market under stress and degrade the whole network — congestion that, alongside a known QUIC bottleneck, drove Solana's v1.18 central-scheduler fixes.",
+    onMap: "A frenzied open-pit mine whose diggers churn the ground until the roads choke with traffic.",
+    sources: [
+      { label: "CoinDesk — Solana rolls out update to tackle congestion (Apr 2024)", url: "https://www.coindesk.com/tech/2024/04/15/solana-rolls-out-update-to-tackle-network-congestion" },
+      { label: "DL News — Solana users spend thousands to earn ORE tokens", url: "https://www.dlnews.com/articles/defi/solana-users-spend-thousands-to-earn-ore-tokens/" },
+      { label: "CryptoSlate — ORE halts mining, announces v2", url: "https://cryptoslate.com/solana-based-pow-project-ore-halts-mining-announces-version-2/" }
+    ]
+  },
+  {
+    id: "saga", name: "SAGA MONOLITH", x: 43, y: 55.7,
+    category: "Consumer", year: 2023, date: "2023-05-08", status: "verified", danger: false, image: "assets/landmarks/saga.jpeg",
+    tldr: "Solana built a phone. Almost nobody wanted the first one. The second sold out.",
+    whatHappened: "Solana Mobile shipped Saga on May 8, 2023 — a flagship Android phone built around a hardware Secure Element called Seed Vault, plus a fee-free dApp Store. Launched near $1,000 (later cut to $599), it was widely panned until December 2023, when the BONK community airdropped 30M BONK to each device; as BONK climbed, the bundled tokens were briefly worth more than the phone, and Saga sold out with units flipping for thousands on eBay. The successor, Chapter 2, drew over 30,000 preorders within ~30 hours of its January 2024 announcement.",
+    whyItMatters: "Saga was the first deeply crypto-native smartphone — earlier devices like HTC Exodus and Sirin Finney had hardware key storage, but Saga paired Seed Vault with an open, fee-free dApp Store and tight wallet/SDK integration. Its airdrop-driven second life showed how token incentives, not specs, can make or break consumer hardware adoption.",
+    onMap: "A monolith that stood ignored until a strange light made the crowds rush its gates.",
+    sources: [
+      { label: "Solana — Saga reveal (official)", url: "https://solana.com/news/saga-reveal" },
+      { label: "CoinDesk — Saga sales surge on BONK arbitrage (Dec 2023)", url: "https://www.coindesk.com/markets/2023/12/14/sales-of-solana-phone-surge-as-traders-chase-bonk-arbitrage" },
+      { label: "TechCrunch — Solana Mobile's second phone drives preorder frenzy (Jan 2024)", url: "https://techcrunch.com/2024/01/18/solana-mobiles-second-phone-announcement-drives-buying-frenzy/" }
+    ]
+  },
+  {
+    id: "backpack", name: "BEARPROOF BASTION", x: 90.7, y: 76.4,
+    category: "Consumer", year: 2023, date: "2023-04-21", status: "verified", danger: false, image: "assets/landmarks/backpack.jpeg",
+    tldr: "When the bear market was coldest, some people kept shipping. Mad Lads and Backpack are the proof.",
+    whatHappened: "On April 21, 2023, the team behind the Backpack wallet minted Mad Lads, a 10,000-piece NFT collection claimable only through Backpack. Mad Lads was the first high-profile xNFT — an 'executable' NFT whose code runs inside the wallet itself. Demand was so extreme it caused a denial-of-service-like load that knocked out two Solana RPC nodes and the project's UI, forcing a one-day delay. It became a defining bear-market product moment for Backpack, which later grew into a wallet and exchange.",
+    whyItMatters: "Mad Lads showed a polished product and a novel primitive could capture mainstream attention even in a deep bear market, and it stress-tested Solana's RPC infrastructure under genuine load.",
+    onMap: "A fortified keep that drew so many pilgrims at once its walls briefly buckled.",
+    sources: [
+      { label: "CoinDesk — Mad Lads demand breaks the internet, delays mint (Apr 2023)", url: "https://www.coindesk.com/web3/2023/04/21/heavy-demand-for-madlads-nft-breaks-internet-delays-mint" },
+      { label: "nftnow — A guide to Mad Lads (10k count, xNFT, Backpack)", url: "https://nftnow.com/features/mad-lads-what-to-know-about-the-project-reviving-solana/" },
+      { label: "The Block — Backpack launches exchange with Dubai license", url: "https://www.theblock.co/post/260114/backpack-launching-cryptocurrency-exchange-with-dubai-license" }
+    ]
+  },
+  {
+    id: "jup_drop", name: "GRAND AIRDROP SHRINE", x: 38.3, y: 15.1,
+    category: "Airdrop", year: 2024, date: "2024-01-31", status: "verified", danger: false, image: "assets/landmarks/jup_drop.jpeg",
+    tldr: "One of the largest community airdrops in Solana history landed JUP in nearly a million wallets.",
+    whatHappened: "On January 31, 2024, Jupiter opened claims for the first round of its JUP token airdrop, distributing roughly $700M worth of tokens to nearly a million wallets that had routed swaps through its service. The chain's consensus layer stayed online through the surge, though RPC nodes struggled for the first 30–45 minutes. It was round one of four planned community distributions, with half of JUP's supply earmarked for the community.",
+    whyItMatters: "The airdrop became a stress test that Solana's base layer passed, signaling the network had matured past its 2021–2022 outage era, and set a template for large, community-weighted token launches.",
+    onMap: "A vast shrine where a sudden rain falls evenly across a million open hands.",
+    sources: [
+      { label: "CoinDesk — Jupiter's $700M JUP airdrop", url: "https://www.coindesk.com/markets/2024/01/31/jupiters-jup-token-soars-after-massive-700m-airdrop-to-solana-wallets" },
+      { label: "Blockworks — Jupiter tokenomics ahead of airdrop", url: "https://blockworks.com/news/jupiter-airdrop-tokenomics" },
+      { label: "The Block — Jupiter confirms JUP token release date", url: "https://www.theblock.co/post/272800/jupiter-jup-token-launch-date-memecoin-drop-planned" }
+    ]
+  },
+  {
+    id: "pumpfun", name: "DEGEN LAUNCHPAD", x: 75.3, y: 57.9,
+    category: "Meme", year: 2024, date: "2024-01-19", status: "verified", featured: true, danger: false,
+    image: "assets/landmarks/degen-launchpad.jpeg",
+    tldr: "Launch a token in 30 seconds for almost nothing. Solana's meme floodgates never closed again.",
+    whatHappened: "Pump.fun made token creation fast, permissionless, and nearly free, turning meme-coin launches into a constant, high-volume cultural activity on Solana.",
+    whyItMatters: "A major product and culture moment — with real speculation and risk attached. It is history, treated neutrally, not an endorsement.",
+    onMap: "A launchpad firing off tokens like flares.",
+    sources: [
+      { label: "CoinDesk — Most Influential 2025: Pump.fun", url: "https://www.coindesk.com/coindesk-news/2025/12/10/most-influential-pump-fun" },
+      { label: "The Block — Pump.fun PUMP token launch coverage", url: "https://www.theblock.co/post/361449/solana-based-memecoin-generator-pump-fun-plans-to-list-its-upcoming-pump-token-on-july-12" },
+      { label: "Wikipedia — Pump.fun (cited overview)", url: "https://en.wikipedia.org/wiki/Pump.fun" }
+    ],
+    affiliationNote: "Historical reference only. No endorsement or investment implication."
+  },
+  {
+    id: "wen_temple", name: "TEMPLE OF \"WHEN?\"", x: 9.9, y: 37,
+    category: "Airdrop", year: 2024, date: "2024-01-26", status: "verified", danger: false, image: "assets/landmarks/wen_temple.jpeg",
+    tldr: "'wen' — the word Solana asked a thousand times — finally became a real airdrop.",
+    whatHappened: "In late January 2024, WEN became the first token launched through Jupiter's LFG Launchpad, used as a public test run days before Jupiter's own JUP airdrop. Its one-trillion supply was fractionalized from a single NFT — a poem written for the community members who perpetually asked 'wen token?'. Claims opened January 26, 2024, with 70% of supply airdropped across more than a million eligible wallets, including past Jupiter users and Saga owners.",
+    whyItMatters: "WEN turned a piece of crypto vernacular — 'wen,' the community's running cry of anticipation — into a documented culture moment, and demonstrated Jupiter's launchpad mechanics at scale before its flagship token went live.",
+    onMap: "A temple of echoes where one endlessly repeated question is finally carved into stone.",
+    sources: [
+      { label: "Decrypt — Over a million wallets eligible for WEN airdrop", url: "https://decrypt.co/214282/wen-token-over-million-wallets-eligible-solana-meme-coin-airdrop" },
+      { label: "DL News — Jupiter dev's WEN airdrop introduces a new Solana NFT standard", url: "https://www.dlnews.com/articles/defi/jupiter-wen-airdrop-introduces-new-solana-nft-standard/" },
+      { label: "CoinDesk — ~17% of WEN supply could be burned after airdrop", url: "https://www.coindesk.com/markets/2024/01/27/around-17-of-wen-token-supply-could-be-burned-after-airdrop-data-suggests" }
+    ],
+    affiliationNote: "Historical reference only. Documented as culture, not investment."
+  },
+  {
+    id: "mew_forest", name: "MEWVEIL WOODS", x: 76.2, y: 39.2,
+    category: "Meme", year: 2024, date: "2024-03", status: "verified", danger: false, image: "assets/landmarks/mew_forest.jpeg",
+    tldr: "A cat staking its claim in a world run by dogs — and the 'cat season' it kicked off.",
+    whatHappened: "MEW, branded 'cat in a dog's world,' launched on Solana in late March 2024 via a fair launch, with part of supply distributed to the community by airdrop. Its premise was explicitly cultural: a cat-themed project staking a claim in a meme ecosystem long dominated by dog mascots. Its arrival is widely credited with sparking the wave crypto-natives nicknamed 'cat season.'",
+    whyItMatters: "MEW marked the moment cat-meme culture asserted itself as a distinct community identity on Solana, showing how a simple cultural frame could organize a large online community around a shared in-joke.",
+    onMap: "A silver-furred grove that purrs where the kennels once ruled.",
+    sources: [
+      { label: "Crypto Briefing — Cat-themed token MEW soars over 120% (2024)", url: "https://cryptobriefing.com/cat-token-solana-over-120/" },
+      { label: "Decrypt — Solana 'Chapter 2' airdrops include MEW", url: "https://decrypt.co/228171/solana-chapter-2-phone-maneki-mew-airdrops" },
+      { label: "CoinDesk — MEW cat character on Telegram mini-game (Jul 2024)", url: "https://www.coindesk.com/markets/2024/07/03/solana-meme-coin-mews-cat-character-to-feature-on-trending-telegram-mini-game" }
+    ],
+    affiliationNote: "Historical reference only. Documented as culture, not investment."
+  },
+  {
+    id: "myro", name: "PUP-LINE CIRCUIT", x: 68.2, y: 22.9,
+    category: "Meme", year: 2023, date: "2023-11", status: "verified", danger: false, image: "assets/landmarks/myro.jpeg",
+    tldr: "Named after a Solana co-founder's actual dog — folklore turned into a meme.",
+    whatHappened: "Myro is a Solana meme project that launched in November 2023, named after Solana co-founder Raj Gokal's pet dog. It rode the dog-mascot tradition on Solana and built community tooling such as a Telegram bot surfacing trending projects. The name's direct tie to a co-founder's real dog made it a recognizable thread in Solana's dog-meme lineage.",
+    whyItMatters: "Myro illustrates how Solana's meme culture often grows out of the community's own folklore — turning insider references into shared cultural landmarks.",
+    onMap: "A worn circuit of paw-prints looping back to the founders' hearth.",
+    sources: [
+      { label: "Bitcoinist — Solana meme coins Myro and WIF score Binance listing", url: "https://bitcoinist.com/solana-meme-coins-myro-wif/" },
+      { label: "Crypto.com University — What is Myro (Nov 2023 mainnet)", url: "https://crypto.com/en/university/what-is-myro-token-and-how-to-buy-myro" }
+    ],
+    affiliationNote: "Historical reference only. No affiliation implied; documented as community history."
+  },
+  {
+    id: "shark_bay", name: "SHARKCAT COVE", x: 39.5, y: 80.8,
+    category: "Meme", year: 2024, date: "2024-05", status: "verified", danger: false, image: "assets/landmarks/shark_bay.jpeg",
+    tldr: "A meme cat in a shark suit — and the real IP fight that followed.",
+    whatHappened: "Shark Cat, a Solana community meme, was built on a copyrighted photo of Nala — a famous Instagram cat (owned by pseudonymous 'Pookie') — pictured in a shark costume, used without permission. After a public dispute over IP rights in April 2024 (including cease-and-desist notices), the matter was resolved around May 2024 when the team secured an official license to the Nala Cat IP rather than going to court, with a crypto lawyer assisting Pookie pro bono.",
+    whyItMatters: "Shark Cat became an early case study in meme-culture IP: community projects built on real people's pets and brands carry genuine intellectual-property obligations, and licensing — not just virality — matters.",
+    onMap: "A reef cove where a borrowed fin was finally granted its own waters.",
+    sources: [
+      { label: "Decrypt — Shark Cat fight ends without legal battle", url: "https://decrypt.co/229823/shark-cat-solana-meme-coin-fight-ends" },
+      { label: "Decrypt — Why the legal claws are out over Shark Cat", url: "https://decrypt.co/226638/crypto-cat-fight-legal-claws-out-solana-meme-coin-shark-cat" }
+    ],
+    affiliationNote: "Historical reference only. Documented as a culture/IP episode, not investment."
+  },
+  {
+    id: "gigachad", name: "DIAMONDHANDS FORGE", x: 24.2, y: 44.2,
+    category: "Meme", year: 2024, date: "2024-01", status: "verified", danger: false, image: "assets/landmarks/gigachad.jpeg",
+    tldr: "The people who held through the bear, forged into a cultural totem.",
+    whatHappened: "GIGA is a Solana community meme launched in 2024, honoring Ernest Khalimov, the model behind the internet 'Gigachad' figure (from Krista Sudmalis's Sleek'n'Tears project). It runs as a community-organized project with a companion Giga Fitness brand, and drew public endorsements from Khalimov, bodybuilder Mike O'Hearn, and UFC fighter Paulo Costa. Over 2024 it grew into a cultural rallying point for the 'Chad' archetype of conviction and endurance.",
+    whyItMatters: "More than a single mascot, GIGA became shorthand for the culture of endurance — the builders and long-term community members who weathered the bear market — turning a stoic internet meme into a symbol of staying the course.",
+    onMap: "A windswept forge on the ridge where those who outlasted the long winter still keep the embers lit.",
+    sources: [
+      { label: "Decrypt — Gigachad meme coin endorsed by the 'Gigachad' model (Aug 2024)", url: "https://decrypt.co/244620/solana-meme-coin-gigachad-endorsement-meme-model" },
+      { label: "Solscan — GIGACHAD (GIGA) on-chain token page", url: "https://solscan.io/token/63LfDmNb3MQ8mw9MtZ2To9bEA2M71kZUUGq5tiJxcqj9" },
+      { label: "The Block — Gigachad (GIGA) data page", url: "https://www.theblock.co/price/338233/gigachad-giga-usd" }
+    ],
+    affiliationNote: "Historical reference only. A culture/endurance landmark, not investment advice."
+  },
+  {
+    id: "meow_sanctuary", name: "CAT SEASON PEAKS", x: 17.2, y: 73.6,
+    category: "Meme", year: 2024, date: "2024-07", status: "verified", danger: false, image: "assets/landmarks/meow_sanctuary.jpeg",
+    tldr: "Where cats staked their claim against a dog-ruled meme world — Popcat's grin and MEW's 'cat in a dog's world' powering 2024's 'cat season.'",
+    whatHappened: "Solana's cat-coin culture rises here as a deliberate counter to the dog-dominated meme scene. Popcat — drawn from the 2020 'Oatmeal' cat clicker meme — launched as a Solana token in December 2023; in July 2024 it became the first cat-themed meme coin to cross a $1B market cap. In March 2024, MEW launched with its narrative baked into its name — 'cat in a dog's world,' a lone cat surviving among dogs — and the cat-coin rally around these tokens through 2024 became known in crypto circles as 'cat season.'",
+    whyItMatters: "This landmark captures meme culture as identity and rivalry: dogs as the incumbent dynasty, cats as the scrappy challengers. It shows how online communities use humor, mascots, and us-vs-them stories to build belonging.",
+    onMap: "A cat-shaped mountain in the southwest, peaks lit by a thousand blinking eyes, feline banners raised in defiance of the dog dynasty across the valley.",
+    sources: [
+      { label: "CoinDesk — Popcat crosses $1B, first cat-themed meme coin to do so (Jul 2024)", url: "https://www.coindesk.com/markets/2024/07/22/popcat-crosses-1b-mog-rallies-as-solana-ethereum-beta-bets-gain-favor" },
+      { label: "Know Your Meme — Popcat (SOL) meme coin", url: "https://knowyourmeme.com/memes/subcultures/popcat-sol-meme-coin" },
+      { label: "CoinMarketCap — cat in a dog's world (MEW) overview", url: "https://coinmarketcap.com/currencies/mew/" }
+    ],
+    affiliationNote: "Historical reference only. Documented as meme/internet culture, not investment."
+  },
+  {
+    id: "woof_city", name: "DOG DYNASTY FORGE", x: 89.5, y: 35,
+    category: "Meme", year: 2022, date: "2022-12-25", status: "verified", danger: false, image: "assets/landmarks/woof_city.jpeg",
+    tldr: "The foundry of Solana's dog-meme dynasty — from BONK's post-FTX morale airdrop to dogwifhat's pink beanie conquering the internet.",
+    whatHappened: "Solana's dog-coin culture begins here. On December 25, 2022 — weeks after FTX gutted Solana's reputation — an anonymous community launched BONK as 'the first Solana dog coin, for the people, by the people,' airdropping roughly half its supply to active Solana participants instead of insiders, a grassroots morale boost in the depths of the bear. The lineage continued with dogwifhat (WIF), launched in late 2023 — a Shiba in a pink knit beanie that became one of the internet's most-shared images; in March 2024 its community crowdfunded over $690,000 in under four days to try to put the meme on the Las Vegas Sphere — though the display never ran: organizers never secured a deal with the venue and refunded backers in April 2025.",
+    whyItMatters: "BONK and WIF document how Solana's meme scene was rebuilt on community participation and shared humor rather than top-down marketing — BONK's broad airdrop became a template for grassroots distribution, and dogwifhat showed how one absurd image plus collective coordination could capture mainstream attention.",
+    onMap: "A clanging dog-shaped factory in the northeast, forging stray sparks into the howling banners of the dog dynasty.",
+    sources: [
+      { label: "Decrypt — Solana devs' BONK Christmas 2022 airdrop", url: "https://decrypt.co/209906/solana-devs-bonk-airdrop-worth-300-last-christmas-now-worth-500000" },
+      { label: "CoinDesk — dogwifhat completes Vegas Sphere fundraising (Mar 2024)", url: "https://www.coindesk.com/markets/2024/03/13/dogwifhat-becomes-4th-largest-meme-coin-as-community-completes-fundraising-for-las-vegas-sphere-showing" },
+      { label: "Decrypt — dogwifhat abandons Vegas Sphere plans, refunds ~$700K (Apr 2025)", url: "https://decrypt.co/312720/dogwifhat-las-vegas-sphere-solana-meme-coin-refund-700k" }
+    ],
+    affiliationNote: "Historical reference only. Documented as meme/internet culture, not investment."
+  }
+];

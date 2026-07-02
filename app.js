@@ -26,11 +26,11 @@ const LANDMARKS = [
 const MOCK_STATE = {
   roundCurrent: 1,
   defcon: 1,
-  resetIn: "04h 58m 14s",
+  resetIn: "PAUSED",
   ca: "MEOW: CAign7KRPN5xSxHALXiYJBPfyaGurmXg7hMST7snixFH | WOOF: 9aZjzzYXv4pqwdJLSxJwAaMS8dhSMV2bWkL71SKbu9U6",
-  ticker: "MEOW vs WOOF is live. Weekly War Chest unlock at week start. Voting decides allocation.",
-  pin: "Weekly War Chest unlock happens at week start.",
-  intel: "Weekly War Chest unlock happens at week start. Voting decides allocation.",
+  ticker: "Live scoring is paused — on-chain activity is currently too low for data providers to track.",
+  pin: "LIVE SCORING PAUSED — the map and locks stay; rounds resume when real trading returns.",
+  intel: "Live scoring is paused; the Solana-history map and receipt layer remain public.",
   tokenSupply: { meow: 5000000000, woof: 5000000000 },
   locks: {
     lpPct: 70, warPct: 20, teamPct: 10,
@@ -110,6 +110,18 @@ function guessStateUrl() {
   return "https://api.meow-woof.org/api/state";
 }
 
+// === 赛季暂停（诚实状态）===
+// 链上交易过少、数据源(DexScreener 等)无法统计时，手动置 true。
+// 恢复真实交易、数据重新流入后，改回 false 即可自动恢复对战显示。
+const SEASON_PAUSED = true;
+const PAUSED_PIN = "LIVE SCORING PAUSED — on-chain activity is currently too low for data providers to track. The map stays; rounds resume when real trading returns.";
+const PAUSED_TICKER = [
+  "Live scoring is paused — on-chain trading is currently too low for data providers to track.",
+  "Weekly rounds are on hold until real activity returns.",
+  "The Solana-history map and the project are still here.",
+  "War Chest locks remain public and verifiable on Streamflow.",
+].join(" • ");
+
 function normalizeApiState(api) {
   const treasury = api?.facts?.treasury || {};
   const stats = api?.facts?.roundStats || {};
@@ -135,7 +147,13 @@ function normalizeApiState(api) {
     };
   }
 
-  return {
+  const apiPaused = !!(
+    api?.season?.paused ||
+    api?.facts?.season_paused ||
+    String(api?.battle?.status || "").toLowerCase() === "paused"
+  );
+
+  const state = {
     roundCurrent: api?.facts?.countdown?.round ?? api?.round?.current ?? api?.battle?.round ?? 1,
     defcon: api?.facts?.countdown?.round ?? api?.round?.current ?? api?.battle?.round ?? 1,
     resetIn: api?.facts?.countdown?.reset_ttl ?? "—",
@@ -170,11 +188,31 @@ function normalizeApiState(api) {
     },
     meow: sideState("meow"),
     woof: sideState("woof"),
+    spentHistory: api?.spent_history || null,
     battle: api?.battle || null,
+    seasonPaused: SEASON_PAUSED || apiPaused,
     world: api?.world || null,
     // [New] Pass vote data
-    vote: api?.vote || null 
+    vote: api?.vote || null
   };
+
+  // 赛季暂停时，覆盖为诚实的“暂停”展示：
+  // - 顶部 pin / 跑马灯说明实情
+  // - 倒计时显示 PAUSED（不再假装在计分）
+  // - 五维条归到中性 50（不暗示任何“测量结果”）
+  // 地图位置、战争金库锁仓、链上证明照常显示——它们仍然是真实的。
+  if (SEASON_PAUSED || apiPaused) {
+    state.pin = PAUSED_PIN;
+    state.ticker = PAUSED_TICKER;
+    state.resetIn = "PAUSED";
+    state.nextResetAt = "";
+    if (state.locks) state.locks.warTtl = "PAUSED";
+    const neutral = { str: 50, def: 50, dex: 50, chr: 50, luck: 50 };
+    state.meow = { ...state.meow, ...neutral };
+    state.woof = { ...state.woof, ...neutral };
+  }
+
+  return state;
 }
 
 function saveLastGoodState(state) {
@@ -444,6 +482,7 @@ let lastWorldStr = "";
 let lastBattleStr = "";
 
 async function initApp() {
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   map.initNodes(LANDMARKS);
 
   // 1. 首次加载：执行一次完整更新
@@ -462,9 +501,67 @@ async function initApp() {
   startTributeTypewriter();
   events.init();
   voteUI.init();
+  spentHistoryUI.init();
+  bindMobileLayoutAnchors();
+  bindLayoutObservers();
   
   // [!code ++] Bind Contact Form here
   if (typeof bindContactForm === 'function') bindContactForm();
+}
+
+function centerHorizontalScroller(el) {
+  if (!el) return;
+  const maxScroll = Math.max(0, el.scrollWidth - el.clientWidth);
+  if (!maxScroll) return;
+  el.scrollLeft = Math.round(maxScroll / 2);
+}
+
+function resetHorizontalScrollerToStart(el) {
+  if (!el) return;
+  el.scrollLeft = 0;
+}
+
+function syncMobileLayoutAnchors() {
+  if (!window.matchMedia("(max-width: 768px)").matches) return;
+  resetHorizontalScrollerToStart(document.querySelector(".topbar"));
+  resetHorizontalScrollerToStart(document.querySelector(".console-wrapper"));
+}
+
+function bindMobileLayoutAnchors() {
+  if (!window.matchMedia("(max-width: 768px)").matches) return;
+  const topbar = document.querySelector(".topbar");
+  if (!topbar) return;
+  // Reset topbar to show IMPORTANT text from left edge.
+  // Use a scroll event listener to catch and cancel browser scroll restoration
+  // (browser restores scrollLeft from previous session, which was centered).
+  let restorationHandled = false;
+  const cancelRestoration = () => {
+    if (!restorationHandled) {
+      restorationHandled = true;
+      topbar.scrollLeft = 0;
+    }
+  };
+  topbar.addEventListener("scroll", cancelRestoration, { once: true, passive: false });
+  // Also reset immediately and on load in case no scroll event fires
+  topbar.scrollLeft = 0;
+  window.addEventListener("load", () => { topbar.scrollLeft = 0; });
+  window.addEventListener("orientationchange", () => { topbar.scrollLeft = 0; });
+}
+
+function bindLayoutObservers() {
+  let rafId = null;
+  const sync = () => {
+    if (rafId) return;
+    rafId = requestAnimationFrame(() => { rafId = null; map.syncContainerToImageRect(); });
+  };
+  const topbar = document.querySelector(".topbar");
+  if (topbar && typeof ResizeObserver !== "undefined") {
+    const ro = new ResizeObserver(sync);
+    ro.observe(topbar);
+  }
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(sync).catch(() => {});
+  }
 }
 
 // 统一的更新函数
@@ -556,7 +653,7 @@ function bindProofLinks() {
 
 function bindPlaceholderLinks() {
   const linkIds = [
-    ids.btnVote, ids.txMint, ids.txFreeze, ids.tradeJupiter, ids.tradeRaydium,
+    ids.btnVote, ids.txMint, ids.txFreeze,
     ids.navX, ids.navTelegram, ids.navDiscord, ids.navWhitepaper,
     // [!code --] Removed navContact from here
     ids.navTerms, ids.navPrivacy,
@@ -633,8 +730,9 @@ const map = (() => {
     if (overlay) {
       const rootStyles = getComputedStyle(document.documentElement);
       const sweepH = parseFloat(rootStyles.getPropertyValue("--map-sweep-h")) || 95;
-      const travel = imgRect.height + sweepH * 2;
-      overlay.style.setProperty("--map-sweep-travel", `${travel}px`);
+      const travel = Math.round(imgRect.height + sweepH * 2);
+      const cur = parseFloat(overlay.style.getPropertyValue("--map-sweep-travel")) || 0;
+      if (Math.abs(travel - cur) > 2) overlay.style.setProperty("--map-sweep-travel", `${travel}px`);
     }
   }
   
@@ -887,9 +985,9 @@ const CONFIG = {
   sides: ["meow", "woof"],
   titleByKind: { lp: "LP", war: "WAR CHEST", team: "TEAM" },
   trustRows: [
-    ["lp", "lpStatus", "LP BURNED", "lpTtl", ""],
-    ["war", "warStatus", "WEEKLY UNLOCKS", "warTtl", "—"],
-    ["team", "teamStatus", "LINEAR 12M", "teamTtl", "STARTS IN —"],
+    { id: "lp-sub", key: "lpStatus", fallback: "LP BURNED" },
+    { id: "team-sub", key: "teamStatus", fallback: "LINEAR 12M" },
+    { id: "team-ttl", key: "teamTtl", fallback: "STARTS IN —" },
   ],
   fmt: { billionDecimals: 2, millionDecimals: 2, thousandDecimals: 1 },
 };
@@ -919,7 +1017,6 @@ const ids = {
   pct: (side, seg) => `${side}-pct-${seg}`,
   topRound: "top-round",
   topReset: "top-reset",
-  caText: "ca-txt",
   tickerPin: "ticker-pin",
   tickerScroll: "ticker-scroll",
   trustPct: (kind) => `${kind}-pct`,
@@ -927,8 +1024,17 @@ const ids = {
   trustSub: (kind) => `${kind}-sub`,
   trustTtl: (kind) => `${kind}-ttl`,
   proof: (kind, side) => `${kind}-${side}`,
-  btnCopy: "btn-copy", btnTrade: "btn-trade", btnVote: "btn-vote", btnConnect: "btn-connect",
-  tradeWrap: "trade-wrap", tradeDropdown: "trade-dropdown", tradeJupiter: "trade-jupiter", tradeRaydium: "trade-raydium",
+  btnTrade: "btn-trade", btnVote: "btn-vote", btnConnect: "btn-connect",
+  btnSpentLogMeow: "btn-spent-log-meow",
+  btnSpentLogWoof: "btn-spent-log-woof",
+  tradeWrap: "trade-wrap", tradeDropdown: "trade-dropdown",
+  spentModal: "spent-modal",
+  spentModalTitle: "spent-modal-title",
+  btnCloseSpent: "btn-close-spent",
+  btnSpentTabMeow: "btn-spent-tab-meow",
+  btnSpentTabWoof: "btn-spent-tab-woof",
+  spentTableBody: "spent-table-body",
+  spentUpdated: "spent-updated",
   txMint: "tx-mint", txFreeze: "tx-freeze",
   navX: "nav-x", navTelegram: "nav-telegram", navDiscord: "nav-discord", navWhitepaper: "nav-whitepaper",
   navContact: "nav-contact", navTerms: "nav-terms", navPrivacy: "nav-privacy",
@@ -987,6 +1093,172 @@ function renderWarChest(prefix, wc) {
   dom.pct(ids.tubeSeg(prefix, "locked"), "height", hLocked);
 }
 
+const EMPTY_SPENT_HISTORY = { updated_at: "", meow: [], woof: [] };
+
+const spentHistoryUI = {
+  inited: false,
+  side: "meow",
+  data: { ...EMPTY_SPENT_HISTORY },
+
+  normalize(history) {
+    const src = (history && typeof history === "object") ? history : EMPTY_SPENT_HISTORY;
+    const clean = {
+      updated_at: String(src.updated_at || ""),
+      meow: Array.isArray(src.meow) ? src.meow : [],
+      woof: Array.isArray(src.woof) ? src.woof : [],
+    };
+    for (const side of ["meow", "woof"]) {
+      clean[side] = clean[side]
+        .map((row) => ({
+          date: String(row?.date || "").slice(0, 10),
+          amount: String(row?.amount || ""),
+          use: String(row?.use || ""),
+          note: String(row?.note || ""),
+          proof: String(row?.proof || ""),
+        }))
+        .filter((row) => row.date || row.amount || row.use || row.note || row.proof);
+    }
+    return clean;
+  },
+
+  setData(history) {
+    this.data = this.normalize(history);
+    this.render();
+  },
+
+  async fetchLatest() {
+    try {
+      const res = await fetch(getApiUrl("/api/spent-history"), { cache: "no-store" });
+      if (!res.ok) return;
+      const payload = await res.json();
+      if (payload && payload.ok) this.setData(payload.history);
+    } catch (err) {
+      console.warn("Spent history fetch failed:", err);
+    }
+  },
+
+  open(side = "meow") {
+    this.side = (side === "woof") ? "woof" : "meow";
+    this.render();
+    const modal = dom.get(ids.spentModal);
+    if (modal) modal.style.display = "flex";
+    this.fetchLatest();
+  },
+
+  close() {
+    const modal = dom.get(ids.spentModal);
+    if (modal) modal.style.display = "none";
+  },
+
+  switchSide(side) {
+    this.side = (side === "woof") ? "woof" : "meow";
+    this.render();
+  },
+
+  render() {
+    const body = dom.get(ids.spentTableBody);
+    if (!body) return;
+    const tabMeow = dom.get(ids.btnSpentTabMeow);
+    const tabWoof = dom.get(ids.btnSpentTabWoof);
+    const title = dom.get(ids.spentModalTitle);
+    const updated = dom.get(ids.spentUpdated);
+    if (tabMeow) tabMeow.classList.toggle("active", this.side === "meow");
+    if (tabWoof) tabWoof.classList.toggle("active", this.side === "woof");
+    if (title) title.textContent = `${this.side.toUpperCase()} SPENT HISTORY`;
+    if (updated) updated.textContent = this.data.updated_at ? `UPDATED: ${this.data.updated_at}` : "UPDATED: --";
+    body.innerHTML = "";
+
+    const rows = Array.isArray(this.data[this.side]) ? this.data[this.side] : [];
+    if (!rows.length) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = '<td colspan="4" class="spent-empty">No records yet.</td>';
+      body.appendChild(tr);
+      return;
+    }
+
+    rows.forEach((row) => {
+      const tr = document.createElement("tr");
+      const tdDate = document.createElement("td");
+      tdDate.className = "col-date";
+      tdDate.textContent = row.date || "--";
+
+      const tdAmount = document.createElement("td");
+      tdAmount.className = "col-amount";
+      tdAmount.textContent = row.amount || "--";
+
+      const tdUse = document.createElement("td");
+      tdUse.textContent = row.use || "--";
+
+      const tdNote = document.createElement("td");
+      const note = String(row.note || "").trim();
+      const proof = String(row.proof || "").trim();
+      const proofLike = /^https?:\/\//i;
+      if (note) {
+        if (proofLike.test(note)) {
+          const noteLink = document.createElement("a");
+          noteLink.href = note;
+          noteLink.className = "spent-note-link";
+          noteLink.target = "_blank";
+          noteLink.rel = "noopener";
+          noteLink.textContent = "[note]";
+          tdNote.appendChild(noteLink);
+        } else {
+          tdNote.append(document.createTextNode(note));
+        }
+      }
+      if (proof) {
+        if (note) tdNote.append(document.createTextNode(" "));
+        if (proofLike.test(proof)) {
+          const a = document.createElement("a");
+          a.href = proof;
+          a.className = "spent-note-link";
+          a.target = "_blank";
+          a.rel = "noopener";
+          a.textContent = "[proof]";
+          tdNote.appendChild(a);
+        } else if (!note) {
+          tdNote.textContent = proof;
+        } else {
+          tdNote.append(document.createTextNode(proof));
+        }
+      }
+      if (!note && !proof) tdNote.textContent = "--";
+
+      tr.appendChild(tdDate);
+      tr.appendChild(tdAmount);
+      tr.appendChild(tdUse);
+      tr.appendChild(tdNote);
+      body.appendChild(tr);
+    });
+  },
+
+  init() {
+    if (this.inited) return;
+    this.inited = true;
+
+    const btnMeow = dom.get(ids.btnSpentLogMeow);
+    const btnWoof = dom.get(ids.btnSpentLogWoof);
+    const btnClose = dom.get(ids.btnCloseSpent);
+    const tabMeow = dom.get(ids.btnSpentTabMeow);
+    const tabWoof = dom.get(ids.btnSpentTabWoof);
+    const modal = dom.get(ids.spentModal);
+
+    if (btnMeow) btnMeow.addEventListener("click", () => this.open("meow"));
+    if (btnWoof) btnWoof.addEventListener("click", () => this.open("woof"));
+    if (btnClose) btnClose.addEventListener("click", () => this.close());
+    if (tabMeow) tabMeow.addEventListener("click", () => this.switchSide("meow"));
+    if (tabWoof) tabWoof.addEventListener("click", () => this.switchSide("woof"));
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) this.close();
+      });
+    }
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") this.close();
+    });
+  },
+};
+
 const ui = {
   render(s) {
     ui.topbar(s);
@@ -996,21 +1268,29 @@ const ui = {
     ui.center.proofLinks(s);
     ui.center.trustRows(s);
     ui.sides(s);
+    spentHistoryUI.setData(s?.spentHistory || null);
     
     // [!code focus] Update Vote UI
-    if (typeof voteUI !== 'undefined') voteUI.update(s.vote);
+    if (typeof voteUI !== 'undefined') voteUI.update(s.vote, !!s?.seasonPaused);
   },
   topbar(s) {
     dom.text(ids.topRound, String(s?.roundCurrent ?? "—"));
     dom.text(ids.topReset, String(s?.resetIn ?? "—"));
-    dom.text(ids.caText, s?.ca ?? "");
   },
   ticker(s) {
     const pin = (s.pin || s.intel || "").trim();
     const scroll = (s.ticker || s.intel || "Waiting for updates...").trim();
     
     dom.text(ids.tickerPin, pin ? pin : "—");
-    
+
+    // 赛季暂停：把写死的 “LIVE” 红色标记改成 “PAUSED”，避免和暂停文案自相矛盾
+    if (SEASON_PAUSED || s?.seasonPaused) {
+      const liveDot = document.querySelector(".live-dot");
+      if (liveDot) { liveDot.textContent = "PAUSED"; liveDot.classList.add("paused"); }
+      const pinLabel = document.querySelector(".pin-label");
+      if (pinLabel) pinLabel.textContent = "STATUS:";
+    }
+
     const el = dom.get(ids.tickerScroll);
     if(el) {
       const spacer = " \u00A0 \u00A0 • \u00A0 \u00A0 ";
@@ -1037,11 +1317,9 @@ const ui = {
       });
     },
     proofLinks(s) {
-      const locks = s.locks || {};
       const proofs = s.proofs || {};
       forEachSideKind((side, kind) => {
         const href = proofs?.[side]?.[kind] || "#";
-        const status = locks[`${kind}Status`] || "";
         const id = ids.proof(kind, side);
         // 不把真实链接放进 href，避免 hover 出现长条预览
         dom.attr(id, "href", "#");
@@ -1055,9 +1333,8 @@ const ui = {
     },
     trustRows(s) {
       const locks = s.locks || {};
-      for (const [k, statusKey, statusFallback, ttlKey, ttlFallback] of CONFIG.trustRows) {
-        dom.text(ids.trustSub(k), locks[statusKey] || statusFallback);
-        dom.text(ids.trustTtl(k), locks[ttlKey] || ttlFallback);
+      for (const row of CONFIG.trustRows) {
+        dom.text(row.id, locks[row.key] || row.fallback);
       }
     },
   },
@@ -1239,6 +1516,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const voteUI = {
   state: null,
+  paused: false,
   _submitting: false,
 
     init() {
@@ -1307,10 +1585,22 @@ const voteUI = {
     },
   
 
-  update(v) {
+  update(v, paused = false) {
     this.state = v;
+    this.paused = !!paused;
     const btn = dom.get(ids.btnVote);
     if (!btn) return;
+
+    if (this.paused) {
+      btn.classList.add("disabled");
+      btn.textContent = "SCORING PAUSED";
+      btn.style.opacity = "0.5";
+      btn.style.cursor = "not-allowed";
+      btn.style.backgroundColor = 'transparent';
+      btn.style.borderColor = 'rgba(255,255,255,0.3)';
+      btn.style.color = '#fff';
+      return;
+    }
 
     if (v && v.status === 'open' && v.winner) {
       btn.classList.remove("disabled");
@@ -1342,6 +1632,11 @@ const voteUI = {
   },
 
   open() {
+    if (this.paused) {
+      sys.alert("Live scoring is paused.\nVoting resumes only when real trading data returns.", "SCORING PAUSED");
+      return;
+    }
+
     // 1. 检查钱包
     if (!wallet.addr) { wallet.connect(); return; }
     

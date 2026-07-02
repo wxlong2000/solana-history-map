@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <title>Your Solana history footprint — Solana History Map</title>
+  <meta name="description" content="Read-only: paste a Solana address and see which moments in Solana history your wallet lived through. No signing, no fund access, nothing stored." />
+  <meta property="og:title" content="Your Solana history footprint" />
+  <meta property="og:description" content="See which moments in Solana history your wallet lived through. Read-only, no signing." />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./history-map.css?v=14" />
+  <style>
+    .fp .lead-copy{max-width:680px}
+    .fp-form{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 10px}
+    .fp-input{flex:1;min-width:240px;height:44px;padding:0 14px;border:1px solid var(--line-2);border-radius:8px;background:rgba(255,255,255,0.04);color:var(--ink);font-family:var(--font-mono);font-size:14px}
+    .fp-input:focus{outline:none;border-color:var(--solana-green)}
+    .fp-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+    .fp-link-btn{background:none;border:none;color:var(--solana-cyan);font-family:var(--font-mono);font-size:12px;letter-spacing:.5px;cursor:pointer;text-decoration:underline;padding:4px 0}
+    .fp-status{min-height:20px;font-family:var(--font-mono);font-size:12px;color:var(--muted);margin:6px 0}
+    .fp-status.error{color:var(--danger)}
+    .fp-result{margin-top:24px}
+    .fp-card{border:1px solid var(--line-2);border-radius:14px;padding:22px;background:linear-gradient(160deg,rgba(17,23,31,0.96),rgba(8,11,15,0.99));position:relative;overflow:hidden}
+    .fp-card::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:url("assets/scanlines.png");background-size:auto 3px;opacity:0.10}
+    .fp-card-top{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;color:var(--solana-green);text-transform:uppercase}
+    .fp-addr{font-family:var(--font-mono);font-size:13px;color:var(--muted);margin:4px 0 14px;word-break:break-all}
+    .fp-headline{font-size:clamp(24px,3.4vw,34px);font-weight:800;line-height:1.1;margin:0 0 16px}
+    .fp-badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+    .fp-badge{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;border-radius:20px;border:1px solid var(--line-2);background:rgba(255,255,255,0.04);color:var(--ink-dim)}
+    .fp-badge.dog{border-color:rgba(245,196,81,0.5);color:var(--amber)}
+    .fp-badge.cat{border-color:rgba(61,214,255,0.5);color:var(--solana-cyan)}
+    .fp-badge.both{border-color:rgba(255,71,111,0.5);color:var(--danger)}
+    .fp-landmarks{display:grid;gap:8px}
+    .fp-lm{display:flex;gap:10px;align-items:baseline;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,0.025);text-decoration:none}
+    .fp-lm .fp-lm-tag{font-family:var(--font-mono);font-size:10px;letter-spacing:1px;color:var(--solana-green);white-space:nowrap}
+    .fp-lm .fp-lm-text{color:var(--ink-dim);font-size:14px;line-height:1.4}
+    .fp-lm:hover{border-color:rgba(93,245,180,0.4)}
+    .fp-wm{margin-top:16px;font-family:var(--font-mono);font-size:10px;letter-spacing:2px;color:var(--muted);text-align:right}
+    .fp-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .fp-note{margin-top:22px;font-size:12px;color:var(--muted);line-height:1.6;max-width:680px;border-top:1px solid var(--line);padding-top:14px}
+    .fp-empty{color:var(--muted);font-family:var(--font-mono);font-size:13px}
+  </style>
+  <script defer src="./landmarks-data.js?v=14"></script>
+  <script defer src="./footprint.js?v=1"></script>
+</head>
+
+<body data-fx="on">
+  <header class="site-header">
+    <a class="brand-mark" href="./index.html" aria-label="Solana History Map home">
+      <span class="brand-kicker">SOURCE-CITED ATLAS</span><span class="brand-title">Solana History Map</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="./index.html">Atlas</a>
+      <a href="./footprint.html" aria-current="page">Footprint</a>
+      <a href="./sources.html">Sources</a>
+      <a href="./about.html">About</a>
+      <a href="./meow-vs-woof.html" data-archive>Archive</a>
+    </nav>
+  </header>
+
+  <main class="page-shell fp">
+    <p class="panel-topline">[ Read-only · onchain ]</p>
+    <h1>Your Solana history footprint</h1>
+    <p class="lead-copy">Paste a Solana wallet address — we read the public chain and show which moments on the map your wallet lived through. <strong>Read-only.</strong> No signing, no access to your funds, and we don't store your address.</p>
+
+    <div class="fp-form">
+      <input class="fp-input" id="fp-addr" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="Paste a Solana address (base58)…" aria-label="Solana wallet address" />
+      <button class="btn-hud" id="fp-trace" type="button">Trace</button>
+    </div>
+    <div class="fp-row">
+      <button class="btn-hud" id="fp-connect" type="button" hidden>Connect Phantom (read-only)</button>
+      <button class="fp-link-btn" id="fp-example" type="button">Try an example</button>
+    </div>
+    <p class="fp-status" id="fp-status" aria-live="polite"></p>
+
+    <div class="fp-result" id="fp-result" hidden></div>
+
+    <p class="fp-note">How this works: we call read-only Solana RPC (<code>getParsedTokenAccountsByOwner</code> for current holdings, <code>getSignaturesForAddress</code> for first visible activity). We can only see what you <em>currently</em> hold and the oldest activity the RPC retains — so we say "currently holds", not "claimed the airdrop", and "first activity we can see", not a guaranteed birth date. Your address is never stored and we never request a signature or transaction.</p>
+  </main>
+
+  <footer class="site-footer">
+    <span class="foot-brand">Solana History Map</span>
+    <a href="./index.html">Atlas</a>
+    <a href="./sources.html">Sources</a>
+    <a href="./about.html">About</a>
+    <span class="foot-spacer"></span>
+    <a href="./about.html">Open-source · MIT + CC-BY-4.0</a>
+  </footer>
+</body>
+</html>

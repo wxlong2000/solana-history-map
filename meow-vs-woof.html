@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEOW vs WOOF — Paused Archive</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./styles.css?v=7" />
+  <script defer src="./app.js?v=2"></script>
+</head>
+
+<body>
+  <!-- ================= TOP BAR (42px) ================= -->
+  <div class="topbar">
+    <div class="top-structure">
+      <!-- 左侧：紧凑布局 -->
+      <div class="top-section left-stack" style="flex: 1 1 0; min-width: 0;">
+        <div class="live-indicator">
+          <span class="live-dot">LIVE</span>
+        </div>
+        
+        <div class="top-pin-box" style="flex: 1 1 auto; min-width: 0;">
+          <span class="pin-label">IMPORTANT:</span>
+          <span class="pin-text" id="ticker-pin" style="display:inline-block; white-space:nowrap;">LOADING...</span>
+        </div>
+        
+      </div>
+
+      <!-- 中间：双币核心信息条 -->
+      <div class="top-section center-chip">
+        <div class="dual-core-box">
+          
+          <!-- MEOW 侧 -->
+          <div class="core-cell meow-cell">
+            <span class="core-name">MEOW</span>
+            <div class="mint-group">
+              <!-- 1. 链接换成了 explorer.solana.com -->
+              <a href="https://solscan.io/token/CAign7KRPN5xSxHALXiYJBPfyaGurmXg7hMST7snixFH" target="_blank" class="mint-link" title="View on Solscan">
+                MINT: <span class="code-short">CAig...ixFH</span>
+              </a>
+              <!-- 3. data-code 是你完整的真实地址，用于复制 -->
+              <button class="btn-icon copy-trigger" data-code="CAign7KRPN5xSxHALXiYJBPfyaGurmXg7hMST7snixFH">
+                <svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+            </div>
+            <div class="auth-flags">
+              <span title="Mint Authority Revoked">MINT 🚫</span>
+              <span title="Freeze Authority Revoked">FRZ 🚫</span>
+              <span title="Metadata Locked">META 🔒</span>
+            </div>
+          </div>
+
+          <div class="core-sep"></div>
+
+          <!-- WOOF 侧 -->
+          <div class="core-cell woof-cell">
+            <span class="core-name">WOOF</span>
+            <div class="mint-group">
+              <a href="https://solscan.io/token/9aZjzzYXv4pqwdJLSxJwAaMS8dhSMV2bWkL71SKbu9U6" target="_blank" class="mint-link" title="View on Solscan">
+                MINT: <span class="code-short">9aZj...u9U6</span>
+              </a>
+              <button class="btn-icon copy-trigger" data-code="9aZjzzYXv4pqwdJLSxJwAaMS8dhSMV2bWkL71SKbu9U6">
+                <svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </button>
+            </div>
+            <div class="auth-flags">
+              <span title="Mint Authority Revoked">MINT 🚫</span>
+              <span title="Freeze Authority Revoked">FRZ 🚫</span>
+              <span title="Metadata Locked">META 🔒</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧：按钮组 (VOTE 移至此处) -->
+      <div class="top-section right-wing">
+        <div class="round-box" style="margin-right:12px; white-space:nowrap;">
+          <span class="defcon">ROUND <span id="top-round" class="highlight">--</span></span>
+          <span class="sep">/</span>
+          <span class="countdown">RESET: <span id="top-reset">--</span></span>
+        </div>
+        <div class="trade-wrap" id="trade-wrap">
+          <button class="btn ghost" id="btn-trade">TRADE <span class="arr">▾</span></button>
+          <div class="trade-dropdown trade-mega" id="trade-dropdown">
+            <div class="trade-group">
+              <div class="trade-group-title">JUPITER</div>
+              <a href="https://jup.ag/tokens/CAign7KRPN5xSxHALXiYJBPfyaGurmXg7hMST7snixFH" id="trade-jupiter-meow" target="_blank" rel="noopener">
+                <span class="trade-token meow">MEOW</span>
+                <span class="trade-arrow">↗</span>
+              </a>
+              <a href="https://jup.ag/tokens/9aZjzzYXv4pqwdJLSxJwAaMS8dhSMV2bWkL71SKbu9U6" id="trade-jupiter-woof" target="_blank" rel="noopener">
+                <span class="trade-token woof">WOOF</span>
+                <span class="trade-arrow">↗</span>
+              </a>
+            </div>
+            <div class="trade-divider"></div>
+            <div class="trade-group">
+              <div class="trade-group-title">RAYDIUM</div>
+              <a href="https://raydium.io/swap/?inputMint=sol&outputMint=CAign7KRPN5xSxHALXiYJBPfyaGurmXg7hMST7snixFH" id="trade-raydium-meow" target="_blank" rel="noopener">
+                <span class="trade-token meow">MEOW</span>
+                <span class="trade-arrow">↗</span>
+              </a>
+              <a href="https://raydium.io/swap/?inputMint=sol&outputMint=9aZjzzYXv4pqwdJLSxJwAaMS8dhSMV2bWkL71SKbu9U6" id="trade-raydium-woof" target="_blank" rel="noopener">
+                <span class="trade-token woof">WOOF</span>
+                <span class="trade-arrow">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- VOTE 按钮在这里 -->
+        <a href="#" class="btn action-vote" id="btn-vote">VOTE</a>
+        <button class="btn primary" id="btn-connect">CONNECT</button>
+      </div>
+    </div>
+    <div class="top-border-line"></div>
+  </div>
+
+  <!-- ================= MAP AREA ================= -->
+  <main>
+    <section class="map-layer" id="map-layer">
+      <img
+        class="world-map"
+        id="world-map"
+        src="assets/final_3840.webp"
+        srcset="assets/final_3840.webp 3840w, assets/final.webp 5824w"
+        sizes="100vw"
+        alt="Solana War Map"
+      />
+
+      <div class="map-overlay">
+        <div class="map-sweep" aria-hidden="true"></div>
+        <div class="sector-block" aria-hidden="true">
+          <div class="sector-title">THEATER: SOLANA</div>
+          <div class="sector-sub" id="tribute-line"></div>
+        </div>
+        <svg class="links-svg" id="links-svg" aria-hidden="true"></svg>
+        <div id="nodes-container"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 浮动 LOGO -->
+  <div class="floating-brand">
+    <div class="brand-inner">
+      <div class="brand-side">
+        <div class="brand-badge meow-badge">
+          <img src="assets/logo-meow-512.webp" class="brand-icon-img" alt="MEOW" />
+        </div>
+        <span class="brand-text meow">MEOW</span>
+      </div>
+      <div class="brand-vs">
+        <span class="slash s1">/</span>
+        <span class="slash s2">/</span>
+        <span class="slash s3">/</span>
+      </div>
+      <div class="brand-side">
+        <span class="brand-text woof">WOOF</span>
+        <div class="brand-badge woof-badge">
+          <img src="assets/logo-woof-512.webp" class="brand-icon-img" alt="WOOF" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= BOTTOM CONSOLE ================= -->
+  <footer class="console-wrapper">
+    
+    <!-- 第一层：主控制面板 -->
+    <div class="console-main">
+      
+      <!-- [左面板] MEOW -->
+      <div class="hud-panel left-panel">
+        <div class="panel-header meow-bg">
+          <span class="panel-title">MEOW FORCES</span>
+          <div class="panel-deco"></div>
+        </div>
+        
+        <div class="panel-body">
+          <div class="chest-header-row">
+            <span class="chest-title">WAR CHEST FUND</span>
+            <span class="chest-line"></span>
+          </div>
+          <!-- 复杂布局：左侧柱子 + 右侧(图例+数据+Briefing) -->
+          <div class="panel-split-layout">
+            
+            <!-- 1. 柱子 (最左) -->
+            <div class="split-col-tube">
+              <div class="power-core">
+                <div class="core-bar locked" id="meow-tube-locked" style="height:0%"></div>
+                <div class="core-bar avail" id="meow-tube-avail" style="height:0%"></div>
+                <div class="core-bar spent" id="meow-tube-spent" style="height:0%"></div>
+                <div class="core-grid"></div>
+              </div>
+              <div class="core-val-total"><span id="meow-tube-total">--</span></div>
+            </div>
+
+            <!-- 2. 数据区 (右侧) -->
+            <div class="split-col-data">
+              <!-- 上半部分：图例 + 大数字 -->
+              <div class="data-row-top">
+                <!-- 竖排图例 (修正顺序和ID) -->
+                <div class="tube-legend-v">
+                  <div class="lg-row spent">
+                    <span class="dot"></span> SPENT <span id="meow-pct-spent">--</span>
+                  </div>
+                  <div class="lg-row avail">
+                    <span class="dot"></span> AVAIL <span id="meow-pct-avail">--</span>
+                  </div>
+                  <div class="lg-row locked">
+                    <span class="dot"></span> LOCKED <span id="meow-pct-locked">--</span>
+                  </div>
+                </div>
+                
+                <!-- 大数字 -->
+                <div class="big-stat-block text-right">
+                  <div class="stat-label">AVAILABLE AMMO</div>
+                  <div class="stat-main-row meow-row">
+                    <div class="stat-val meow-txt" id="wc-avail-meow">--</div>
+                  </div>
+                  <div class="aux-stats">
+                    <button class="spent-log-btn meow aux" id="btn-spent-log-meow" type="button">SPENT LOG</button>
+                    <span>LOCKED: <b id="wc-locked-meow">--</b></span>
+                    <span class="sep">•</span>
+                    <span>SPENT: <b id="wc-spent-meow">--</b></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 下半部分：Briefing -->
+              <div class="briefing-box">
+                <div class="brief-head">> SYSTEM_LOG</div>
+                <div class="brief-body" id="wc-bulletin-meow">Scanning...</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- [中间] BATTLE WELL -->
+      <div class="battle-center">
+        <div class="battle-header">BATTLE METRICS</div>
+        <div class="battle-grid">
+          <div class="b-row">
+            <span class="b-lbl meow">STR</span>
+            <div class="b-track"><div class="b-fill meow" id="bar-str-meow"></div><div class="b-fill woof" id="bar-str-woof"></div></div>
+            <span class="b-lbl woof">STR</span>
+          </div>
+          <div class="b-row">
+            <span class="b-lbl meow">DEF</span>
+            <div class="b-track"><div class="b-fill meow" id="bar-def-meow"></div><div class="b-fill woof" id="bar-def-woof"></div></div>
+            <span class="b-lbl woof">DEF</span>
+          </div>
+          <div class="b-row">
+            <span class="b-lbl meow">DEX</span>
+            <div class="b-track"><div class="b-fill meow" id="bar-dex-meow"></div><div class="b-fill woof" id="bar-dex-woof"></div></div>
+            <span class="b-lbl woof">DEX</span>
+          </div>
+          <div class="b-row">
+            <span class="b-lbl meow">CHR</span>
+            <div class="b-track"><div class="b-fill meow" id="bar-chr-meow"></div><div class="b-fill woof" id="bar-chr-woof"></div></div>
+            <span class="b-lbl woof">CHR</span>
+          </div>
+          <div class="b-row">
+            <span class="b-lbl meow">LUCK</span>
+            <div class="b-track"><div class="b-fill meow" id="bar-luck-meow"></div><div class="b-fill woof" id="bar-luck-woof"></div></div>
+            <span class="b-lbl woof">LUCK</span>
+          </div>
+        </div>
+        
+        <!-- 7个图标栏 (放在这里) -->
+        <!-- 7个图标栏 (已植入真实链接) -->
+        <div class="icon-nav-row">
+          <!-- X / Twitter -->
+          <a id="nav-x" href="https://x.com/Meow_vs_Woof" target="_blank" rel="noopener" title="X">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          
+          <!-- Telegram -->
+          <a id="nav-telegram" href="https://t.me/MeowWoof_Solana" target="_blank" rel="noopener" title="Telegram">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M21.928 2.52c-.63-.26-1.35-.11-1.84.4l-17.5 17.5c-.38.38-.59.9-.59 1.44 0 1.1.9 2 2 2 .54 0 1.06-.21 1.44-.59l17.5-17.5c.51-.51.66-1.25.4-1.88a2.001 2.001 0 0 0-.41-.37zM4.928 19.92l5.5-5.5 8.5-8.5-14 14z"/></svg>
+          </a>
+          
+          <!-- Discord -->
+          <a id="nav-discord" href="https://discord.gg/u4rWUa5B7f" target="_blank" rel="noopener" title="Discord">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          </a>
+          
+          <!-- Whitepaper -->
+          <a id="nav-whitepaper" href="whitepaper.pdf" target="_blank" rel="noopener" title="Whitepaper">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          </a>
+          
+          <!-- Contact (老代码是 #，我保持原样) -->
+          <a id="nav-contact" href="#" title="Contact">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </a>
+          
+          <!-- Terms -->
+          <a id="nav-terms" href="legal.html#terms" target="_blank" rel="noopener" title="Terms">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><path d="M9 15h6"></path><path d="M9 19h6"></path></svg>
+          </a>
+          
+          <!-- Privacy -->
+          <a id="nav-privacy" href="legal.html#privacy" target="_blank" rel="noopener" title="Privacy">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </a>
+        </div>
+      </div>
+
+     <!-- [右面板] WOOF -->
+      <div class="hud-panel right-panel">
+        <div class="panel-header woof-bg">
+          <div class="panel-deco"></div>
+          <span class="panel-title">WOOF LEGION</span>
+        </div>
+
+        <div class="panel-body">
+          <!-- WOOF 标题：线在左，字在右 -->
+          <div class="chest-header-row">
+            <span class="chest-line"></span> <!-- 线在前 -->
+            <span class="chest-title">WAR CHEST FUND</span> <!-- 字在后 -->
+          </div>
+          <!-- 镜像布局：先数据，后柱子 -->
+          <div class="panel-split-layout">
+            
+            <!-- 1. 数据区 (放在左边) -->
+            <div class="split-col-data">
+              <!-- 上半部分：大数字(左) + 图例(右) -->
+              <div class="data-row-top">
+                <!-- 大数字 (靠左对齐，顶住左边缘) -->
+                <div class="big-stat-block text-left">
+                  <div class="stat-label">AVAILABLE AMMO</div>
+                  <div class="stat-main-row woof-row">
+                    <div class="stat-val woof-txt" id="wc-avail-woof">--</div>
+                  </div>
+                  <div class="aux-stats">
+                    <!-- 镜像：先 SPENT 后 LOCKED -->
+                    <span>SPENT: <b id="wc-spent-woof">--</b></span>
+                    <span class="sep">•</span>
+                    <span>LOCKED: <b id="wc-locked-woof">--</b></span>
+                    <button class="spent-log-btn woof aux" id="btn-spent-log-woof" type="button">SPENT LOG</button>
+                  </div>
+                </div>
+
+                <!-- 竖排图例 (修正顺序和ID) -->
+                <div class="tube-legend-v right-align">
+                  <div class="lg-row spent">
+                    <span id="woof-pct-spent">--</span> SPENT <span class="dot"></span>
+                  </div>
+                  <div class="lg-row avail">
+                    <span id="woof-pct-avail">--</span> AVAIL <span class="dot"></span>
+                  </div>
+                  <div class="lg-row locked">
+                    <span id="woof-pct-locked">--</span> LOCKED <span class="dot"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 下半部分：Briefing -->
+              <div class="briefing-box">
+                <div class="brief-head">> SYSTEM_LOG</div>
+                <div class="brief-body" id="wc-bulletin-woof">Scanning...</div>
+              </div>
+            </div>
+
+            <!-- 2. 柱子 (放在最右边) -->
+            <div class="split-col-tube">
+              <div class="power-core">
+                <div class="core-bar locked" id="woof-tube-locked" style="height:0%"></div>
+                <div class="core-bar avail" id="woof-tube-avail" style="height:0%"></div>
+                <div class="core-bar spent" id="woof-tube-spent" style="height:0%"></div>
+                <div class="core-grid"></div>
+              </div>
+              <div class="core-val-total"><span id="woof-tube-total">--</span></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第二层：底部指令栏 -->
+    <div class="command-bar">
+      <!-- 左侧：信任数据 -->
+      <div class="trust-zone">
+        <div class="trust-item">
+          <span class="t-head">LIQUIDITY <b class="val-hl" id="lp-pct">--%</b></span>
+          <span class="t-sub" id="lp-sub">--</span>
+          <div class="proof-links">
+            <a id="lp-meow" href="#" class="p-link meow" title="MEOW Proof">↗</a>
+            <a id="lp-woof" href="#" class="p-link woof" title="WOOF Proof">↗</a>
+            <span id="lp-meow-amt" style="display:none"></span><span id="lp-woof-amt" style="display:none"></span>
+          </div>
+        </div>
+        <div class="sep-line"></div>
+        <div class="trust-item">
+          <span class="t-head">WAR CHEST <b class="val-hl" id="war-pct">--%</b></span>
+          <span class="t-sub" id="war-ttl">--</span>
+          <div class="proof-links">
+            <a id="war-meow" href="#" class="p-link meow" title="MEOW Proof">↗</a>
+            <a id="war-woof" href="#" class="p-link woof" title="WOOF Proof">↗</a>
+            <span id="war-meow-amt" style="display:none"></span><span id="war-woof-amt" style="display:none"></span>
+          </div>
+        </div>
+        <div class="sep-line"></div>
+        <div class="trust-item">
+          <span class="t-head">TEAM <b class="val-hl" id="team-pct">--%</b></span>
+          <span class="t-sub" id="team-ttl">--</span>
+          <span id="team-sub" style="display:none"></span>
+          <div class="proof-links">
+            <a id="team-meow" href="#" class="p-link meow" title="MEOW Proof">↗</a>
+            <a id="team-woof" href="#" class="p-link woof" title="WOOF Proof">↗</a>
+            <span id="team-meow-amt" style="display:none"></span><span id="team-woof-amt" style="display:none"></span>
+          </div>
+        </div>
+        <div class="trust-end-cap"></div>
+      </div>
+
+      <!-- 右侧：滚动新闻 -->
+      <div class="ticker-zone">
+        <div class="ticker-mask">
+          <div class="ticker-track">
+            <span class="ticker-content" id="ticker-scroll">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden IDs -->
+    <div style="display:none;">
+        <span id="tx-mint"></span><span id="tx-freeze"></span>
+    </div>
+  </footer>
+
+  <!-- Vote Modal -->
+  <div id="vote-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-title">COUNCIL CHAMBER</span>
+        <button class="btn-icon close-modal" id="btn-close-vote">✕</button>
+      </div>
+      
+      <!-- 战况概览 -->
+      <div class="vote-context">
+        <div class="ctx-row">
+          <span class="ctx-lbl">STATUS</span>
+          <span class="ctx-val" id="vm-status">--</span>
+        </div>
+        <div class="ctx-row">
+          <span class="ctx-lbl">MARGIN</span>
+          <span class="ctx-val" id="vm-margin">--</span>
+        </div>
+        <div class="ctx-row">
+          <span class="ctx-lbl">BASE BURN</span>
+          <span class="ctx-val" id="vm-base">--</span>
+        </div>
+      </div>
+
+      <!-- 选项区域 -->
+      <div class="vote-options" id="vm-options-container">
+        <!-- JS 会在这里生成 A/B/C 选项卡片 -->
+        <div class="loading-text">Loading protocol data...</div>
+      </div>
+
+      <!-- 最近投票滚动 -->
+      <div class="vote-ticker-box">
+        <div class="vt-title">RECENT VOTES</div>
+        <div class="vt-track-wrap">
+          <div class="vt-track" id="vm-recent-track">
+            <!-- JS 会在这里填入像 "Abc4..9sX1 (50k)" 这样的数据 -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spent History Modal -->
+  <div id="spent-modal" class="modal-overlay spent-modal" style="display:none;">
+    <div class="modal-box spent-modal-box">
+      <div class="modal-header">
+        <span class="modal-title" id="spent-modal-title">SPENT HISTORY</span>
+        <button class="btn-icon close-modal" id="btn-close-spent" type="button">✕</button>
+      </div>
+      <div class="spent-modal-toolbar">
+        <div class="spent-tabs">
+          <button id="btn-spent-tab-meow" class="spent-tab meow active" type="button">MEOW</button>
+          <button id="btn-spent-tab-woof" class="spent-tab woof" type="button">WOOF</button>
+        </div>
+        <div class="spent-updated" id="spent-updated">UPDATED: --</div>
+      </div>
+      <div class="spent-table-wrap">
+        <table class="spent-table">
+          <thead>
+            <tr>
+              <th>DATE</th>
+              <th>AMOUNT</th>
+              <th>USE</th>
+              <th>NOTE / PROOF</th>
+            </tr>
+          </thead>
+          <tbody id="spent-table-body">
+            <tr>
+              <td colspan="4" class="spent-empty">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email Modal (New) -->
+  <div id="email-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-box" style="width: 320px;">
+      <div class="modal-header">
+        <span class="modal-title">SECURE COMMS</span>
+        <button class="btn-icon close-modal" id="btn-close-email">✕</button>
+      </div>
+      <div class="vote-options" style="padding-top:20px;">
+        <input id="email-contact" class="cyber-input" placeholder="YOUR CONTACT (OPTIONAL)">
+        <textarea id="email-msg" class="cyber-input" style="height:100px;resize:none;" placeholder="ENTER MESSAGE..."></textarea>
+        <button id="btn-send-email" class="v-card selected" style="justify-content:center;margin-top:10px;">
+          <span class="v-opt-id">SEND TRANSMISSION</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- System Alert Modal (Universal) -->
+  <div id="sys-modal" class="modal-overlay" style="display:none; z-index: 999;">
+    <div class="modal-box" style="width: 300px; text-align: center;">
+      <div class="modal-header" style="justify-content: center;">
+        <span class="modal-title" id="sys-title">SYSTEM MESSAGE</span>
+      </div>
+      <div style="padding: 20px;">
+        <p id="sys-msg" style="color:#ccc; font-size:12px; line-height:1.5; margin-bottom:20px;">...</p>
+        <div id="sys-btns" style="display:flex; justify-content: center; gap: 10px;">
+          <!-- JS 会在这里动态插入按钮 -->
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
