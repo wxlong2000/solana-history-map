@@ -5,14 +5,19 @@
 //   - /dataset.html           dataset + methodology page
 //   - /sitemap.xml
 // Run:  node build/generate.js      (from site-new/)
-// sharp is borrowed from the sibling cron-final project's node_modules.
+// sharp is optional: without it, OG share cards are kept as-is and only the
+// HTML pages / landmarks.json / sitemap are regenerated.
 
 const fs = require("fs");
 const path = require("path");
 
 const SITE = path.resolve(__dirname, "..");
-const SHARP_PATH = path.resolve(SITE, "..", "cron-final", "node_modules", "sharp");
-const sharp = require(SHARP_PATH);
+let sharp = null;
+try { sharp = require("sharp"); }
+catch (e) {
+  try { sharp = require(path.resolve(SITE, "..", "cron-final", "node_modules", "sharp")); }
+  catch (e2) { console.warn("sharp not available — skipping OG card regeneration"); }
+}
 
 // Deploy-time base URL — CONFIRM/EDIT before deploying (OG tags need absolute URLs).
 const BASE_URL = "https://www.meow-woof.org";
@@ -35,15 +40,14 @@ function esc(v) {
 const W = 1200, H = 630;
 
 async function makeCard(l) {
+  if (!sharp) return; // no sharp available — keep existing OG cards
   let base;
   const ownImg = l.image ? path.join(SITE, l.image) : null;
   if (ownImg && fs.existsSync(ownImg)) {
     base = sharp(ownImg).resize(W, H, { fit: "cover", position: "centre" });
   } else {
     // crop the main map around this landmark's coordinates, at 1200:630 ratio
-    const mapPath = fs.existsSync(path.join(SITE, "assets", "final.webp"))
-      ? path.join(SITE, "assets", "final.webp")
-      : path.join(SITE, "assets", "final_3840.webp");
+    const mapPath = path.join(SITE, "assets", "final_3840.webp");
     const meta = await sharp(mapPath).metadata();
     let cw = Math.round(meta.height * W / H), ch = meta.height;
     if (cw > meta.width) { cw = meta.width; ch = Math.round(meta.width * H / W); }
@@ -117,7 +121,7 @@ function pageHtml(l, prev, next) {
 </head><body data-fx="on">
 <header class="site-header">
   <a class="brand-mark" href="../index.html" aria-label="Solana History Map home"><span class="brand-kicker">SOURCE-CITED ATLAS</span><span class="brand-title">Solana History Map</span></a>
-  <nav class="nav-links" aria-label="Primary navigation"><a href="../index.html">Atlas</a><a href="../footprint.html">Footprint</a><a href="../sources.html">Sources</a><a href="../about.html">About</a><a href="../meow-vs-woof.html" data-archive>Archive</a></nav>
+  <nav class="nav-links" aria-label="Primary navigation"><a href="../index.html">Atlas</a><a href="../footprint.html">Footprint</a><a href="../sources.html">Sources</a><a href="../about.html">About</a></nav>
 </header>
 <main class="page-shell lp">
   <a class="lp-back" href="../index.html#${esc(l.id)}">← Back to the atlas</a>
@@ -148,7 +152,7 @@ function datasetHtml(json) {
 <style>.ds-table{width:100%;border-collapse:collapse;margin-top:18px;font-size:14px}.ds-table th,.ds-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}.ds-table th{font-family:var(--font-mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--solana-green)}</style>
 </head><body data-fx="on">
 <header class="site-header"><a class="brand-mark" href="./index.html"><span class="brand-kicker">SOURCE-CITED ATLAS</span><span class="brand-title">Solana History Map</span></a>
-<nav class="nav-links"><a href="./index.html">Atlas</a><a href="./footprint.html">Footprint</a><a href="./sources.html">Sources</a><a href="./about.html">About</a><a href="./meow-vs-woof.html" data-archive>Archive</a></nav></header>
+<nav class="nav-links"><a href="./index.html">Atlas</a><a href="./footprint.html">Footprint</a><a href="./sources.html">Sources</a><a href="./about.html">About</a></nav></header>
 <main class="page-shell">
 <h1>Open dataset</h1>
 <p>Every landmark on this map is open data you can reuse. Text and data are licensed CC-BY-4.0; the site code is MIT. No token, no tracking, no affiliation claims.</p>
@@ -194,7 +198,7 @@ function sourcesHtml() {
 .src-none{color:var(--muted,#9aa6b8);font-size:13px;list-style:none;margin-left:-18px}</style>
 </head><body data-fx="on">
 <header class="site-header"><a class="brand-mark" href="./index.html"><span class="brand-kicker">SOURCE-CITED ATLAS</span><span class="brand-title">Solana History Map</span></a>
-<nav class="nav-links"><a href="./index.html">Atlas</a><a href="./footprint.html">Footprint</a><a href="./sources.html" aria-current="page">Sources</a><a href="./about.html">About</a><a href="./meow-vs-woof.html" data-archive>Archive</a></nav></header>
+<nav class="nav-links"><a href="./index.html">Atlas</a><a href="./footprint.html">Footprint</a><a href="./sources.html" aria-current="page">Sources</a><a href="./about.html">About</a></nav></header>
 <main class="page-shell">
 <h1>Source Index</h1>
 <p class="src-intro">Every landmark on the map is an interpretation of a documented Solana ecosystem memory, backed by primary or strongly authoritative references. Citations are historical references, not endorsements, partnerships, or affiliation claims.</p>
