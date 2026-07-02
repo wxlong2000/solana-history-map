@@ -22,7 +22,7 @@ window.SOLANA_HISTORY_LANDMARKS = [
   },
   {
     id: "restart", name: "MOUNT RESTART", x: 22.2, y: 22.2,
-    category: "Outage", year: 2022, status: "verified", featured: true, danger: false,
+    category: "Outage", year: 2022, date: "2021-09", status: "verified", featured: true, danger: false,
     image: "assets/landmarks/restart.jpeg",
     lastVerified: "2026-07", tier: "playable",
     tldr: "The network went down. Then down again. And every time, it clawed its way back.",
@@ -95,7 +95,7 @@ window.SOLANA_HISTORY_LANDMARKS = [
   },
   {
     id: "jup_port", name: "AGGREGATOR STARPORT", x: 63.5, y: 67.3,
-    category: "Infrastructure", year: 2021, status: "verified", featured: true, danger: false,
+    category: "Infrastructure", year: 2021, date: "2021-10", status: "verified", featured: true, danger: false,
     image: "assets/landmarks/jup_port.jpeg",
     lastVerified: "2026-07", tier: "playable",
     tldr: "Almost every 'best price' swap you've made on Solana ran through this one aggregator.",
