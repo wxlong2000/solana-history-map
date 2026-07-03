@@ -92,7 +92,11 @@ async function chain(request, env, ctx) {
   if (hit) return cors(hit);
 
   const upstreams = [];
-  if (env && env.RPC_UPSTREAM) upstreams.push(env.RPC_UPSTREAM);
+  if (env && env.RPC_UPSTREAM) {
+    const u = String(env.RPC_UPSTREAM).trim();
+    // accept either a full RPC URL or a bare Helius API key
+    upstreams.push(/^https?:\/\//i.test(u) ? u : ("https://mainnet.helius-rpc.com/?api-key=" + u));
+  }
   for (const u of FALLBACK_UPSTREAMS) if (!upstreams.includes(u)) upstreams.push(u);
 
   const payload = JSON.stringify(body);
