@@ -42,7 +42,7 @@
   }
 
   function getHeldSyms(addr) {
-    return rpc("getParsedTokenAccountsByOwner", [addr, { programId: TOKEN_PROGRAM }, { encoding: "jsonParsed" }])
+    return rpc("getTokenAccountsByOwner", [addr, { programId: TOKEN_PROGRAM }, { encoding: "jsonParsed" }])
       .then(function (res) {
         var held = [];
         (res && res.value || []).forEach(function (acc) {

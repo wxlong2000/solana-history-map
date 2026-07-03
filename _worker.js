@@ -14,10 +14,10 @@
 // key then lives only in the Cloudflare dashboard, never in this repo.
 
 // Whitelisted read-only methods. getSlot/getEpochInfo/getRecentPerformanceSamples
-// power the homepage live pulse; getParsedTokenAccountsByOwner/getSignaturesForAddress
+// power the homepage live pulse; getTokenAccountsByOwner/getSignaturesForAddress
 // power the footprint tool (public, read-only account data — no private info, cached,
 // batch-capped, so it can't be abused as an open write relay).
-const ALLOWED = new Set(["getEpochInfo", "getRecentPerformanceSamples", "getSlot", "getParsedTokenAccountsByOwner", "getSignaturesForAddress"]);
+const ALLOWED = new Set(["getEpochInfo", "getRecentPerformanceSamples", "getSlot", "getTokenAccountsByOwner", "getSignaturesForAddress"]);
 const FALLBACK_UPSTREAMS = ["https://solana-rpc.publicnode.com"];
 const MAX_AGE = 8; // seconds
 
