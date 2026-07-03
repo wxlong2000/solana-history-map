@@ -79,7 +79,7 @@
 
     <div class="fp-result" id="fp-result" hidden></div>
 
-    <p class="fp-note">How this works: we call read-only Solana RPC (<code>getParsedTokenAccountsByOwner</code> for current holdings, <code>getSignaturesForAddress</code> for first visible activity). We can only see what you <em>currently</em> hold and the oldest activity the RPC retains — so we say "currently holds", not "claimed the airdrop", and "first activity we can see", not a guaranteed birth date. Your address is never stored and we never request a signature or transaction.</p>
+    <p class="fp-note">How this works: we call read-only Solana RPC (<code>getTokenAccountsByOwner</code> for current holdings, <code>getSignaturesForAddress</code> for first visible activity). We can only see what you <em>currently</em> hold and the oldest activity the RPC retains — so we say "currently holds", not "claimed the airdrop", and "first activity we can see", not a guaranteed birth date. Your address is never stored and we never request a signature or transaction.</p>
   </main>
 
   <footer class="site-footer">
