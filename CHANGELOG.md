@@ -15,7 +15,7 @@ Notable changes to the Solana History Map site and dataset.
   fixed dead-ends, Jupiter routing now genuinely beats a hand-route).
 - New origin mini-game THE TRUCE (replaces the emoji tug-of-war): the two
   mascots became co-keepers of the archive.
-- Full source re-verification of all 22 landmark records (62 references).
+- Full source re-verification of all 22 landmark records (68 references).
 
 ## 2026-06
 

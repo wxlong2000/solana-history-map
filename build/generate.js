@@ -94,7 +94,9 @@ const LP_STYLE = `.lp{max-width:880px}
 .lp-nav a{font-family:var(--font-mono);font-size:13px;color:var(--solana-cyan);text-decoration:none}
 .lp-nav a:hover{color:var(--solana-green)}
 .lp-tier{display:inline-block;margin-left:10px;padding:2px 8px;border-radius:3px;border:1px solid var(--line);font-family:var(--font-mono);font-size:10px;letter-spacing:1.5px;color:var(--ink-dim);vertical-align:middle}
-.lp-tier-play{border-color:rgba(93,245,180,.45);color:var(--solana-green)}`;
+.lp-tier-play{border-color:rgba(93,245,180,.45);color:var(--solana-green)}
+.lp-play{display:inline-block;margin:6px 0 4px;padding:11px 18px;border-radius:11px;border:1px solid rgba(93,245,180,.5);background:linear-gradient(180deg,rgba(20,241,149,.16),rgba(20,241,149,.06));color:#c9ffe8;font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:.3px;text-decoration:none;transition:.15s}
+.lp-play:hover{box-shadow:0 6px 20px rgba(20,241,149,.25);transform:translateY(-1px)}`;
 
 function pageHtml(l, prev, next) {
   const cat = String(l.category || "").toUpperCase();
@@ -152,6 +154,7 @@ function pageHtml(l, prev, next) {
   <p class="selected-meta">${esc(metaBits)}</p>
   <img class="lp-hero" src="${heroSrc}" alt="${esc(l.name)} landmark artwork" loading="lazy" decoding="async">
   <p class="selected-tldr">${esc(l.tldr || "")}</p>
+  ${l.tier === "playable" ? `<a class="lp-play" href="../index.html#${esc(l.id)}">▶ Play this teardown — operate the mechanism yourself →</a>` : ""}
   <div class="story-block">${story}</div>
   <details class="evidence" open><summary>Evidence${verified}</summary><div class="evidence-body">${sources}</div></details>
   ${affil}
