@@ -112,6 +112,7 @@
           '<span class="fp-badge">TX · ' + esc(fp.txLabel) + '</span>' +
         '</div>' +
         '<div class="fp-landmarks">' + chips + '</div>' +
+        (fp.holdingsUnavailable ? '<p class="fp-degraded">Token holdings couldn’t be read from the current RPC (public endpoints block token-account scans) — showing activity-based results only. Full holdings need a keyed RPC upstream.</p>' : '') +
         '<div class="fp-wm">SOLANA HISTORY MAP</div>' +
       '</div>' +
       '<div class="fp-actions">' +
@@ -135,11 +136,19 @@
     if (!validAddr(addr)) { setStatus("That doesn’t look like a Solana address (base58, 32–44 chars).", true); return; }
     setStatus("Reading the chain…");
     resultEl.hidden = true;
-    Promise.all([getHeldSyms(addr), getEra(addr)]).then(function (out) {
+    // Degrade gracefully: activity (getSignaturesForAddress) works on any RPC;
+    // token holdings (getParsedTokenAccountsByOwner) need a keyed upstream, so if
+    // that call fails we still render era + activity-based landmarks.
+    var pHeld = getHeldSyms(addr).then(function (h) { return { held: h, ok: true }; }, function () { return { held: [], ok: false }; });
+    var pEra = getEra(addr).then(function (e) { return e; }, function () { return { firstYear: null, txLabel: "?", ok: false }; });
+    Promise.all([pHeld, pEra]).then(function (out) {
+      var held = out[0], era = out[1];
+      if (!held.ok && era.ok === false) {
+        setStatus("Couldn’t read the chain right now. Please try again in a moment.", true);
+        return;
+      }
       setStatus("");
-      render({ address: addr, held: out[0], firstYear: out[1].firstYear, txLabel: out[1].txLabel });
-    }).catch(function (e) {
-      setStatus("Couldn’t read the chain right now (" + (e.message || "RPC error") + "). Please try again in a moment.", true);
+      render({ address: addr, held: held.held, firstYear: era.firstYear, txLabel: era.txLabel, holdingsUnavailable: !held.ok });
     });
   }
 
