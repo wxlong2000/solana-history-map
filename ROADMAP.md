@@ -7,7 +7,7 @@ grant funding would build next, framed as measurable milestones.
 
 ## Shipped (v1.0)
 
-- **22 source-cited landmark records · 68 references**, weighted toward primary
+- **22 source-cited landmark records · 73 references**, weighted toward primary
   sources (official post-mortems, court filings, specs, root-cause analyses).
 - **16 playable mechanism simulations** — you operate the failure mode yourself
   (forge the Wormhole receipt, tamper a real SHA-256 Proof-of-History chain,

@@ -1,7 +1,9 @@
 (function () {
-  // Demo uses the public RPC. Before launch, point this at YOUR Cloudflare Worker
-  // proxy (Helius key hidden as a Worker secret) — frontend code stays the same.
-  var RPC_URL = "https://api.mainnet-beta.solana.com";
+  // Routes through this site's own read-only Worker proxy (/api/chain), which
+  // whitelists exactly the two account methods below, edge-caches, and falls
+  // through to a keyless upstream — so it works reliably from the browser
+  // (the public api.mainnet-beta endpoint 403s browser IPs).
+  var RPC_URL = "/api/chain";
   var TOKEN_PROGRAM = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
 
   // Verified mainnet mints -> faction + the landmark they evoke.
@@ -82,7 +84,7 @@
     // fp: { address, firstYear, txLabel, held:[syms] }
     var lms = [], seen = {};
     function add(id, tag, text) { var k = id + "|" + text; if (seen[k]) return; seen[k] = 1; lms.push({ id: id, tag: tag, text: text }); }
-    if (fp.firstYear && fp.firstYear <= 2022) add("ftx_crater", String(fp.firstYear), "On Solana through the FTX Fallout Crater era");
+    if (fp.firstYear && fp.firstYear <= 2022) add("ftx_crater", String(fp.firstYear), "Active on Solana by the FTX Fallout Crater era (earliest activity we can see)");
     TOKENS.forEach(function (t) { if (fp.held.indexOf(t.sym) >= 0) add(t.landmark, t.sym, t.line); });
     return lms;
   }
@@ -103,7 +105,7 @@
       '<div class="fp-card" id="fp-card">' +
         '<div class="fp-card-top">Solana history · footprint</div>' +
         '<div class="fp-addr">' + esc(shortAddr(fp.address)) + '</div>' +
-        '<h2 class="fp-headline">You’ve walked ' + lms.length + ' moment' + (lms.length === 1 ? "" : "s") + ' on the map.</h2>' +
+        '<h2 class="fp-headline">Your wallet overlaps ' + lms.length + ' moment' + (lms.length === 1 ? "" : "s") + ' on the map.</h2>' +
         '<div class="fp-badges">' +
           '<span class="fp-badge">ERA · ' + esc(era) + '</span>' +
           '<span class="fp-badge ' + (faction === "none" ? "" : faction) + '">FACTION · ' + esc(factionLabel) + '</span>' +
@@ -122,7 +124,7 @@
     if (shareBtn) shareBtn.addEventListener("click", function () {
       var url = location.origin + location.pathname;
       var text = "My Solana history footprint: " + era + (faction !== "none" ? ", " + factionLabel : "") +
-        ", " + lms.length + " landmark" + (lms.length === 1 ? "" : "s") + " walked. Trace yours —";
+        ", overlapping " + lms.length + " landmark" + (lms.length === 1 ? "" : "s") + " on the map. Trace yours —";
       if (navigator.share) { navigator.share({ title: "Solana history footprint", text: text, url: url }).catch(function () {}); return; }
       window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(url), "_blank", "noopener");
     });
@@ -137,7 +139,7 @@
       setStatus("");
       render({ address: addr, held: out[0], firstYear: out[1].firstYear, txLabel: out[1].txLabel });
     }).catch(function (e) {
-      setStatus("Couldn’t read the chain (" + (e.message || "RPC error") + "). The public RPC rate-limits browsers — wire up the Worker proxy for reliability.", true);
+      setStatus("Couldn’t read the chain right now (" + (e.message || "RPC error") + "). Please try again in a moment.", true);
     });
   }
 

@@ -14,7 +14,7 @@ tamper with a real SHA-256 chain and watch it break.
 (4 tracks × 16 playable teardowns: consensus & liveness, exploits & security,
 markets & liquidity, scale & distribution)
 
-- 🗺️ **22 landmarks · 68 references**, weighted toward primary sources
+- 🗺️ **22 landmarks · 73 references**, weighted toward primary sources
   (official post-mortems, court filings, specs, root-cause analyses)
 - 🕹️ **Playable teardowns** — operate the failure mode yourself:
   - **Wormhole Breach** — be the clerk: forge the *receipt*, not the

@@ -7,9 +7,9 @@
   <link rel="icon" href="/favicon-32.png" sizes="32x32" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <title>Your Solana history footprint — Solana History Map</title>
-  <meta name="description" content="Read-only: paste a Solana address and see which moments in Solana history your wallet lived through. No signing, no fund access, nothing stored." />
+  <meta name="description" content="Read-only: paste a Solana address and see which moments in Solana history your wallet overlaps with. No signing, no fund access, nothing stored." />
   <meta property="og:title" content="Your Solana history footprint" />
-  <meta property="og:description" content="See which moments in Solana history your wallet lived through. Read-only, no signing." />
+  <meta property="og:description" content="See which moments in Solana history your wallet overlaps with. Read-only, no signing." />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="stylesheet" href="./history-map.css?v=20" />
   <script defer src="/stats.js?v=1"></script>
@@ -43,8 +43,8 @@
     .fp-note{margin-top:22px;font-size:12px;color:var(--muted);line-height:1.6;max-width:680px;border-top:1px solid var(--line);padding-top:14px}
     .fp-empty{color:var(--muted);font-family:var(--font-mono);font-size:13px}
   </style>
-  <script defer src="./landmarks-data.js?v=22"></script>
-  <script defer src="./footprint.js?v=1"></script>
+  <script defer src="./landmarks-data.js?v=23"></script>
+  <script defer src="./footprint.js?v=2"></script>
 </head>
 
 <body data-fx="on">
@@ -64,7 +64,7 @@
   <main class="page-shell fp">
     <p class="panel-topline">[ Read-only · onchain ]</p>
     <h1>Your Solana history footprint</h1>
-    <p class="lead-copy">Paste a Solana wallet address — we read the public chain and show which moments on the map your wallet lived through. <strong>Read-only.</strong> No signing, no access to your funds, and we don't store your address.</p>
+    <p class="lead-copy">Paste a Solana wallet address — we read the public chain and show which moments on the map your wallet <strong>overlaps with</strong>, by what it holds today and how long it has been active. <strong>Read-only</strong>, best-effort: no signing, no access to your funds, and we don't store your address. (We can see current holdings and earliest visible activity — not exact acquisition dates.)</p>
 
     <div class="fp-form">
       <input class="fp-input" id="fp-addr" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="Paste a Solana address (base58)…" aria-label="Solana wallet address" />

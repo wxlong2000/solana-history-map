@@ -268,7 +268,9 @@ window.SOLANA_HISTORY_LANDMARKS = [
     onMap: "A worn circuit of paw-prints looping back to the founders' hearth.",
     sources: [
       { label: "Bitcoinist — Solana meme coins Myro and WIF score Binance listing", url: "https://bitcoinist.com/solana-meme-coins-myro-wif/" },
-      { label: "Crypto.com University — What is Myro (Nov 2023 mainnet)", url: "https://crypto.com/en/university/what-is-myro-token-and-how-to-buy-myro" }
+      { label: "Crypto.com University — What is Myro (Nov 2023 mainnet)", url: "https://crypto.com/en/university/what-is-myro-token-and-how-to-buy-myro" },
+      { label: "CoinGecko — Myro (named after Raj Gokal's dog, on Solana)", url: "https://www.coingecko.com/en/coins/myro" },
+      { label: "CoinMarketCap — Myro (MYRO) token page", url: "https://coinmarketcap.com/currencies/myro/" }
     ],
     affiliationNote: "Historical reference only. No affiliation implied; documented as community history."
   },
@@ -282,7 +284,9 @@ window.SOLANA_HISTORY_LANDMARKS = [
     onMap: "A reef cove where a borrowed fin was finally granted its own waters.",
     sources: [
       { label: "Decrypt — Shark Cat fight ends without legal battle", url: "https://decrypt.co/229823/shark-cat-solana-meme-coin-fight-ends" },
-      { label: "Decrypt — Why the legal claws are out over Shark Cat", url: "https://decrypt.co/226638/crypto-cat-fight-legal-claws-out-solana-meme-coin-shark-cat" }
+      { label: "Decrypt — Why the legal claws are out over Shark Cat", url: "https://decrypt.co/226638/crypto-cat-fight-legal-claws-out-solana-meme-coin-shark-cat" },
+      { label: "CoinGecko — Shark Cat (SC) on Solana", url: "https://www.coingecko.com/en/coins/shark-cat" },
+      { label: "CoinMarketCap — Shark Cat (SC) token page", url: "https://coinmarketcap.com/currencies/shark-cat/" }
     ],
     affiliationNote: "Historical reference only. Documented as a culture/IP episode, not investment."
   },
@@ -297,7 +301,8 @@ window.SOLANA_HISTORY_LANDMARKS = [
     sources: [
       { label: "Decrypt — Gigachad meme coin endorsed by the 'Gigachad' model (Aug 2024)", url: "https://decrypt.co/244620/solana-meme-coin-gigachad-endorsement-meme-model" },
       { label: "Solscan — GIGACHAD (GIGA) on-chain token page", url: "https://solscan.io/token/63LfDmNb3MQ8mw9MtZ2To9bEA2M71kZUUGq5tiJxcqj9" },
-      { label: "The Block — Gigachad (GIGA) data page", url: "https://www.theblock.co/price/338233/gigachad-giga-usd" }
+      { label: "The Block — Gigachad (GIGA) data page", url: "https://www.theblock.co/price/338233/gigachad-giga-usd" },
+      { label: "Crypto Briefing — Coinbase adds GIGA to its listing roadmap (Dec 2024)", url: "https://cryptobriefing.com/coinbase-token-listing-roadmap-gains/" }
     ],
     affiliationNote: "Historical reference only. A culture/endurance landmark, not investment advice."
   },

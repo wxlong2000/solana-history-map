@@ -107,5 +107,19 @@ for (const l of LM) {
 }
 if (!failures) ok(`16 playable tiers all backed by registered sims`);
 
+// ---------- 6. reference-count consistency ----------
+console.log("6. reference-count claims match the data");
+const totalRefs = LM.reduce((n, l) => n + l.sources.length, 0);
+const claimFiles = ["README.md", "ROADMAP.md", "CHANGELOG.md", "about.html", "learn.html", "sources.html", "dataset.html"];
+for (const f of claimFiles) {
+  const p = path.join(SITE, f);
+  if (!fs.existsSync(p)) continue;
+  const txt = fs.readFileSync(p, "utf8");
+  for (const m of txt.matchAll(/(\d+)\s+references/g)) {
+    if (Number(m[1]) !== totalRefs) fail(`${f} claims "${m[1]} references" but the data has ${totalRefs}`);
+  }
+}
+if (!failures) ok(`all "N references" claims agree with the data (${totalRefs})`);
+
 console.log(failures ? `\nFAILED — ${failures} problem(s)` : "\nAll checks passed");
 process.exit(failures ? 1 : 0);

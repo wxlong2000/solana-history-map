@@ -518,6 +518,14 @@
         {
           "label": "Crypto.com University — What is Myro (Nov 2023 mainnet)",
           "url": "https://crypto.com/en/university/what-is-myro-token-and-how-to-buy-myro"
+        },
+        {
+          "label": "CoinGecko — Myro (named after Raj Gokal's dog, on Solana)",
+          "url": "https://www.coingecko.com/en/coins/myro"
+        },
+        {
+          "label": "CoinMarketCap — Myro (MYRO) token page",
+          "url": "https://coinmarketcap.com/currencies/myro/"
         }
       ],
       "page": "https://www.meow-woof.org/landmarks/myro.html"
@@ -542,6 +550,14 @@
         {
           "label": "Decrypt — Why the legal claws are out over Shark Cat",
           "url": "https://decrypt.co/226638/crypto-cat-fight-legal-claws-out-solana-meme-coin-shark-cat"
+        },
+        {
+          "label": "CoinGecko — Shark Cat (SC) on Solana",
+          "url": "https://www.coingecko.com/en/coins/shark-cat"
+        },
+        {
+          "label": "CoinMarketCap — Shark Cat (SC) token page",
+          "url": "https://coinmarketcap.com/currencies/shark-cat/"
         }
       ],
       "page": "https://www.meow-woof.org/landmarks/shark_bay.html"
@@ -570,6 +586,10 @@
         {
           "label": "The Block — Gigachad (GIGA) data page",
           "url": "https://www.theblock.co/price/338233/gigachad-giga-usd"
+        },
+        {
+          "label": "Crypto Briefing — Coinbase adds GIGA to its listing roadmap (Dec 2024)",
+          "url": "https://cryptobriefing.com/coinbase-token-listing-roadmap-gains/"
         }
       ],
       "page": "https://www.meow-woof.org/landmarks/gigachad.html"
