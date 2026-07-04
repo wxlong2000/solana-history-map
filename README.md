@@ -1,18 +1,22 @@
 # Solana History Map
 
 [![CI](https://github.com/wxlong2000/solana-history-map/actions/workflows/ci.yml/badge.svg)](https://github.com/wxlong2000/solana-history-map/actions/workflows/ci.yml)
+&nbsp;[![License: MIT](https://img.shields.io/badge/code-MIT-5df5b4)](./LICENSE)
+&nbsp;[![Data: CC BY 4.0](https://img.shields.io/badge/data-CC--BY--4.0-3dd6ff)](./LICENSE-DATA.md)
+
+[![Solana History Map — an interactive, source-cited atlas of 22 events in Solana's history](assets/og/home.jpg)](https://www.meow-woof.org/)
 
 **Learn Solana's core mechanisms through the real events that defined them.**
-A source-cited, interactive atlas of 22 ecosystem history landmarks — outages,
+A free, open-source, source-cited atlas of 22 ecosystem history landmarks — outages,
 exploits, infrastructure milestones, airdrops, and meme culture — on a
-hand-illustrated map. The defining moments are playable, step-by-step
-simulations of the actual mechanism: you don't read about the Wormhole
-exploit, you forge the receipt; you don't read about Proof of History, you
-tamper with a real SHA-256 chain and watch it break.
+hand-illustrated map. The defining moments aren't just described, they're
+**playable**: you don't read about the Wormhole exploit, you forge the receipt;
+you don't read about Proof of History, you tamper with a real SHA-256 chain and
+watch it cascade-break.
 
-**Live:** https://www.meow-woof.org/ · **Start here:** [Learn tracks](https://www.meow-woof.org/learn.html)
-(4 tracks × 16 playable teardowns: consensus & liveness, exploits & security,
-markets & liquidity, scale & distribution)
+**[▶ Open the map](https://www.meow-woof.org/)** · **[Start with the Learn tracks](https://www.meow-woof.org/learn)** · jump straight into a teardown → [Wormhole](https://www.meow-woof.org/landmarks/wormhole) · [Proof of History](https://www.meow-woof.org/landmarks/architects_echo) · [Mango](https://www.meow-woof.org/landmarks/mango)
+
+> No token · no wallet connect · no ads · no tracking. Just a public good you can read, run, fork, and cite.
 
 - 🗺️ **22 landmarks · 73 references**, weighted toward primary sources
   (official post-mortems, court filings, specs, root-cause analyses)
@@ -32,6 +36,8 @@ markets & liquidity, scale & distribution)
   regenerated from a single source of truth
 - 📱 Mobile feed mode, per-landmark static pages, share cards, a read-only
   wallet "footprint" tool, and a live on-chain pulse via a tiny RPC proxy
+
+*If it's useful, a ⭐ helps others find it — and corrections are welcome (see below).*
 
 ## Editorial method
 
@@ -66,7 +72,8 @@ Deliberately small and auditable:
 - **`build/generate.js`** — regenerates the 22 landmark pages, OG share
   cards, `landmarks.json`, `sources.html`, and `sitemap.xml` from
   [`landmarks-data.js`](./landmarks-data.js), the single source of truth
-- Landmark detail pages are pure HTML/CSS (zero JS) — fast and crawlable
+- Landmark detail pages are pure HTML/CSS (zero JS) — fast, crawlable, and
+  each ships Open Graph tags plus `Article` structured data with its citations
 
 ## Run locally
 
