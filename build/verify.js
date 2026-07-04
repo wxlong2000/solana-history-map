@@ -53,11 +53,15 @@ for (const l of LM) {
   const html = fs.readFileSync(page, "utf8");
   if (!html.includes("application/ld+json")) fail(`landmarks/${l.id}.html missing JSON-LD — rerun generate`);
   if (!html.includes(`sources last verified ${l.lastVerified}`)) fail(`landmarks/${l.id}.html verified date stale — rerun generate`);
+  // canonical must be the clean URL (no .html) that Cloudflare Pages serves
+  if (!html.includes(`<link rel="canonical" href="https://www.meow-woof.org/landmarks/${l.id}">`))
+    fail(`landmarks/${l.id}.html missing/!clean canonical — rerun generate`);
 }
 const sitemap = fs.readFileSync(path.join(SITE, "sitemap.xml"), "utf8");
 const urlCount = (sitemap.match(/<loc>/g) || []).length;
 if (urlCount !== 6 + LM.length) fail(`sitemap has ${urlCount} urls, expected ${6 + LM.length}`);
-if (!sitemap.includes("footprint.html")) fail("sitemap missing footprint.html");
+if (!sitemap.includes("<loc>https://www.meow-woof.org/footprint</loc>")) fail("sitemap missing clean /footprint url");
+if (/\.html<\/loc>/.test(sitemap)) fail("sitemap still has .html urls — should be clean (redirect-free) URLs");
 if (!failures) ok("landmarks.json, 22 pages, sitemap all match the data");
 
 // ---------- 3. assets & links ----------

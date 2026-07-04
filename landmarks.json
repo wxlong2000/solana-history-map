@@ -3,7 +3,7 @@
   "license": "CC-BY-4.0",
   "generated_from": "landmarks-data.js",
   "version": "1.0.0",
-  "generated_at": "2026-07-03",
+  "generated_at": "2026-07-04",
   "count": 22,
   "landmarks": [
     {
@@ -32,7 +32,7 @@
           "url": "https://www.theblock.co/learn/302470/what-is-proof-of-history-and-why-does-solana-use-it"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/architects_echo.html"
+      "page": "https://www.meow-woof.org/landmarks/architects_echo"
     },
     {
       "id": "restart",
@@ -72,7 +72,7 @@
           "url": "https://www.helius.dev/blog/solana-outages-complete-history"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/restart.html"
+      "page": "https://www.meow-woof.org/landmarks/restart"
     },
     {
       "id": "ftx_crater",
@@ -100,7 +100,7 @@
           "url": "https://decrypt.co/292874/solana-hits-all-time-high-price"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/ftx_crater.html"
+      "page": "https://www.meow-woof.org/landmarks/ftx_crater"
     },
     {
       "id": "mango",
@@ -128,7 +128,7 @@
           "url": "https://www.theblock.co/post/355666/u-s-judge-overturns-fraud-convictions-of-mango-markets-exploiter-eisenberg-determining-improper-venue"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/mango.html"
+      "page": "https://www.meow-woof.org/landmarks/mango"
     },
     {
       "id": "wormhole",
@@ -152,7 +152,7 @@
           "url": "https://www.chainalysis.com/blog/wormhole-hack-february-2022/"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/wormhole.html"
+      "page": "https://www.meow-woof.org/landmarks/wormhole"
     },
     {
       "id": "slope",
@@ -176,7 +176,7 @@
           "url": "https://www.theblock.co/post/161425/slope-wallet-provider-saved-user-seed-phrases-in-plain-text-solana-security-researchers-find"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/slope.html"
+      "page": "https://www.meow-woof.org/landmarks/slope"
     },
     {
       "id": "jup_port",
@@ -208,7 +208,7 @@
           "url": "https://solanafloor.com/news/jupiter-reclaims-dominance-with-93-6-market-share-in-solana-s-aggregator-landscape"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/jup_port.html"
+      "page": "https://www.meow-woof.org/landmarks/jup_port"
     },
     {
       "id": "raydium",
@@ -236,7 +236,7 @@
           "url": "https://github.com/raydium-io/raydium-amm"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/raydium.html"
+      "page": "https://www.meow-woof.org/landmarks/raydium"
     },
     {
       "id": "firedancer",
@@ -264,7 +264,7 @@
           "url": "https://github.com/firedancer-io/firedancer"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/firedancer.html"
+      "page": "https://www.meow-woof.org/landmarks/firedancer"
     },
     {
       "id": "helium",
@@ -292,7 +292,7 @@
           "url": "https://www.coindesk.com/tech/2023/04/18/decentralized-wireless-project-helium-begins-move-to-solana-blockchain"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/helium.html"
+      "page": "https://www.meow-woof.org/landmarks/helium"
     },
     {
       "id": "ore",
@@ -320,7 +320,7 @@
           "url": "https://cryptoslate.com/solana-based-pow-project-ore-halts-mining-announces-version-2/"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/ore.html"
+      "page": "https://www.meow-woof.org/landmarks/ore"
     },
     {
       "id": "saga",
@@ -348,7 +348,7 @@
           "url": "https://techcrunch.com/2024/01/18/solana-mobiles-second-phone-announcement-drives-buying-frenzy/"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/saga.html"
+      "page": "https://www.meow-woof.org/landmarks/saga"
     },
     {
       "id": "backpack",
@@ -376,7 +376,7 @@
           "url": "https://www.theblock.co/post/260114/backpack-launching-cryptocurrency-exchange-with-dubai-license"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/backpack.html"
+      "page": "https://www.meow-woof.org/landmarks/backpack"
     },
     {
       "id": "jup_drop",
@@ -404,7 +404,7 @@
           "url": "https://www.theblock.co/post/272800/jupiter-jup-token-launch-date-memecoin-drop-planned"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/jup_drop.html"
+      "page": "https://www.meow-woof.org/landmarks/jup_drop"
     },
     {
       "id": "pumpfun",
@@ -440,7 +440,7 @@
           "url": "https://en.wikipedia.org/wiki/Pump.fun"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/pumpfun.html"
+      "page": "https://www.meow-woof.org/landmarks/pumpfun"
     },
     {
       "id": "wen_temple",
@@ -468,7 +468,7 @@
           "url": "https://www.coindesk.com/markets/2024/01/27/around-17-of-wen-token-supply-could-be-burned-after-airdrop-data-suggests"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/wen_temple.html"
+      "page": "https://www.meow-woof.org/landmarks/wen_temple"
     },
     {
       "id": "mew_forest",
@@ -496,7 +496,7 @@
           "url": "https://www.coindesk.com/markets/2024/07/03/solana-meme-coin-mews-cat-character-to-feature-on-trending-telegram-mini-game"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/mew_forest.html"
+      "page": "https://www.meow-woof.org/landmarks/mew_forest"
     },
     {
       "id": "myro",
@@ -528,7 +528,7 @@
           "url": "https://coinmarketcap.com/currencies/myro/"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/myro.html"
+      "page": "https://www.meow-woof.org/landmarks/myro"
     },
     {
       "id": "shark_bay",
@@ -560,7 +560,7 @@
           "url": "https://coinmarketcap.com/currencies/shark-cat/"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/shark_bay.html"
+      "page": "https://www.meow-woof.org/landmarks/shark_bay"
     },
     {
       "id": "gigachad",
@@ -592,7 +592,7 @@
           "url": "https://cryptobriefing.com/coinbase-token-listing-roadmap-gains/"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/gigachad.html"
+      "page": "https://www.meow-woof.org/landmarks/gigachad"
     },
     {
       "id": "meow_sanctuary",
@@ -620,7 +620,7 @@
           "url": "https://coinmarketcap.com/currencies/mew/"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/meow_sanctuary.html"
+      "page": "https://www.meow-woof.org/landmarks/meow_sanctuary"
     },
     {
       "id": "woof_city",
@@ -648,7 +648,7 @@
           "url": "https://decrypt.co/312720/dogwifhat-las-vegas-sphere-solana-meme-coin-refund-700k"
         }
       ],
-      "page": "https://www.meow-woof.org/landmarks/woof_city.html"
+      "page": "https://www.meow-woof.org/landmarks/woof_city"
     }
   ]
 }

@@ -103,7 +103,8 @@ function pageHtml(l, prev, next) {
   const metaBits = [l.year, cat, (l.sources && l.sources.length) ? "SOURCED" : ""].filter(Boolean).join("  ·  ");
   const desc = esc(l.tldr || "");
   const ogImg = `${BASE_URL}/assets/og/${l.id}.jpg`;
-  const url = `${BASE_URL}/landmarks/${l.id}.html`;
+  // Canonical = the clean URL Cloudflare Pages actually serves (the .html form 308-redirects to it).
+  const url = `${BASE_URL}/landmarks/${l.id}`;
   const story = [["What happened", l.whatHappened], ["Why Solana remembers it", l.whyItMatters], ["On the map", l.onMap]]
     .filter((s) => s[1]).map((s) => `<section><h4>${esc(s[0])}</h4><p>${esc(s[1])}</p></section>`).join("");
   const sources = (l.sources && l.sources.length)
@@ -135,6 +136,7 @@ function pageHtml(l, prev, next) {
 <meta property="og:title" content="${esc(l.name)} — Solana History Map">
 <meta property="og:description" content="${desc}">
 <meta property="og:type" content="article"><meta property="og:url" content="${url}">
+<link rel="canonical" href="${url}">
 <meta property="og:image" content="${ogImg}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="${ogImg}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -171,7 +173,7 @@ function datasetHtml(json) {
     "@type": "Dataset",
     name: json.name,
     description: "Open, source-cited dataset of 22 Solana ecosystem history landmarks: outages, exploits, infrastructure milestones, airdrops, and culture.",
-    url: `${BASE_URL}/dataset.html`,
+    url: `${BASE_URL}/dataset`,
     version: json.version,
     dateModified: json.generated_at,
     license: "https://creativecommons.org/licenses/by/4.0/",
@@ -183,6 +185,7 @@ function datasetHtml(json) {
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Open dataset — Solana History Map</title>
 <meta name="description" content="Open, reusable dataset of Solana history landmarks with sources. CC-BY-4.0.">
+<link rel="canonical" href="${BASE_URL}/dataset">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="./history-map.css?v=${CSS_VERSION}">
 <script defer src="./stats.js?v=1"></script>
@@ -219,6 +222,7 @@ function sourcesHtml() {
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sources — Solana History Map</title>
 <meta name="description" content="The source index for the Solana History Map — every landmark with its primary and journalistic references. CC-BY-4.0.">
+<link rel="canonical" href="${BASE_URL}/sources">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="stylesheet" href="./history-map.css?v=${CSS_VERSION}">
 <script defer src="./stats.js?v=1"></script>
@@ -267,14 +271,15 @@ async function main() {
       tldr: l.tldr, whatHappened: l.whatHappened, whyItMatters: l.whyItMatters,
       status: l.status, tier: l.tier || "", lastVerified: l.lastVerified || "",
       sources: l.sources || [],
-      page: `${BASE_URL}/landmarks/${l.id}.html`
+      page: `${BASE_URL}/landmarks/${l.id}`
     })),
   };
   fs.writeFileSync(path.join(SITE, "landmarks.json"), JSON.stringify(json, null, 2));
   fs.writeFileSync(path.join(SITE, "dataset.html"), datasetHtml(json));
   fs.writeFileSync(path.join(SITE, "sources.html"), sourcesHtml());
-  const urls = [`${BASE_URL}/`, `${BASE_URL}/dataset.html`, `${BASE_URL}/sources.html`, `${BASE_URL}/about.html`, `${BASE_URL}/learn.html`, `${BASE_URL}/footprint.html`]
-    .concat(LM.map((l) => `${BASE_URL}/landmarks/${l.id}.html`));
+  // Clean URLs (no .html) — these are what Cloudflare Pages serves at 200; the .html forms 308-redirect.
+  const urls = [`${BASE_URL}/`, `${BASE_URL}/dataset`, `${BASE_URL}/sources`, `${BASE_URL}/about`, `${BASE_URL}/learn`, `${BASE_URL}/footprint`]
+    .concat(LM.map((l) => `${BASE_URL}/landmarks/${l.id}`));
   fs.writeFileSync(path.join(SITE, "sitemap.xml"),
     `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${u}</loc></url>`).join("\n")}\n</urlset>\n`);
   console.log("Generated " + LM.length + " landmark pages + OG cards, dataset.html, landmarks.json, sitemap.xml");
