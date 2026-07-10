@@ -53,7 +53,13 @@
   };
 
   // ---------- engine ----------
-  var modal = null, els = {}, cur = null, ctx = null, step = 0, lastFocused = null;
+  var modal = null, els = {}, cur = null, ctx = null, step = 0, lastFocused = null, activeId = "", completed = false;
+  function track(event, id) { if (window.SHMStats && window.SHMStats.track) window.SHMStats.track(event, id || activeId); }
+  function recordFor(id) {
+    var L = window.SOLANA_HISTORY_LANDMARKS || [];
+    for (var i = 0; i < L.length; i++) if (L[i].id === id) return L[i];
+    return null;
+  }
   function build() {
     if (modal) return;
     modal = el("div", "breach-modal sim-modal");
@@ -65,15 +71,20 @@
         '<div class="breach-headwrap"><h2 class="breach-head" id="sim-head" tabindex="-1"></h2><p class="breach-body sim-body"></p></div>' +
         '<div class="breach-stage sim-stage"></div>' +
         '<p class="breach-say" aria-live="polite"></p>' +
-        '<div class="breach-foot"><p class="breach-hint"></p><div class="breach-nav"><button class="btn-hud breach-prev" type="button">← Prev</button><button class="btn-hud breach-next primary" type="button">Next →</button></div></div>' +
+        '<div class="breach-foot"><p class="breach-hint"></p><div class="breach-nav"><button class="btn-hud breach-prev" type="button">← Prev</button><button class="btn-hud sim-share" type="button" hidden>Share teardown</button><button class="btn-hud breach-next primary" type="button">Next →</button></div></div>' +
         '<p class="breach-live shm-vh" aria-live="polite"></p>' +
       '</div>';
     document.body.appendChild(modal);
     els.rail = modal.querySelector(".breach-rail"); els.count = modal.querySelector(".breach-count");
     els.stage = modal.querySelector(".sim-stage"); els.head = modal.querySelector(".breach-head"); els.body = modal.querySelector(".sim-body");
-    els.hint = modal.querySelector(".breach-hint"); els.prev = modal.querySelector(".breach-prev"); els.next = modal.querySelector(".breach-next"); els.live = modal.querySelector(".breach-live"); els.say = modal.querySelector(".breach-say");
+    els.hint = modal.querySelector(".breach-hint"); els.prev = modal.querySelector(".breach-prev"); els.share = modal.querySelector(".sim-share"); els.next = modal.querySelector(".breach-next"); els.live = modal.querySelector(".breach-live"); els.say = modal.querySelector(".breach-say");
     modal.addEventListener("click", function (e) { if (e.target.hasAttribute && e.target.hasAttribute("data-close")) close(); });
     els.prev.addEventListener("click", function () { go(step - 1); });
+    els.share.addEventListener("click", function () {
+      var rec = recordFor(activeId);
+      if (!rec || !window.SHMShareCard || !window.SHMShareCard.open) return;
+      close(); window.SHMShareCard.open(rec);
+    });
     els.next.addEventListener("click", function () { if (step >= cur.steps.length - 1) close(); else go(step + 1); });
     document.addEventListener("keydown", onKey);
   }
@@ -102,12 +113,15 @@
     var segs = els.rail.querySelectorAll(".rail-seg");
     for (var k = 0; k < segs.length; k++) segs[k].className = "rail-seg" + (k < i ? " done" : k === i ? " active" : "");
     els.prev.disabled = (i === 0); els.next.textContent = (i === cur.steps.length - 1) ? "Close" : "Next →";
+    els.share.hidden = (i !== cur.steps.length - 1) || !window.SHMShareCard;
     if (s.enter) s.enter(ctx);
+    if (i === cur.steps.length - 1 && !completed) { completed = true; track("sim_complete"); }
     if (els.live) els.live.textContent = "Step " + (i + 1) + " of " + cur.steps.length + ": " + els.head.textContent; // a11y only
     try { els.head.focus({ preventScroll: false }); } catch (e) {}
   }
   function open(id) {
     cur = SIMS[id]; if (!cur) return;
+    activeId = id; completed = false; track("sim_start", id);
     build();
     ctx = { state: {}, accent: cur.accent || "#14f195", reduce: reduce, speak: speak, stage: null, sim: cur, el: el, sha256hex: sha256hex, short: short, refreshNav: function () {} };
     modal.style.setProperty("--sim-accent", ctx.accent);

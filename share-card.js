@@ -227,6 +227,7 @@
 
   // ---------- modal ----------
   var modal = null, preview = null, statusEl = null, cur = null, curCanvas = null;
+  function track(event) { if (window.SHMStats && window.SHMStats.track) window.SHMStats.track(event, cur && cur.id); }
 
   function filenameFor(l) { return "solana-history-" + pad2(l.num) + "-" + (l.id || "record") + ".png"; }
   function recordUrl(l) { return location.origin + location.pathname + "#" + l.id; }
@@ -274,6 +275,7 @@
   function handle(act) {
     if (!cur) return;
     if (act === "download") {
+      track("share_download");
       toBlob(function (b) {
         var a = document.createElement("a");
         a.href = URL.createObjectURL(b); a.download = filenameFor(cur);
@@ -282,6 +284,7 @@
         flash("Saved " + filenameFor(cur));
       });
     } else if (act === "share") {
+      track("share_native");
       toBlob(function (b) {
         var file = new File([b], filenameFor(cur), { type: "image/png" });
         var payload = { title: cur.name, text: cur.name + " — " + (cur.tldr || ""), url: recordUrl(cur) };
@@ -294,10 +297,12 @@
         }
       });
     } else if (act === "copy") {
+      track("share_copy");
       var url = recordUrl(cur);
       if (navigator.clipboard) navigator.clipboard.writeText(url).then(function () { flash("Link copied"); }, function () { flash(url); });
       else flash(url);
     } else if (act === "tweet") {
+      track("share_x");
       var text = cur.name + " — " + (cur.tldr || "") + "  via Solana History Map";
       window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(recordUrl(cur)), "_blank", "noopener");
     }
@@ -306,6 +311,7 @@
   function open(l) {
     if (!l) return;
     cur = l;
+    track("share_open");
     ensureModal();
     var render = function () {
       curCanvas = buildCanvas(l);

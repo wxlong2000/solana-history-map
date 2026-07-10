@@ -98,8 +98,9 @@
   function fmt(n) { return n.toLocaleString("en-US"); }
 
   // ---- module state ----
-  var lastRecord = null, step = 0, swapped = false, readerChecked = false, stopped = false;
+  var lastRecord = null, step = 0, swapped = false, readerChecked = false, stopped = false, completed = false;
   var modal = null, els = {};
+  function track(event) { if (window.SHMStats && window.SHMStats.track) window.SHMStats.track(event, "wormhole"); }
 
   function commaRecord() {
     if (lastRecord) return lastRecord;
@@ -161,6 +162,7 @@
           '<p class="breach-hint"></p>' +
           '<div class="breach-nav">' +
             '<button class="btn-hud breach-prev" type="button">← Prev</button>' +
+            '<button class="btn-hud breach-share" type="button" hidden>Share teardown</button>' +
             '<button class="btn-hud breach-next primary" type="button">Next →</button>' +
           '</div>' +
         '</div>' +
@@ -182,6 +184,7 @@
     els.focus = modal.querySelector(".breach-focus");
     els.hint = modal.querySelector(".breach-hint");
     els.prev = modal.querySelector(".breach-prev");
+    els.share = modal.querySelector(".breach-share");
     els.next = modal.querySelector(".breach-next");
     els.live = modal.querySelector(".breach-live"); els.say = modal.querySelector(".breach-say");
 
@@ -194,6 +197,11 @@
       if (e.target.hasAttribute && e.target.hasAttribute("data-close")) close();
     });
     els.prev.addEventListener("click", function () { go(step - 1); });
+    els.share.addEventListener("click", function () {
+      var rec = commaRecord();
+      if (!rec || !window.SHMShareCard || !window.SHMShareCard.open) return;
+      close(); window.SHMShareCard.open(rec);
+    });
     els.next.addEventListener("click", function () { if (step >= STEPS.length - 1) close(); else go(step + 1); });
     document.addEventListener("keydown", onKey);
   }
@@ -456,7 +464,9 @@
     }
     if (i === 5) paintLedger(5, !reduce);
     els.prev.disabled = (i === 0);
+    els.share.hidden = (i !== STEPS.length - 1) || !window.SHMShareCard;
     els.next.textContent = (i === STEPS.length - 1) ? "Close" : "Next →";
+    if (i === STEPS.length - 1 && !completed) { completed = true; track("sim_complete"); }
     if (els.live) els.live.textContent = "Step " + (i + 1) + " of " + STEPS.length + ": " + d.head; // a11y only
     // move focus to heading for SR
     els.head.setAttribute("tabindex", "-1");
@@ -468,7 +478,8 @@
   function open(record) {
     lastRecord = record || lastRecord || commaRecord();
     build();
-    swapped = false; readerChecked = false; stopped = false; step = 0;
+    swapped = false; readerChecked = false; stopped = false; completed = false; step = 0;
+    track("sim_start");
     lastFocused = document.activeElement;
     document.body.classList.add("breach-lock");
     modal.classList.add("open");

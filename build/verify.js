@@ -9,11 +9,13 @@
 
 const fs = require("fs");
 const path = require("path");
+const vm = require("vm");
 
 const SITE = path.resolve(__dirname, "..");
 let failures = 0;
 function fail(msg) { failures++; console.error("  ✗ " + msg); }
 function ok(msg) { console.log("  ✓ " + msg); }
+function htmlEsc(value) { return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;"); }
 
 global.window = {};
 require(path.join(SITE, "landmarks-data.js"));
@@ -53,6 +55,8 @@ for (const l of LM) {
   const html = fs.readFileSync(page, "utf8");
   if (!html.includes("application/ld+json")) fail(`landmarks/${l.id}.html missing JSON-LD — rerun generate`);
   if (!html.includes(`sources last verified ${l.lastVerified}`)) fail(`landmarks/${l.id}.html verified date stale — rerun generate`);
+  const expectedTitle = l.seoTitle || l.name;
+  if (!html.includes(`<title>${htmlEsc(expectedTitle)} — Solana History Map</title>`)) fail(`landmarks/${l.id}.html SEO title stale — rerun generate`);
   // canonical must be the clean URL (no .html) that Cloudflare Pages serves
   if (!html.includes(`<link rel="canonical" href="https://www.meow-woof.org/landmarks/${l.id}">`))
     fail(`landmarks/${l.id}.html missing/!clean canonical — rerun generate`);
@@ -124,6 +128,33 @@ for (const f of claimFiles) {
   }
 }
 if (!failures) ok(`all "N references" claims agree with the data (${totalRefs})`);
+
+// ---------- 7. privacy analytics contract ----------
+console.log("7. analytics path/event contract");
+try {
+  const workerSrc = fs.readFileSync(path.join(SITE, "_worker.js"), "utf8")
+    .replace("export default {", "const __worker = {");
+  const context = vm.createContext({ URL, Response, Request, TextEncoder, crypto: global.crypto, console });
+  vm.runInContext(workerSrc, context);
+  const pathCases = {
+    "/": "/",
+    "/index.html": "/",
+    "/learn": "/learn",
+    "/learn.html": "/learn",
+    "/landmarks/wormhole": "/landmarks/wormhole",
+    "/landmarks/wormhole.html": "/landmarks/wormhole",
+    "/not-a-real-route": "/other",
+  };
+  for (const [input, expected] of Object.entries(pathCases)) {
+    const got = vm.runInContext(`normalizeHitPath(${JSON.stringify(input)})`, context);
+    if (got !== expected) fail(`analytics path ${input} normalized to ${got}, expected ${expected}`);
+  }
+  const statsSrc = fs.readFileSync(path.join(SITE, "stats.js"), "utf8");
+  for (const event of ["pageview", "sim_start", "sim_complete", "share_open", "share_x", "source_click", "github_click"])
+    if (!workerSrc.includes(`"${event}"`) || !statsSrc.includes(event) && !["sim_start", "sim_complete", "share_open", "share_x"].includes(event))
+      fail(`analytics contract missing ${event}`);
+  if (!failures) ok("clean and legacy URLs normalize; conversion-event contract is wired");
+} catch (e) { fail("analytics contract could not be evaluated: " + e.message); }
 
 console.log(failures ? `\nFAILED — ${failures} problem(s)` : "\nAll checks passed");
 process.exit(failures ? 1 : 0);

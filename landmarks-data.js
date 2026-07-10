@@ -1,7 +1,7 @@
 // Solana History Map — landmark dataset
 // Schema: id, name, x/y (map %), category, year, date?, tldr (the hook),
 //         danger (security/exploit -> red glitch), status, featured, image,
-//         whatHappened, whyItMatters, onMap, sources[], affiliationNote?
+//         whatHappened, whyItMatters, onMap, sources[], affiliationNote?, seoTitle?, seoDescription?
 // Content is the spine: tldr teases (curiosity gap), the body resolves it.
 // Sourcing is the lifeblood — Wormhole is NOT a DOJ case (that's Mango/Eisenberg).
 
@@ -10,6 +10,8 @@ window.SOLANA_HISTORY_LANDMARKS = [
     id: "architects_echo", name: "ARCHITECT'S ECHO", x: 83.4, y: 12.5,
     category: "Infrastructure", year: 2020, date: "2020-03-16", status: "verified", danger: false, image: "assets/landmarks/architects_echo.jpeg",
     lastVerified: "2026-07", tier: "playable",
+    seoTitle: "How Solana Proof of History Works — Interactive Demo",
+    seoDescription: "Tamper with a sequential SHA-256 chain and see how Solana Proof of History creates a verifiable ordering of events.",
     tldr: "Why is Solana fast to the point of absurdity? The answer is a bet called Proof of History.",
     whatHappened: "Solana's design begins with Proof of History (PoH), a verifiable delay function using sequential SHA-256 hashing that Anatoly Yakovenko described in a November 2017 whitepaper. PoH stamps a cryptographic, verifiable ordering of events into the ledger before consensus, so validators can agree on time without constant communication. After a series of testnets, Solana Labs launched the network's Mainnet Beta on March 16, 2020.",
     whyItMatters: "Proof of History is the foundational idea that lets Solana parallelize and pipeline transaction processing for high throughput, and the 2020 mainnet beta is the origin point of the entire ecosystem mapped here.",
@@ -43,6 +45,8 @@ window.SOLANA_HISTORY_LANDMARKS = [
     category: "Macro", year: 2022, date: "2022-11", status: "verified", featured: true, danger: true,
     image: "assets/landmarks/ftx-fallout-crater.jpeg",
     lastVerified: "2026-07", tier: "playable",
+    seoTitle: "FTX, Serum and OpenBook — Solana Dependency Teardown",
+    seoDescription: "Explore how FTX contagion reached Solana through custody, liquidity and upgrade keys — and how Serum was forked into OpenBook.",
     tldr: "The meteor that hit closest to Solana — and nearly took the whole chain with it.",
     whatHappened: "When FTX and Alameda collapsed in November 2022, the fallout hit Solana harder than any other chain: SOL was the ecosystem most associated with them, and confidence cratered alongside the price. But the damage traveled along dependency edges, not the blockchain — custody (Sollet-wrapped assets), liquidity (Alameda market-making), the Foundation's own disclosed FTX balance, and one hard technical break: Serum, whose program-upgrade keys were held by FTX. The chain itself never stopped producing blocks. Within about 48 hours the community forked Serum into OpenBook under fresh keys, restoring the order-book liquidity that Raydium and others depended on.",
     whyItMatters: "It became a brutal stress test that separated builders who stayed from capital that left, and a lasting lesson in systemic risk: on a permissionless chain, contagion spreads through custody, liquidity, and keys — your dependency graph — not through consensus. The crater is not about price; it marks the period the ecosystem had to prove it was more than an exchange-era narrative, and the OpenBook fork showed the infrastructure was recoverable because no one owned the chain itself.",
@@ -58,6 +62,8 @@ window.SOLANA_HISTORY_LANDMARKS = [
     category: "Security", year: 2022, date: "2022-10", status: "verified", featured: true, danger: true,
     image: "assets/landmarks/mango.jpeg",
     lastVerified: "2026-07", tier: "playable",
+    seoTitle: "Mango Markets Exploit Explained — Oracle Teardown",
+    seoDescription: "Operate a simplified model of the 2022 Mango Markets oracle manipulation and see how inflated collateral enabled a roughly $110M drain.",
     tldr: "One trader drained ~$110M through an oracle, then argued it was a legal trade — and a court later vacated his convictions.",
     whatHappened: "In October 2022, Avraham Eisenberg manipulated the price oracle behind Mango Markets to inflate his collateral and borrow out roughly $110M. He publicly framed it as a legal 'highly profitable trading strategy.' A jury convicted him of fraud and market manipulation in April 2024, but in May 2025 a federal judge vacated all convictions — citing improper venue and the absence of a material misrepresentation — and prosecutors appealed.",
     whyItMatters: "Oracle manipulation is one of DeFi's defining attack surfaces. Mango turned an abstract risk into a years-long legal saga and a permanent design lesson about where price data comes from.",
@@ -73,6 +79,8 @@ window.SOLANA_HISTORY_LANDMARKS = [
     category: "Security", year: 2022, date: "2022-02", status: "verified", featured: true, danger: true,
     image: "assets/landmarks/wormhole.jpeg",
     lastVerified: "2026-07", tier: "playable",
+    seoTitle: "Wormhole Hack Explained — Interactive Bridge Teardown",
+    seoDescription: "Replay a simplified model of the 2022 Wormhole bridge exploit: a forged verification path, 120,000 unbacked wETH and a $320M loss.",
     tldr: "A signature check that wasn't. 120,000 ETH minted from nothing. $320M gone in minutes.",
     whatHappened: "In February 2022, an attacker exploited a signature-verification flaw in Wormhole — the bridge connecting Solana and Ethereum — to forge the minting of 120,000 wrapped ETH without depositing any collateral. Around $320M drained out in minutes, one of the largest DeFi hacks ever at the time. Jump Crypto, which backs Wormhole, replaced the funds within hours to keep users whole.",
     whyItMatters: "Cross-chain bridges are among DeFi's largest attack surfaces, and Wormhole became the dividing line: after it, bridge security, audits, and verification got dramatically more serious. It also exposed the double edge of a deep-pocketed backstop — users were protected, but only because a large player chose to absorb the loss.",

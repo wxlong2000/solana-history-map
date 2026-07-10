@@ -4,9 +4,9 @@
 //     It hides the upstream RPC, whitelists only the read methods the pulse needs (so it can't be
 //     abused as an open relay), edge-caches a few seconds so all visitors collapse into a handful
 //     of upstream calls, and falls through a list of upstreams.
-//   /api/hit — self-hosted, privacy-first page-view counting into Workers Analytics Engine.
+//   /api/hit — self-hosted, privacy-first aggregate event counting into Workers Analytics Engine.
 //     No cookies, no fingerprinting, no third parties: it stores only (path, referrer host,
-//     coarse device class) per hit. Honors DNT/GPC. The STATS binding is configured in
+//     coarse device class, event, landmark/action key, campaign label). Honors DNT/GPC. The STATS binding is configured in
 //     wrangler.toml; without it the endpoint is a silent no-op.
 //
 // Upstream: the public api.mainnet-beta endpoint blocks Cloudflare IPs, so the keyless default is
@@ -31,8 +31,25 @@ export default {
   },
 };
 
-// ---- /api/hit — privacy-first page-view counter (Workers Analytics Engine) ----
-const HIT_PATH = /^\/(index\.html)?$|^\/(about|sources|dataset|footprint|learn|404)\.html$|^\/landmarks\/[a-z_]+\.html$/;
+// ---- /api/hit — privacy-first aggregate event counter (Workers Analytics Engine) ----
+const HIT_EVENT = new Set(["pageview", "sim_start", "sim_complete", "share_open", "share_download", "share_native", "share_copy", "share_x", "source_click", "github_click"]);
+const HIT_OBJECT = /^[a-z0-9_:-]{1,48}$/;
+
+function normalizeHitPath(value) {
+  if (typeof value !== "string") return "/other";
+  let path = value.split("?")[0].replace(/\/+$/, "") || "/";
+  if (path === "/index.html") path = "/";
+  path = path.replace(/^\/(about|sources|dataset|footprint|learn|404)\.html$/, "/$1");
+  path = path.replace(/^\/landmarks\/([a-z0-9_]+)\.html$/, "/landmarks/$1");
+  if (path === "/" || /^\/(about|sources|dataset|footprint|learn|404)$/.test(path)) return path;
+  if (/^\/landmarks\/[a-z0-9_]+$/.test(path)) return path;
+  return "/other";
+}
+
+function cleanKey(value, max) {
+  const key = typeof value === "string" ? value.toLowerCase().slice(0, max || 48) : "";
+  return HIT_OBJECT.test(key) ? key : "";
+}
 async function hit(request, env) {
   if (request.method === "OPTIONS") return cors(new Response(null, { status: 204 }));
   if (request.method !== "POST") return json({ error: "POST only" }, 405);
@@ -42,12 +59,17 @@ async function hit(request, env) {
     return json({ ok: true, respected: "dnt" }, 200);
   let body;
   try { body = await request.json(); } catch (e) { return json({ error: "invalid json" }, 400); }
-  const path = typeof body.p === "string" && HIT_PATH.test(body.p) ? body.p : "/other";
+  const path = normalizeHitPath(body.p);
+  const event = typeof body.e === "string" && HIT_EVENT.has(body.e) ? body.e : "pageview";
+  const object = cleanKey(body.o, 48);
+  const campaign = cleanKey(body.c, 32);
   let refHost = "";
   try { if (body.r) refHost = new URL(body.r).hostname.slice(0, 64); } catch (e) {}
   const device = body.m === 1 ? "mobile" : "desktop";
   env.STATS.writeDataPoint({
-    blobs: [path.slice(0, 96), refHost, device],
+    // Keep path/referrer/device in the first three blobs for compatibility with
+    // the original page-view queries; event/object/campaign are additive.
+    blobs: [path.slice(0, 96), refHost, device, event, object, campaign],
     doubles: [1],
     indexes: [path.slice(0, 96)],
   });

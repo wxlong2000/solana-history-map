@@ -1,7 +1,7 @@
 # Cloudflare Pages configuration (advanced mode via _worker.js).
 # Secrets (e.g. RPC_UPSTREAM) are managed in the Cloudflare dashboard, never here.
 #
-# The STATS binding powers the self-hosted privacy-first page-view counter
+# The STATS binding powers self-hosted privacy-first aggregate page/event counts
 # (/api/hit — see stats.js + _worker.js), writing to the "shm_hits" Analytics
 # Engine dataset. Secrets (e.g. RPC_UPSTREAM) live in the Cloudflare dashboard.
 name = "meowwoof-token"
