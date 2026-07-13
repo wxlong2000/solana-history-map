@@ -21,11 +21,11 @@
     },
     mango: {
       accent: GOLD,
-      headline: "A THIN ORACLE CREATED $431M BORROW POWER",
-      verdict: "In this simplified model, unrealized PnL became collateral and real treasury assets left the protocol.",
-      note: "Illustrative model of the October 2022 Mango Markets mechanism.",
+      headline: "$431M MODELED BORROW POWER. ~$110M ACTUALLY WITHDRAWN.",
+      verdict: "In this simplified model, unrealized PnL became collateral; historically, more than $100M in real assets left the protocol.",
+      note: "Illustrative borrow-power model; reported withdrawal estimates range from ~$110M to ~$116M.",
       source: "CFTC + 2 REFERENCES",
-      metrics: [["ORACLE", "+2,295%"], ["BORROW MODEL", "$431M"], ["TREASURY", "$0"]]
+      metrics: [["ORACLE", "+2,295%"], ["MODEL", "$431M"], ["WITHDRAWN", "~$110M"]]
     },
     architects_echo: {
       accent: GREEN,
