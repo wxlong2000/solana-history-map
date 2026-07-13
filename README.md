@@ -14,9 +14,9 @@ hand-illustrated map. The defining moments aren't just described, they're
 you don't read about Proof of History, you tamper with a real SHA-256 chain and
 watch it cascade-break.
 
-**[▶ Open the map](https://www.meow-woof.org/)** · **[Start with the Learn tracks](https://www.meow-woof.org/learn)** · jump straight into a teardown → [Wormhole](https://www.meow-woof.org/landmarks/wormhole) · [Proof of History](https://www.meow-woof.org/landmarks/architects_echo) · [Mango](https://www.meow-woof.org/landmarks/mango)
+**[▶ Open the map](https://www.meow-woof.org/)** · **[Start with the Learn tracks](https://www.meow-woof.org/learn)** · jump straight into a teardown → [Wormhole](https://www.meow-woof.org/?play=wormhole&src=github_readme#wormhole) · [Proof of History](https://www.meow-woof.org/?play=architects_echo&src=github_readme#architects_echo) · [Mango](https://www.meow-woof.org/?play=mango&src=github_readme#mango)
 
-> No token · no wallet connect · no ads · no tracking. Just a public good you can read, run, fork, and cite.
+> No token · no wallet connect · no ads. Privacy-first aggregate telemetry uses no cookies, fingerprints, or user IDs and honors DNT/GPC. Just a public good you can read, run, fork, and cite.
 
 - 🗺️ **22 landmarks · 73 references**, weighted toward primary sources
   (official post-mortems, court filings, specs, root-cause analyses)
@@ -55,7 +55,7 @@ The content bet is **verifiability over vibes**:
 - Numbers inside simulations are labeled *illustrative* where they are toy
   models; historical figures come from the cited sources.
 - Meme-era tokens are documented **as culture, not investment** — every such
-  record carries an affiliation disclaimer. No token, no tracking, no ads.
+  record carries an affiliation disclaimer. No token, no personal tracking, no ads.
 
 Found an error? See [CONTRIBUTING.md](./CONTRIBUTING.md) — factual
 corrections with a primary source get priority.

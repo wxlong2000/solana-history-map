@@ -200,7 +200,7 @@
     els.share.addEventListener("click", function () {
       var rec = commaRecord();
       if (!rec || !window.SHMShareCard || !window.SHMShareCard.open) return;
-      close(); window.SHMShareCard.open(rec);
+      close(); window.SHMShareCard.open(rec, { completed: true, simId: "wormhole", variant: stopped ? "prevented" : "breached" });
     });
     els.next.addEventListener("click", function () { if (step >= STEPS.length - 1) close(); else go(step + 1); });
     document.addEventListener("keydown", onKey);

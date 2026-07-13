@@ -83,7 +83,7 @@
     els.share.addEventListener("click", function () {
       var rec = recordFor(activeId);
       if (!rec || !window.SHMShareCard || !window.SHMShareCard.open) return;
-      close(); window.SHMShareCard.open(rec);
+      close(); window.SHMShareCard.open(rec, { completed: true, simId: activeId });
     });
     els.next.addEventListener("click", function () { if (step >= cur.steps.length - 1) close(); else go(step + 1); });
     document.addEventListener("keydown", onKey);

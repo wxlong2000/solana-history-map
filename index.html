@@ -63,19 +63,44 @@
     .shm-card-modal{position:fixed;inset:0;z-index:400;display:none;align-items:center;justify-content:center;padding:24px}
     .shm-card-modal.open{display:flex}
     .shm-card-backdrop{position:absolute;inset:0;background:rgba(3,5,9,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-    .shm-card-dialog{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;max-width:min(440px,94vw)}
+    .shm-card-dialog{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;max-width:min(480px,94vw)}
     .shm-card-x{position:absolute;top:-6px;right:-6px;z-index:2;width:34px;height:34px;border-radius:50%;border:1px solid var(--line,rgba(255,255,255,.16));background:rgba(10,14,20,.85);color:#cdd6e3;font-size:14px;cursor:pointer;line-height:1}
     .shm-card-x:hover{color:#fff;border-color:rgba(255,255,255,.4)}
     .shm-card-stage{width:100%;display:flex;justify-content:center}
     .shm-card-preview{max-height:68vh;display:flex}
-    .shm-card-canvas{width:auto;max-width:100%;max-height:68vh;border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);animation:shmCardIn .5s cubic-bezier(.2,.8,.2,1)}
+    .shm-card-canvas{width:auto;max-width:100%;max-height:68vh;border-radius:6px;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.08);animation:shmCardIn .5s cubic-bezier(.2,.8,.2,1)}
     @keyframes shmCardIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:none}}
     .shm-card-bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-    .shm-card-btn{font-family:var(--font-mono,monospace);font-size:12px;letter-spacing:.5px;text-transform:uppercase;padding:10px 16px;border-radius:9px;cursor:pointer;border:1px solid rgba(255,255,255,.16);background:rgba(14,18,25,.7);color:#dbe3ee;transition:.16s}
+    .shm-card-btn{font-family:var(--font-mono,monospace);font-size:12px;letter-spacing:.5px;text-transform:uppercase;padding:10px 16px;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,.16);background:rgba(14,18,25,.7);color:#dbe3ee;transition:.16s}
     .shm-card-btn:hover{border-color:rgba(255,255,255,.42);color:#fff;transform:translateY(-1px)}
     .shm-card-btn.primary{background:linear-gradient(135deg,#14f195,#0fce86);border-color:transparent;color:#04130c;font-weight:700;box-shadow:0 6px 20px rgba(20,241,149,.28)}
     .shm-card-btn.ghost{background:transparent}
     .shm-card-status{min-height:18px;margin:0;font-family:var(--font-mono,monospace);font-size:12px;color:var(--solana-green,#14f195);text-align:center}
+    /* optional no-spoiler prediction gate */
+    .btn-challenge{border-color:rgba(215,192,138,.38)!important;color:#e7d8b3!important;background:rgba(22,19,15,.72)!important}
+    .btn-challenge:hover{border-color:#d7c08a!important;color:#fff!important;box-shadow:0 0 16px rgba(215,192,138,.18)}
+    .challenge-modal{position:fixed;inset:0;z-index:540;display:none;align-items:center;justify-content:center;padding:18px}
+    .challenge-modal.open{display:flex}
+    .challenge-backdrop{position:absolute;inset:0;background:rgba(3,5,9,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+    .challenge-dialog{position:relative;width:min(650px,96vw);padding:24px;border:1px solid rgba(215,192,138,.28);border-radius:8px;background:#080b10;box-shadow:0 34px 90px rgba(0,0,0,.68);font-family:var(--font-mono,monospace)}
+    .challenge-dialog:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:#d7c08a}
+    .challenge-top{display:flex;align-items:center;justify-content:space-between;gap:18px;color:#d7c08a;font-size:11px;letter-spacing:1.3px}
+    .challenge-x{width:32px;height:32px;border:1px solid rgba(255,255,255,.16);border-radius:50%;background:#0d1118;color:#cbd3df;cursor:pointer}
+    .challenge-index{margin-top:30px;color:rgba(255,255,255,.38);font-size:11px;letter-spacing:1.2px}
+    .challenge-dialog h2{margin:8px 0 6px;color:#f5f8fc;font:800 clamp(34px,6vw,58px)/1.02 var(--font-display,Inter,sans-serif);letter-spacing:0}
+    .challenge-dialog h2:focus{outline:none}
+    .challenge-lead{margin:0 0 22px;color:#9ea9b8;font:400 14px/1.55 var(--font-sans,Inter,sans-serif)}
+    .challenge-options{display:grid;gap:8px}
+    .challenge-options button{display:grid;grid-template-columns:44px 1fr;align-items:center;gap:12px;min-height:62px;padding:10px 16px;border:1px solid rgba(255,255,255,.12);border-radius:6px;background:#0b0f15;color:#e8edf4;text-align:left;cursor:pointer;font:600 14px/1.35 var(--font-sans,Inter,sans-serif)}
+    .challenge-options button b{color:#d7c08a;font:700 12px var(--font-mono,monospace)}
+    .challenge-options button:hover:not(:disabled){border-color:rgba(215,192,138,.58);background:#10141a}
+    .challenge-options button[data-selected]{border-color:#ff6a7d;background:rgba(255,80,102,.08)}
+    .challenge-options button[data-correct]{border-color:#14f195;background:rgba(20,241,149,.07)}
+    .challenge-feedback{margin-top:16px;padding:14px 16px;border-left:3px solid #14f195;background:rgba(20,241,149,.06);color:#cdd7e4;font:500 13px/1.55 var(--font-sans,Inter,sans-serif)}
+    .challenge-feedback strong{color:#14f195}
+    .challenge-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}
+    .challenge-actions .primary{border-color:#14f195!important;background:#14f195!important;color:#04130c!important;font-weight:800}
+    @media (max-width:560px){.challenge-dialog{padding:20px 16px}.challenge-actions{flex-direction:column-reverse}.challenge-actions .btn-hud{width:100%}.challenge-options button{font-size:13px}}
     /* ===== Wormhole playable explainer ===== */
     .shm-vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
     body.breach-lock{overflow:hidden}
@@ -681,12 +706,14 @@
   <script defer src="./landmarks-data.js?v=23"></script>
   <script defer src="./history-map.js?v=24"></script>
   <script defer src="./alive.js?v=3"></script>
-  <script defer src="./share-card.js?v=2"></script>
-  <script defer src="./wormhole-breach.js?v=6"></script>
-  <script defer src="./interactive-sim.js?v=16"></script>
+  <script defer src="./share-card.js?v=3"></script>
+  <script defer src="./wormhole-breach.js?v=7"></script>
+  <script defer src="./interactive-sim.js?v=17"></script>
   <script defer src="./mobile-feed.js?v=1"></script>
   <script defer src="./keepers-sync.js?v=1"></script>
   <script defer src="./stats.js?v=2"></script>
+  <script defer src="./challenge-gate.js?v=1"></script>
+  <script defer src="./direct-play.js?v=2"></script>
 </head>
 
 <body data-fx="on">

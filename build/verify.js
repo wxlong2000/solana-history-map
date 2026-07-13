@@ -150,8 +150,11 @@ try {
     if (got !== expected) fail(`analytics path ${input} normalized to ${got}, expected ${expected}`);
   }
   const statsSrc = fs.readFileSync(path.join(SITE, "stats.js"), "utf8");
-  for (const event of ["pageview", "sim_start", "sim_complete", "share_open", "share_x", "source_click", "github_click"])
-    if (!workerSrc.includes(`"${event}"`) || !statsSrc.includes(event) && !["sim_start", "sim_complete", "share_open", "share_x"].includes(event))
+  const eventSources = statsSrc + "\n" + ["interactive-sim.js", "wormhole-breach.js", "share-card.js", "challenge-gate.js"]
+    .map((file) => fs.readFileSync(path.join(SITE, file), "utf8"))
+    .join("\n");
+  for (const event of ["pageview", "sim_start", "sim_complete", "share_open", "share_x", "source_click", "github_click", "challenge_open", "challenge_answer_correct", "challenge_answer_other", "challenge_skip"])
+    if (!workerSrc.includes(`"${event}"`) || !eventSources.includes(event))
       fail(`analytics contract missing ${event}`);
   if (!failures) ok("clean and legacy URLs normalize; conversion-event contract is wired");
 } catch (e) { fail("analytics contract could not be evaluated: " + e.message); }

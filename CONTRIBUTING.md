@@ -48,7 +48,8 @@ Keep the footprint small — that's a feature:
 
 - Vanilla JS/CSS/HTML only; no frameworks, no runtime dependencies, no
   build chain for the site itself.
-- No analytics, tracking, or third-party scripts.
+- No third-party analytics, cookies, fingerprints, or user IDs. Privacy-first
+  aggregate page and interaction events must honor DNT/GPC.
 - `_worker.js` stays a minimal read-only RPC proxy; secrets live only in the
   Cloudflare environment.
 - Match the existing code style; run `node build/verify.js` and

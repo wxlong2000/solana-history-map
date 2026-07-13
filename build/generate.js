@@ -198,7 +198,7 @@ function datasetHtml(json) {
 <nav class="nav-links"><a href="./index.html">Atlas</a><a href="./learn.html">Learn</a><a href="./footprint.html">Footprint</a><a href="./sources.html">Sources</a><a href="./about.html">About</a></nav></header>
 <main class="page-shell">
 <h1>Open dataset</h1>
-<p>Every landmark on this map is open data you can reuse. Text and data are licensed <a href="./LICENSE-DATA.md">CC-BY-4.0</a>; the site code is <a href="./LICENSE">MIT</a>. No token, no tracking, no affiliation claims.</p>
+<p>Every landmark on this map is open data you can reuse. Text and data are licensed <a href="./LICENSE-DATA.md">CC-BY-4.0</a>; the site code is <a href="./LICENSE">MIT</a>. No token, no personal tracking, no affiliation claims.</p>
 <p><a class="btn-hud" href="./landmarks.json" download>Download landmarks.json</a></p>
 <h2 style="margin-top:28px;font-size:20px">Methodology</h2>
 <p>A landmark qualifies if it is (1) a real, documented Solana ecosystem event or culture moment, (2) sourceable to a primary or strongly authoritative reference, and (3) memorable enough to teach. Security and outage events lead with official post-mortems, court filings, or Chainalysis; meme/culture entries are documented neutrally as culture, never as investment advice. References are historical citations, not endorsements.</p>

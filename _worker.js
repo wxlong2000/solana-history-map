@@ -32,7 +32,7 @@ export default {
 };
 
 // ---- /api/hit — privacy-first aggregate event counter (Workers Analytics Engine) ----
-const HIT_EVENT = new Set(["pageview", "sim_start", "sim_complete", "share_open", "share_download", "share_native", "share_copy", "share_x", "source_click", "github_click"]);
+const HIT_EVENT = new Set(["pageview", "sim_start", "sim_complete", "share_open", "share_download", "share_native", "share_copy", "share_x", "source_click", "github_click", "challenge_open", "challenge_answer_correct", "challenge_answer_other", "challenge_skip"]);
 const HIT_OBJECT = /^[a-z0-9_:-]{1,48}$/;
 
 function normalizeHitPath(value) {
